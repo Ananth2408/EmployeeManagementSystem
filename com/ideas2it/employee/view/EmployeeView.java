@@ -21,7 +21,7 @@ import java.text.ParseException;
  * Get the details of the employee from the user
  * and save the details.
  * Perform create, read, update and exit operations.
- * @version 2.0 02-09-2022.
+ * @version 2.0 13-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeView {
