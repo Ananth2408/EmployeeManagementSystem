@@ -5,7 +5,7 @@ import com.ideas2it.employee.view.EmployeeView;
 /**
  * Get Employeeaddress from the user.
  * Class uses getter setter methods to get input from user.
- * @version 2.0 02-09-2022.
+ * @version 2.0 13-09-2022.
  * @author  Ananth K.
  */
 public class Address {
