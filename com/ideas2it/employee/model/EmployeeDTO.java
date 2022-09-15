@@ -1,6 +1,6 @@
 package com.ideas2it.employee.model;
 
-import com.ideas2it.employee.model.Address;
+import com.ideas2it.employee.model.AddressDTO;
 import com.ideas2it.employee.view.EmployeeView;
 
 import java.util.Date;
@@ -11,7 +11,7 @@ import java.util.Date;
  * @version 2.1 15-09-2022.
  * @author  Ananth K.
  */
-public class Employee {
+public class EmployeeDTO {
     private String name;
     private String id;
     private String phoneNumber;
@@ -19,12 +19,12 @@ public class Employee {
     private String email;
     private double salary;
     private String bloodGroup;
-    private Address address;
+    private AddressDTO address;
 
-    public Employee() {}
+    public EmployeeDTO() {}
 
-    public Employee(String name, String id, String phonenumber, Date dateOfJoining,
-                   String email, double salary, String bloodGroup, Address address) {
+    public EmployeeDTO(String name, String id, String phonenumber, Date dateOfJoining,
+                   String email, double salary, String bloodGroup, AddressDTO address) {
         this.name = name;
         this.id = id;
         this.phoneNumber = phoneNumber;
@@ -90,11 +90,11 @@ public class Employee {
         this.bloodGroup = bloodGroup;
     }
 
-    public Address getAddress() {
+    public AddressDTO getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressDTO address) {
         this.address = address;
     }
 

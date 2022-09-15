@@ -1,10 +1,9 @@
-package com.ideas2it.employee.service.impl;
+package com.ideas2it.employee.dao.impl;
 
-import com.ideas2it.employee.controller.EmployeeController;
-import com.ideas2it.employee.model.Address;
-import com.ideas2it.employee.model.Employee;
 import com.ideas2it.employee.service.EmployeeManagementService;
-import com.ideas2it.employee.view.EmployeeView;
+import com.ideas2it.employee.model.Employee;
+import com.ideas2it.employee.model.EmployeeDTO;
+import com.ideas2it.employee.dao.Dao;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -12,10 +11,10 @@ import java.util.ArrayList;
 /**
  * Manipulate employeedetails and return boolean values.
  * Save the Employee details, read them, update them and delete them.
- * @version 2.0 02-09-2022.
+ * @version 2.1 15-09-2022.
  * @author  Ananth K.
  */ 
-public class EmployeeManagementServiceImpl implements EmployeeManagementService {
+public class EmployeeDao implements Dao {
     List<Employee> employees = new ArrayList<Employee>();
 
     /**
@@ -57,38 +56,15 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     }
 
     /**
-     * Search employee details by employee name,
-     * If name found it update employee details else it doesn't.
-     * @param employee name from user.
-     * @return if employee fount returns searchemployee else it returns null .
-     */
-    @Override
-    public Employee searchEmployee(String employeeName) {
-        Employee searchEmployee = null;
-        for(int i = 0; i < employees.size(); i++) {
-            if(employees.get(i).getName().equals(employeeName)) {
-                searchEmployee = employees.get(i);
-            }
-        }
-        return searchEmployee;
-    }
-
-    /**
      * Delete employee details by employee name,
      * if name found it delets emplyee deatils else it doesn't.
      * @param employee name.
      * @return if employee deleted returns true else it returns false.
      */
     @Override
-    public boolean deleteEmployee(String employeeName) {
-        boolean isRemoved = false;
+    public boolean deleteEmployee(Employee searchEmployee) {
 
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getName().equals(employeeName)) {
-                employees.remove(i);
-                isRemoved = true;
-            } 
-        }
-        return isRemoved;
+        return employees.remove(searchEmployee);
     }
+                
 }  

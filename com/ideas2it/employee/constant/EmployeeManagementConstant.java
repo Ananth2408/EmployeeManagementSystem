@@ -2,7 +2,7 @@ package com.ideas2it.employee.constant;
 
 /**
  * Multiple time used names were declared in same constant.
- * @version 2.0 13-09-2022.
+ * @version 2.1 15-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeManagementConstant {

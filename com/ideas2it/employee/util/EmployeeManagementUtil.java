@@ -9,21 +9,19 @@ import java.util.Date;
 /**
  * Multiple times implemented values were under the same place,
  * Get the values from the user and save them.
+ * @version  2.1 15-09-2022.
+ * @author  Ananth K.
  */
 public class EmployeeManagementUtil {
 
     public Date dateOfJoining(String date) {
         Date dateOfJoining = null;
-        boolean isDate = true;
 
-        do{
             try {
                 dateOfJoining = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-                isDate = false;
             } catch (ParseException exception) {
                 System.out.println("please enter valid date");
             }
-        } while (isDate);
         return dateOfJoining;
     }
 }
