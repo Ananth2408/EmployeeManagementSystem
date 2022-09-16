@@ -7,21 +7,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Multiple times implemented values were under the same place,
- * Get the values from the user and save them.
- * @version  2.1 15-09-2022.
+ * Multiple times implemented values were placed here,
+ * Get the values from the user and validate them.
+ * @version  3.0 16-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeManagementUtil {
 
+    /**
+     * Date of joining were validated and returned.
+     * @param date from the user
+     * @return Date of joining
+     */
     public Date dateOfJoining(String date) {
         Date dateOfJoining = null;
 
-            try {
-                dateOfJoining = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-            } catch (ParseException exception) {
-                System.out.println("please enter valid date");
-            }
+        try {
+            dateOfJoining = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+        } catch (ParseException exception) {
+            System.out.println("please enter valid date");
+        }
         return dateOfJoining;
     }
 }

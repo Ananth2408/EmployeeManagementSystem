@@ -1,14 +1,13 @@
 package com.ideas2it.employee.model;
 
 import com.ideas2it.employee.model.Address;
-import com.ideas2it.employee.view.EmployeeView;
 
 import java.util.Date;
 
 /**
  * Get Employeedetails.
- * Class uses getter setter methods get input from user.
- * @version 2.1 15-09-2022.
+ * Uses getter setter methods get input from user.
+ * @version 3.0 16-09-2022.
  * @author  Ananth K.
  */
 public class Employee {

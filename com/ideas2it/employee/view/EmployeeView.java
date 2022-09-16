@@ -2,27 +2,24 @@ package com.ideas2it.employee.view;
 
 import com.ideas2it.employee.constant.EmployeeManagementConstant;
 import com.ideas2it.employee.controller.EmployeeController;
-import com.ideas2it.employee.model.AddressDTO;
-import com.ideas2it.employee.model.EmployeeDTO;
-import com.ideas2it.employee.dao.Dao;
-import com.ideas2it.employee.service.EmployeeManagementService;
-import com.ideas2it.employee.dao.impl.EmployeeDao;
+import com.ideas2it.employee.dto.AddressDTO;
+import com.ideas2it.employee.dto.EmployeeDTO;
 import com.ideas2it.employee.util.EmployeeManagementUtil;
 
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 
 /**
  * Get the details of the employee from the user
  * and save the details.
  * Perform create, read, update and exit operations.
- * @version 2.1 15-09-2022.
+ * @version 3.0 16-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeView {
@@ -138,11 +135,17 @@ public class EmployeeView {
      */
     public void displayEmployee() {
         List<EmployeeDTO> employees = employeeController.displayEmployee();
-        Iterator<EmployeeDTO> iterator = employees.iterator();
-        while (iterator.hasNext()) {
-            EmployeeDTO employee = iterator.next();
-            System.out.println(employee.toString());
-        }
+
+        if (!employees.isEmpty()) {
+            Iterator<EmployeeDTO> iterator = employees.iterator();
+
+            while (iterator.hasNext()) {
+                EmployeeDTO employee = iterator.next();
+                System.out.println(employee.toString());
+            }
+        } else {
+            System.out.println(EmployeeManagementConstant.EMPLOYEE_NOT_FOUND);
+        }   
     }
         
     /**

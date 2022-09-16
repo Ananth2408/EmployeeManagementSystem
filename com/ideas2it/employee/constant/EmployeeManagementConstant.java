@@ -1,8 +1,9 @@
 package com.ideas2it.employee.constant;
 
 /**
- * Multiple time used names were declared in same constant.
- * @version 2.1 15-09-2022.
+ * Multiple time used names were declared in same constant
+ * and utilised whenever we need.
+ * @version 3.0 16-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeManagementConstant {
@@ -11,6 +12,7 @@ public class EmployeeManagementConstant {
                                                            + "\n3. Update \n4. Search \n5. Delete \n6. Exit";
     public static final String EMPLOYEE_OPERATION_ERROR = "Enter Valid Operation.";
     public static final String EMPLOYEE_MANAGEMENT_ERROR = "Enter The Valid Data.";
+    public static final String EMPLOYEE_NOT_FOUND = "Employee Not Inserted";
     public static final String NAME = "Enter The Name:";
     public static final String ID = "Enter The Employee Id:";
     public static final String PHONENUMBER = "Enter The Employee PhoneNumber:";

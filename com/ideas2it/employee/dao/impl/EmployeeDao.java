@@ -1,26 +1,22 @@
 package com.ideas2it.employee.dao.impl;
 
-import com.ideas2it.employee.service.EmployeeManagementService;
-import com.ideas2it.employee.model.Employee;
-import com.ideas2it.employee.model.EmployeeDTO;
 import com.ideas2it.employee.dao.Dao;
+import com.ideas2it.employee.model.Employee;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manipulate employeedetails and return boolean values.
  * Save the Employee details, read them, update them and delete them.
- * @version 2.1 15-09-2022.
+ * @version 3.0 16-09-2022.
  * @author  Ananth K.
  */ 
 public class EmployeeDao implements Dao {
     List<Employee> employees = new ArrayList<Employee>();
 
     /**
-     * Save the employee details.
-     * @param employee details.
-     * @return if employee details added it returns true else it returns false.
+     * {@inheritdoc}
      */
     @Override
     public boolean addEmployee(Employee employee) {
@@ -28,8 +24,7 @@ public class EmployeeDao implements Dao {
     }
 
     /**
-     * Print emplyoee detail.
-     * @return employee details.
+     * {@inheritdoc}
      */
     @Override 
     public List<Employee> displayEmployee() {
@@ -37,10 +32,7 @@ public class EmployeeDao implements Dao {
     }
 
     /**
-     * Update employee details by employee name,
-     * If name found it update employee details else it doesn't.
-     * @param employee details.
-     * @return if employee updated returns true else it returns false .
+     * {@inheritdoc}
      */
     @Override
     public boolean updateEmployee(Employee employee) {
@@ -56,15 +48,12 @@ public class EmployeeDao implements Dao {
     }
 
     /**
-     * Delete employee details by employee name,
-     * if name found it delets emplyee deatils else it doesn't.
-     * @param employee name.
-     * @return if employee deleted returns true else it returns false.
+     * {@inheritdoc}
      */
     @Override
-    public boolean deleteEmployee(Employee searchEmployee) {
+    public boolean deleteEmployee(Employee employee) {
 
-        return employees.remove(searchEmployee);
+        return employees.remove(employee);
     }
                 
 }  

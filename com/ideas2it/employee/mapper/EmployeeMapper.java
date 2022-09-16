@@ -1,18 +1,18 @@
 package com.ideas2it.employee.mapper;
 
 import com.ideas2it.employee.model.Address;
-import com.ideas2it.employee.model.AddressDTO;
+import com.ideas2it.employee.dto.AddressDTO;
 import com.ideas2it.employee.model.Employee;
-import com.ideas2it.employee.model.EmployeeDTO;
+import com.ideas2it.employee.dto.EmployeeDTO;
 
 /**
  * Mapper convert the modelDto details to model details and
  * model to modelDto details
  *
- * @Version 2.1 15-09-2022
+ * @Version 3.0 16-09-2022
  * @author  Ananth k.
  */
-public class ModelMapper {
+public class EmployeeMapper {
 
     /**
      * Coverts Employeedetails to EmployeeDtodetails
