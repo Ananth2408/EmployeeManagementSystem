@@ -6,8 +6,8 @@ import java.util.Date;
 
 /**
  * Get Employeedetails.
- * Uses getter setter methods get input from user.
- * @version 04.0 25-09-2022.
+ * Uses getter setter methods get input from user
+ * @version 4.0 25-09-2022.
  * @author  Ananth K.
  */
 public class Employee {

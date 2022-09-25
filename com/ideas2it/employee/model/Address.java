@@ -3,7 +3,7 @@ package com.ideas2it.employee.model;
 /**
  * Get Employeeaddress from the user.
  * Uses getter setter to get input from user.
- * @version 4.0 16-09-2022.
+ * @version 4.0 25-09-2022.
  * @author  Ananth K.
  */
 public class Address {
