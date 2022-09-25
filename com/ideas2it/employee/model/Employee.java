@@ -11,42 +11,45 @@ import java.util.Date;
  * @author  Ananth K.
  */
 public class Employee {
-    private String name;
-    private String id;
+    private String firstName;
+    private String lastName;
+    private Date dateOfBirth;
     private String phoneNumber;
     private Date dateOfJoining;
     private String email;
     private double salary;
-    private String bloodGroup;
+    private String gender;
     private Address address;
 
     public Employee() {}
 
-    public Employee(String name, String id, String phonenumber, Date dateOfJoining,
-                   String email, double salary, String bloodGroup, Address address) {
-        this.name = name;
-        this.id = id;
+    public Employee(String firstName, String lastName,Date dateOfBirth, String phonenumber,
+                    Date dateOfJoining, String email, double salary, String gender, Address address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.dateOfJoining = dateOfJoining;
         this.email = email;
         this.salary = salary;
-        this.bloodGroup = bloodGroup;
+        this.gender = gender;
+        this.address = address;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getId() {
-        return id;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhoneNumber() {
@@ -55,6 +58,14 @@ public class Employee {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Date getDateOfJoining() {
@@ -81,12 +92,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public String getBloodGroup() {
-        return bloodGroup;
+    public String getGender() {
+        return gender;
     }
 
-    public void setBloodGroup(String bloodGroup) {
-        this.bloodGroup = bloodGroup;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public Address getAddress() {
@@ -99,13 +110,13 @@ public class Employee {
 
     public String toString() {
         StringBuilder stringBuilderDetails = new StringBuilder();
-        stringBuilderDetails.append("\nName:").append(getName())
-                            .append("\nId:").append(getId())
+        stringBuilderDetails.append("\nName:").append(getFirstName()).append(getLastName())
+                            .append("\nDateofbirth:").append(getDateOfBirth())
                             .append("\nPhoneNumber:").append(getPhoneNumber())
                             .append("\nDate of joining:").append(getDateOfJoining())
                             .append("\nEmail:").append(getEmail())
                             .append("\nSalary:").append(getSalary())
-                            .append("\nBlood Group:").append(getBloodGroup())
+                            .append("\nGender:").append(getGender())
                             .append(getAddress());
         return stringBuilderDetails.toString();
     }

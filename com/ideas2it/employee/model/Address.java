@@ -12,6 +12,7 @@ public class Address {
     private String city;
     private String state;
     private int pinCode;
+    private String type;
 
     public Address() {}
 
@@ -64,13 +65,22 @@ public class Address {
         this.pinCode = pinCode;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String toString() {
         StringBuilder stringBuilderAddress = new StringBuilder();
         stringBuilderAddress.append("\nDoorNumber: ").append(getDoorNumber())
                             .append("\nStreet: ").append(getStreet())
                             .append("\nCity: ").append(getCity())
                             .append("\nState: ").append(getState())
-                            .append("\nPincode: ").append(getPinCode());
+                            .append("\nPincode: ").append(getPinCode())
+                            .append("\nAddressType: ").append(getType());
         return stringBuilderAddress.toString();
     }
 }
