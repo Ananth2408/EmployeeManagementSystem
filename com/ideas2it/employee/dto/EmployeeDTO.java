@@ -1,16 +1,16 @@
-package com.ideas2it.employee.model;
+package com.ideas2it.employee.dto;
 
-import com.ideas2it.employee.model.Address;
+import com.ideas2it.employee.dto.AddressDTO;
 
 import java.util.Date;
 
 /**
  * Get Employeedetails.
- * Uses getter setter methods get input from user.
+ * Uses getter setter get input from user.
  * @version 3.0 16-09-2022.
  * @author  Ananth K.
  */
-public class Employee {
+public class EmployeeDTO {
     private String name;
     private String id;
     private String phoneNumber;
@@ -18,12 +18,12 @@ public class Employee {
     private String email;
     private double salary;
     private String bloodGroup;
-    private Address address;
+    private AddressDTO address;
 
-    public Employee() {}
+    public EmployeeDTO() {}
 
-    public Employee(String name, String id, String phonenumber, Date dateOfJoining,
-                   String email, double salary, String bloodGroup, Address address) {
+    public EmployeeDTO(String name, String id, String phonenumber, Date dateOfJoining,
+                   String email, double salary, String bloodGroup, AddressDTO address) {
         this.name = name;
         this.id = id;
         this.phoneNumber = phoneNumber;
@@ -89,11 +89,11 @@ public class Employee {
         this.bloodGroup = bloodGroup;
     }
 
-    public Address getAddress() {
+    public AddressDTO getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressDTO address) {
         this.address = address;
     }
 

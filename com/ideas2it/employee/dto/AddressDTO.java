@@ -1,4 +1,4 @@
-package com.ideas2it.employee.model;
+package com.ideas2it.employee.dto;
 
 /**
  * Get Employeeaddress from the user.
@@ -6,16 +6,16 @@ package com.ideas2it.employee.model;
  * @version 3.0 16-09-2022.
  * @author  Ananth K.
  */
-public class Address {
+public class AddressDTO {
     private String doorNumber;
     private String street;
     private String city;
     private String state;
     private int pinCode;
 
-    public Address() {}
+    public AddressDTO() {}
 
-    public Address(String doorNumber, String street, String city, String state,
+    public AddressDTO(String doorNumber, String street, String city, String state,
                    int pinCode) {
         this.doorNumber = doorNumber;
         this.street = street;

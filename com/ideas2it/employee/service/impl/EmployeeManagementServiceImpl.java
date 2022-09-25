@@ -1,94 +1,82 @@
 package com.ideas2it.employee.service.impl;
 
-import com.ideas2it.employee.controller.EmployeeController;
-import com.ideas2it.employee.model.Address;
 import com.ideas2it.employee.model.Employee;
+import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.mapper.EmployeeMapper;
+import com.ideas2it.employee.dao.Dao;
+import com.ideas2it.employee.dao.impl.EmployeeDao;
 import com.ideas2it.employee.service.EmployeeManagementService;
-import com.ideas2it.employee.view.EmployeeView;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Manipulate employeedetails and return boolean values.
- * Save the Employee details, read them, update them and delete them.
- * @version 2.0 02-09-2022.
+ * This Application used to maintain the employee details.
+ * Create, read, update and delete operations were done in this application.
+ * @version  2.1 15-09-2022.
  * @author  Ananth K.
- */ 
+ */
 public class EmployeeManagementServiceImpl implements EmployeeManagementService {
-    List<Employee> employees = new ArrayList<Employee>();
-
+    Dao employeeDao = new EmployeeDao();
+    
     /**
-     * Save the employee details.
-     * @param employee details.
-     * @return if employee details added it returns true else it returns false.
+     * {@inheritDoc}
      */
-    @Override
-    public boolean addEmployee(Employee employee) {
-           return employees.add(employee);
+    public boolean addEmployee(EmployeeDTO employeeDto) {
+        Employee employee = EmployeeMapper.toEmployee(employeeDto);
+        return employeeDao.addEmployee(employee); 
     }
 
     /**
-     * Print emplyoee detail.
-     * @return employee details.
+     * {@inheritDoc}
      */
-    @Override 
-    public List<Employee> displayEmployee() {
-        return employees;
-    }
-
-    /**
-     * Update employee details by employee name,
-     * If name found it update employee details else it doesn't.
-     * @param employee details.
-     * @return if employee updated returns true else it returns false .
-     */
-    @Override
-    public boolean updateEmployee(Employee employee) {
-        boolean isUpdated = false;
+    public List<EmployeeDTO> displayEmployee() {
+        List<Employee> employees = employeeDao.displayEmployee();
+        List<EmployeeDTO> employeeDtos = new ArrayList<EmployeeDTO>();
 
         for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getName().equals(employee.getName())) {
-                employees.set(i,employee);
-                isUpdated = true;
-            } 
+            Employee employee = employees.get(i);
+            employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
         }
-        return isUpdated;
+        return employeeDtos;
     }
 
     /**
-     * Search employee details by employee name,
-     * If name found it update employee details else it doesn't.
-     * @param employee name from user.
-     * @return if employee fount returns searchemployee else it returns null .
+     * {@inheritDoc}
      */
-    @Override
-    public Employee searchEmployee(String employeeName) {
-        Employee searchEmployee = null;
+    public boolean updateEmployee(EmployeeDTO employeeDto) {
+        Employee employee = EmployeeMapper.toEmployee(employeeDto);
+        return employeeDao.updateEmployee(employee); 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public EmployeeDTO searchEmployee(String employeeName) {
+        List<Employee> employees = employeeDao.displayEmployee();
+        Employee employee = null;
+
         for(int i = 0; i < employees.size(); i++) {
             if(employees.get(i).getName().equals(employeeName)) {
-                searchEmployee = employees.get(i);
+                employee = employees.get(i);
             }
         }
-        return searchEmployee;
+        EmployeeDTO employeeDto = EmployeeMapper.toEmployeeDTO(employee);
+        return employeeDto;
     }
 
     /**
-     * Delete employee details by employee name,
-     * if name found it delets emplyee deatils else it doesn't.
-     * @param employee name.
-     * @return if employee deleted returns true else it returns false.
+     * {@inheritDoc}
      */
-    @Override
     public boolean deleteEmployee(String employeeName) {
-        boolean isRemoved = false;
+        List<Employee> employees = employeeDao.displayEmployee();
+        Employee employee = null;
 
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getName().equals(employeeName)) {
-                employees.remove(i);
-                isRemoved = true;
-            } 
+        for(int i = 0; i < employees.size(); i++) {
+            if(employees.get(i).getName().equals(employeeName)) {
+                 employee = employees.get(i);
+             }
         }
-        return isRemoved;
+        return employeeDao.deleteEmployee(employee);
     }
-}  
+}
