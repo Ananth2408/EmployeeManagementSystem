@@ -6,24 +6,25 @@ import java.util.Date;
 
 /**
  * Get Employeedetails.
- * Uses getter setter methods get input from user
- * @version 4.0 26-09-2022.
+ * Uses getter setter methods get input from user.
+ * @version 3.0 16-09-2022.
  * @author  Ananth K.
  */
 public class Employee {
+    private long id;
     private String firstName;
     private String lastName;
     private Date dateOfBirth;
-    private String phoneNumber;
+    private long phoneNumber;
     private Date dateOfJoining;
     private String email;
-    private double salary;
+    private float salary;
     private String gender;
     private Address address;
 
     public Employee() {}
 
-    public Employee(String firstName, String lastName,Date dateOfBirth, String phonenumber,
+    public Employee(long id, String firstName, String lastName,Date dateOfBirth, String phonenumber,
                     Date dateOfJoining, String email, double salary, String gender, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,6 +35,14 @@ public class Employee {
         this.salary = salary;
         this.gender = gender;
         this.address = address;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -52,7 +61,7 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public String getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -110,7 +119,8 @@ public class Employee {
 
     public String toString() {
         StringBuilder stringBuilderDetails = new StringBuilder();
-        stringBuilderDetails.append("\nName:").append(getFirstName()).append(getLastName())
+        stringBuilderDetails.append("\nID :").append(getId())
+                            .append("\nName:").append(getFirstName()).append(getLastName())
                             .append("\nDateofbirth:").append(getDateOfBirth())
                             .append("\nPhoneNumber:").append(getPhoneNumber())
                             .append("\nDate of joining:").append(getDateOfJoining())

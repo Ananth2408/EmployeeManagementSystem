@@ -3,7 +3,7 @@ package com.ideas2it.employee.dto;
 /**
  * Get Employeeaddress from the user.
  * Uses getter setter to get input from user.
- * @version 4.0 16-09-2022.
+ * @version 3.0 16-09-2022.
  * @author  Ananth K.
  */
 public class AddressDTO {
@@ -12,16 +12,18 @@ public class AddressDTO {
     private String city;
     private String state;
     private int pinCode;
+    private String type;
 
     public AddressDTO() {}
 
     public AddressDTO(String doorNumber, String street, String city, String state,
-                   int pinCode) {
+                   int pinCode, String type) {
         this.doorNumber = doorNumber;
         this.street = street;
         this.city = city;
         this.state = state;
         this.pinCode = pinCode;
+        this.type = type;
     }
 
     public String getDoorNumber() {
@@ -64,13 +66,22 @@ public class AddressDTO {
         this.pinCode = pinCode;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String toString() {
         StringBuilder stringBuilderAddress = new StringBuilder();
         stringBuilderAddress.append("\nDoorNumber: ").append(getDoorNumber())
                             .append("\nStreet: ").append(getStreet())
                             .append("\nCity: ").append(getCity())
                             .append("\nState: ").append(getState())
-                            .append("\nPincode: ").append(getPinCode());
+                            .append("\nPincode: ").append(getPinCode())
+                            .append("\nAddressType: ").append(getType());
         return stringBuilderAddress.toString();
     }
 }

@@ -75,7 +75,7 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
         for(int i = 0; i < employees.size(); i++) {
             if(employees.get(i).getName().equals(employeeName)) {
                  employee = employees.get(i);
-             }
+            }
         }
         return employeeDao.deleteEmployee(employee);
     }

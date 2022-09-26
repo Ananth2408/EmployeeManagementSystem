@@ -13,16 +13,18 @@ public class EmployeeManagementConstant {
     public static final String EMPLOYEE_OPERATION_ERROR = "Enter Valid Operation.";
     public static final String EMPLOYEE_MANAGEMENT_ERROR = "Enter The Valid Data.";
     public static final String EMPLOYEE_NOT_FOUND = "Employee Not Inserted";
-    public static final String NAME = "Enter The Name:";
-    public static final String ID = "Enter The Employee Id:";
+    public static final String FIRST_NAME = "Enter The FirstName:";
+    public static final String LAST_NAME = "Enter The LastName:";
     public static final String PHONENUMBER = "Enter The Employee PhoneNumber:";
+    public static final String DATE_OF_JOINING = "Enter The Date Of Birth(dd/mm/yyyy):";
     public static final String DATE_OF_JOINING = "Enter The Date Of Joining(dd/mm/yyyy):";
     public static final String EMAIL_ID = "Enter The Email ID:";
-    public static final String BLOOD_GROUP = "Enter The Blood Group:";
+    public static final String GENDER = "Enter The Gender:";
     public static final String DOOR_NUMBER = "Enter The Door Number:";
     public static final String STREET_NAME = "Enter The Street Name:";
     public static final String CITY_NAME = "Enter The City Name:";
     public static final String STATE = "Enter The State:";
+    public static final String TYPE = "Enter The Type:";
     public static final String PINCODE = "Enter The Pincode:";
     public static final String SALARY = "Enter The Salary:";
 }    

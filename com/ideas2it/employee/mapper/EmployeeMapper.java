@@ -23,12 +23,15 @@ public class EmployeeMapper {
     public static EmployeeDTO toEmployeeDTO(Employee employee) {
         EmployeeDTO employeeDto = new EmployeeDTO();
 
-        employeeDto.setName(employee.getName());
         employeeDto.setId(employee.getId());
+        employeeDto.setFirstName(employee.getFirstName());
+        employeeDto.setLastName(employee.getLastName());
+        employeeDto.setDateOfBirth(employee.getDateOfBirth());
         employeeDto.setPhoneNumber(employee.getPhoneNumber());
         employeeDto.setDateOfJoining(employee.getDateOfJoining());
         employeeDto.setEmail(employee.getEmail());
-        employeeDto.setBloodGroup(employee.getBloodGroup());
+        employeeDto.setGender(employee.getGender());
+        employeeDto.setSalary(employee.getSalary());
         employeeDto.setAddress(toAddressDTO(employee.getAddress()));
         return employeeDto;
     }
@@ -42,12 +45,15 @@ public class EmployeeMapper {
     public static Employee toEmployee(EmployeeDTO employeeDto) {
         Employee employee = new Employee();
 
-        employee.setName(employeeDto.getName());
         employee.setId(employeeDto.getId());
+        employee.setFirstName(employeeDto.getFirstName());
+        employee.setLastNmae(employeeDto.getLastName());
+        employee.setDateOfBirth(employeeDto.getDateOfBirth());
         employee.setPhoneNumber(employeeDto.getPhoneNumber());
         employee.setDateOfJoining(employeeDto.getDateOfJoining());
         employee.setEmail(employeeDto.getEmail());
-        employee.setBloodGroup(employeeDto.getBloodGroup());
+        employee.setGender(employeeDto.getGender());
+        employee.setSalary(employeeDto.getSalary());
         employee.setAddress(toAddress(employeeDto.getAddress()));
         return employee;
     }
@@ -66,6 +72,7 @@ public class EmployeeMapper {
         addressDto.setCity(address.getCity());
         addressDto.setState(address.getState());
         addressDto.setPinCode(address.getPinCode());
+        addressDto.setType(address.getType());
         return addressDto;
     }
 
@@ -83,6 +90,7 @@ public class EmployeeMapper {
         address.setCity(addressDto.getCity());
         address.setState(addressDto.getState());
         address.setPinCode(addressDto.getPinCode());
+        address.setType(addressDto.getType());
         return address;
     }
 }

@@ -11,42 +11,54 @@ import java.util.Date;
  * @author  Ananth K.
  */
 public class EmployeeDTO {
-    private String name;
-    private String id;
+    private long id;
+    private String firstName;
+    private String lastName;
+    private Date dateOfBirth;
     private String phoneNumber;
     private Date dateOfJoining;
     private String email;
-    private double salary;
-    private String bloodGroup;
+    private float salary;
+    private String gender;
     private AddressDTO address;
 
     public EmployeeDTO() {}
 
-    public EmployeeDTO(String name, String id, String phonenumber, Date dateOfJoining,
-                   String email, double salary, String bloodGroup, AddressDTO address) {
-        this.name = name;
-        this.id = id;
+    public EmployeeDTO(long id, String firstName, String lastName,Date dateOfBirth, String phonenumber,
+                       Date dateOfJoining, String email, double salary, String gender, AddressDTO address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.dateOfJoining = dateOfJoining;
         this.email = email;
         this.salary = salary;
-        this.bloodGroup = bloodGroup;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.gender = gender;
+        this.address = address;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhoneNumber() {
@@ -55,6 +67,14 @@ public class EmployeeDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Date getDateOfJoining() {
@@ -81,12 +101,12 @@ public class EmployeeDTO {
         this.salary = salary;
     }
 
-    public String getBloodGroup() {
-        return bloodGroup;
+    public String getGender() {
+        return gender;
     }
 
-    public void setBloodGroup(String bloodGroup) {
-        this.bloodGroup = bloodGroup;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public AddressDTO getAddress() {
@@ -99,13 +119,13 @@ public class EmployeeDTO {
 
     public String toString() {
         StringBuilder stringBuilderDetails = new StringBuilder();
-        stringBuilderDetails.append("\nName:").append(getName())
-                            .append("\nId:").append(getId())
+        stringBuilderDetails.append("\nName:").append(getFirstName()).append(getLastName())
+                            .append("\nDateofbirth:").append(getDateOfBirth())
                             .append("\nPhoneNumber:").append(getPhoneNumber())
                             .append("\nDate of joining:").append(getDateOfJoining())
                             .append("\nEmail:").append(getEmail())
                             .append("\nSalary:").append(getSalary())
-                            .append("\nBlood Group:").append(getBloodGroup())
+                            .append("\nGender:").append(getGender())
                             .append(getAddress());
         return stringBuilderDetails.toString();
     }

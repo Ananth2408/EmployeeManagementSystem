@@ -83,19 +83,31 @@ public class EmployeeView {
         boolean isValid = true;
 
         try {
-            System.out.println(EmployeeManagementConstant.NAME);
-            employeeDto.setName(scanner.nextLine());
-            System.out.println(EmployeeManagementConstant.ID);
-            employeeDto.setId(scanner.nextLine());
+            System.out.println(EmployeeManagementConstant.First_NAME);
+            employeeDto.setFirstName(scanner.nextLine());
+            System.out.println(EmployeeManagementConstant.LAST_NAME);
+            employeeDto.setLastName(scanner.nextLine());
+
+            do{
+                System.out.println(EmployeeManagementConstant.DATE_OF_BIRTH);
+                String dateOfBirth = scanner.nextLine();
+                if(util.dateOfBirth(dateOfBirth) != null) {
+                    isValid = false;
+                    employeeDto.setDateOfBirth(util.dateOfBirth(dateOfBirth));
+                } else {
+                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                }
+            } while (isValid);
+
             System.out.println(EmployeeManagementConstant.PHONENUMBER);
             employeeDto.setPhoneNumber(scanner.nextLine());
 
             do{
                 System.out.println(EmployeeManagementConstant.DATE_OF_JOINING);
-                String date = scanner.nextLine();
-                if(util.dateOfJoining(date) != null) {
+                String dateOfJoining = scanner.nextLine();
+                if(util.dateOfJoining(dateOfJoining) != null) {
                     isValid = false;
-                    employeeDto.setDateOfJoining(util.dateOfJoining(date));
+                    employeeDto.setDateOfJoining(util.dateOfJoining(dateOfJoining));
                 } else {
                     System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
                 }
@@ -103,8 +115,8 @@ public class EmployeeView {
 
             System.out.println(EmployeeManagementConstant.EMAIL_ID);
             employeeDto.setEmail(scanner.nextLine());
-            System.out.println(EmployeeManagementConstant.BLOOD_GROUP);
-            employeeDto.setBloodGroup(scanner.nextLine());
+            System.out.println(EmployeeManagementConstant.GENDER);
+            employeeDto.setGender(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.DOOR_NUMBER);
             String doorNumber = scanner.nextLine();
             System.out.println(EmployeeManagementConstant.STREET_NAME);
@@ -113,12 +125,14 @@ public class EmployeeView {
             String city = scanner.nextLine();
             System.out.println(EmployeeManagementConstant.STATE);
             String state = scanner.nextLine();
+            System.out.println(EmployeeManagementConstant.TYPE);
+            String type = scanner.nextLine();
             System.out.println(EmployeeManagementConstant.PINCODE);
             int pinCode = Integer.parseInt(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.SALARY);
             employeeDto.setSalary(Double.parseDouble(scanner.nextLine()));
             employeeDto.setAddress(new AddressDTO(doorNumber, 
-                                                street, city, state, pinCode));
+                                                  street, city, state, pinCode,type));
         } catch (InputMismatchException e) {
             System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
         }
@@ -157,19 +171,31 @@ public class EmployeeView {
         boolean isValid = true;
 
         try {
-            System.out.println(EmployeeManagementConstant.NAME);
-            employeeDto.setName(scanner.nextLine());
-            System.out.println(EmployeeManagementConstant.ID);
-            employeeDto.setId(scanner.nextLine());
+            System.out.println(EmployeeManagementConstant.First_NAME);
+            employeeDto.setFirstName(scanner.nextLine());
+            System.out.println(EmployeeManagementConstant.LAST_NAME);
+            employeeDto.setLastName(scanner.nextLine());
+
+            do{
+                System.out.println(EmployeeManagementConstant.DATE_OF_BIRTH);
+                String dateOfBirth = scanner.nextLine();
+                if(util.dateOfBirth(dateOfBirth) != null) {
+                    isValid = false;
+                    employeeDto.setDateOfBirth(util.dateOfBirth(dateOfBirth));
+                } else {
+                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                }
+            } while (isValid);
+
             System.out.println(EmployeeManagementConstant.PHONENUMBER);
             employeeDto.setPhoneNumber(scanner.nextLine());
 
             do{
                 System.out.println(EmployeeManagementConstant.DATE_OF_JOINING);
-                String date = scanner.nextLine();
-                if(util.dateOfJoining(date) != null) {
+                String dateOfJoining = scanner.nextLine();
+                if(util.dateOfJoining(dateOfJoining) != null) {
                     isValid = false;
-                    employeeDto.setDateOfJoining(util.dateOfJoining(date));
+                    employeeDto.setDateOfJoining(util.dateOfJoining(dateOfJoining));
                 } else {
                     System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
                 }
@@ -177,8 +203,8 @@ public class EmployeeView {
 
             System.out.println(EmployeeManagementConstant.EMAIL_ID);
             employeeDto.setEmail(scanner.nextLine());
-            System.out.println(EmployeeManagementConstant.BLOOD_GROUP);
-            employeeDto.setBloodGroup(scanner.nextLine());
+            System.out.println(EmployeeManagementConstant.GENDER);
+            employeeDto.setGender(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.DOOR_NUMBER);
             String doorNumber = scanner.nextLine();
             System.out.println(EmployeeManagementConstant.STREET_NAME);
@@ -187,12 +213,14 @@ public class EmployeeView {
             String city = scanner.nextLine();
             System.out.println(EmployeeManagementConstant.STATE);
             String state = scanner.nextLine();
+            System.out.println(EmployeeManagementConstant.TYPE);
+            String type = scanner.nextLine();
             System.out.println(EmployeeManagementConstant.PINCODE);
             int pinCode = Integer.parseInt(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.SALARY);
             employeeDto.setSalary(Double.parseDouble(scanner.nextLine()));
             employeeDto.setAddress(new AddressDTO(doorNumber, 
-                                                street, city, state, pinCode));
+                                                  street, city, state, pinCode,type));
         } catch (InputMismatchException e) {
             System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
         }
