@@ -9,7 +9,7 @@ import com.ideas2it.employee.dto.EmployeeDTO;
  * Mapper convert the modelDto details to model details and
  * model to modelDto details
  *
- * @Version 3.0 16-09-2022
+ * @Version 4.0 28-09-2022
  * @author  Ananth k.
  */
 public class EmployeeMapper {
@@ -47,7 +47,7 @@ public class EmployeeMapper {
 
         employee.setId(employeeDto.getId());
         employee.setFirstName(employeeDto.getFirstName());
-        employee.setLastNmae(employeeDto.getLastName());
+        employee.setLastName(employeeDto.getLastName());
         employee.setDateOfBirth(employeeDto.getDateOfBirth());
         employee.setPhoneNumber(employeeDto.getPhoneNumber());
         employee.setDateOfJoining(employeeDto.getDateOfJoining());

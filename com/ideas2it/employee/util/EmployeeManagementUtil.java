@@ -1,15 +1,14 @@
 package com.ideas2it.employee.util;
 
-import com.ideas2it.employee.model.EmployeeDto;
+import com.ideas2it.employee.dto.EmployeeDTO;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
 
 /**
  * Multiple times implemented values were placed here,
  * Get the values from the user and validate them.
- * @version  3.0 16-09-2022.
+ * @version  4.0 28-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeManagementUtil {
@@ -19,15 +18,15 @@ public class EmployeeManagementUtil {
      * @param date from the user
      * @return Date of Birth
      */
-    public Date dateOfBirth(String dateOfBirth) {
-        Date dateOfBirth = null;
+    public LocalDate dateOfBirth(String dateOfBirth) {
+        LocalDate birthDate = null;
 
         try {
-            dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").parse(dateOfBirth);
-        } catch (ParseException exception) {
+            birthDate = LocalDate.parse(dateOfBirth);
+        } catch (DateTimeParseException exception) {
             System.out.println("please enter valid date");
         }
-        return dateOfBirth;
+        return birthDate;
     }
 
     /**
@@ -35,14 +34,14 @@ public class EmployeeManagementUtil {
      * @param date from the user
      * @return Date of joining
      */
-    public Date dateOfJoining(String dateOfJoining) {
-        Date dateOfJoining = null;
+    public LocalDate dateOfJoining(String dateOfJoining) {
+        LocalDate joinDate = null;
 
         try {
-            dateOfJoining = new SimpleDateFormat("dd/MM/yyyy").parse(dateOfJoining);
-        } catch (ParseException exception) {
+            joinDate = LocalDate.parse(dateOfJoining);
+        } catch (DateTimeParseException exception) {
             System.out.println("please enter valid date");
         }
-        return dateOfJoining;
+        return joinDate;
     }
 }

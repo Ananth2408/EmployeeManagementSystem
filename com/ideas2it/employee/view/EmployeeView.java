@@ -19,7 +19,7 @@ import java.util.Scanner;
  * Get the details of the employee from the user
  * and save the details.
  * Perform create, read, update and exit operations.
- * @version 3.0 16-09-2022.
+ * @version 4.0 28-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeView {
@@ -83,7 +83,7 @@ public class EmployeeView {
         boolean isValid = true;
 
         try {
-            System.out.println(EmployeeManagementConstant.First_NAME);
+            System.out.println(EmployeeManagementConstant.FIRST_NAME);
             employeeDto.setFirstName(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.LAST_NAME);
             employeeDto.setLastName(scanner.nextLine());
@@ -100,7 +100,7 @@ public class EmployeeView {
             } while (isValid);
 
             System.out.println(EmployeeManagementConstant.PHONENUMBER);
-            employeeDto.setPhoneNumber(scanner.nextLine());
+            employeeDto.setPhoneNumber(Long.parseLong(scanner.nextLine()));
 
             do{
                 System.out.println(EmployeeManagementConstant.DATE_OF_JOINING);
@@ -130,7 +130,7 @@ public class EmployeeView {
             System.out.println(EmployeeManagementConstant.PINCODE);
             int pinCode = Integer.parseInt(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.SALARY);
-            employeeDto.setSalary(Double.parseDouble(scanner.nextLine()));
+            employeeDto.setSalary(Float.parseFloat(scanner.nextLine()));
             employeeDto.setAddress(new AddressDTO(doorNumber, 
                                                   street, city, state, pinCode,type));
         } catch (InputMismatchException e) {
@@ -169,9 +169,11 @@ public class EmployeeView {
     public void updateEmployee() {
         EmployeeDTO employeeDto = new EmployeeDTO();
         boolean isValid = true;
+        System.out.println(EmployeeManagementConstant.EMPLOYEE_ID);
+        int employeeId = Integer.valueOf(scanner.nextLine());
 
         try {
-            System.out.println(EmployeeManagementConstant.First_NAME);
+            System.out.println(EmployeeManagementConstant.FIRST_NAME);
             employeeDto.setFirstName(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.LAST_NAME);
             employeeDto.setLastName(scanner.nextLine());
@@ -188,7 +190,7 @@ public class EmployeeView {
             } while (isValid);
 
             System.out.println(EmployeeManagementConstant.PHONENUMBER);
-            employeeDto.setPhoneNumber(scanner.nextLine());
+            employeeDto.setPhoneNumber(Long.parseLong(scanner.nextLine()));
 
             do{
                 System.out.println(EmployeeManagementConstant.DATE_OF_JOINING);
@@ -218,14 +220,15 @@ public class EmployeeView {
             System.out.println(EmployeeManagementConstant.PINCODE);
             int pinCode = Integer.parseInt(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.SALARY);
-            employeeDto.setSalary(Double.parseDouble(scanner.nextLine()));
+            employeeDto.setSalary(Float.parseFloat(scanner.nextLine()));
+            scanner.nextLine();
             employeeDto.setAddress(new AddressDTO(doorNumber, 
                                                   street, city, state, pinCode,type));
         } catch (InputMismatchException e) {
             System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
         }
  
-        if (employeeController.updateEmployee(employeeDto)) {
+        if (employeeController.updateEmployee(employeeDto, employeeId)) {
             System.out.println("Employee Details Updated");
         } else {
             System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
@@ -239,11 +242,11 @@ public class EmployeeView {
      */
     public void searchEmployee() {
 
-        System.out.println(EmployeeManagementConstant.NAME);
-        String employeeName = scanner.next();
-        EmployeeDTO selectEmployee = employeeController.searchEmployee(employeeName);
-        if (selectEmployee != null) {
-            System.out.println(selectEmployee);
+        System.out.println(EmployeeManagementConstant.FIRST_NAME);
+        String name = scanner.next();
+        EmployeeDTO employeeDto = employeeController.searchEmployee(name);
+        if (employeeDto != null) {
+            System.out.println(employeeDto);
         } else {
             System.out.println("Not found the Employee");
         }
@@ -254,10 +257,10 @@ public class EmployeeView {
      * If name not found it shows error.
      */
     public void deleteEmployee() {
-        System.out.println(EmployeeManagementConstant.NAME);
-        String employeeName = scanner.nextLine();
+        System.out.println(EmployeeManagementConstant.EMPLOYEE_DELETE);
+        int employeeId = Integer.valueOf(scanner.nextLine());
   
-        if (employeeController.deleteEmployee(employeeName)) {
+        if (employeeController.deleteEmployee(employeeId)) {
             System.out.println("Employee Details Deleted");
         } else {
             System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);

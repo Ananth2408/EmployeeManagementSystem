@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @interface EmployeeManagementService.
  * Employee details manipulation were done. 
- * @version 3.0 16-09-2022.
+ * @version 4.0 28-09-2022.
  * @author  Ananth K.
  */
 public interface EmployeeManagementService {
@@ -31,7 +31,7 @@ public interface EmployeeManagementService {
      * @param employee object from the view.
      * @return the boolean value if updated it returns true else false.
      */
-    public boolean updateEmployee(EmployeeDTO employeeDto);
+    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId);
 
     /**
      * Search employee details by employee name,
@@ -39,12 +39,12 @@ public interface EmployeeManagementService {
      * @param employee name from user.
      * @return if employee found returns employee else it returns null .
      */
-    public EmployeeDTO searchEmployee(String employeeName);
+    public EmployeeDTO searchEmployee(String name);
 
     /**
      * Delete employee details by employee name,
      * if name found it deletes emplyee deatils else it doesn't.
      * @return the boolean value if deleted it returns true else false.
      */
-    public boolean deleteEmployee(String employeeName);
+    public boolean deleteEmployee(int employeeId);
 }

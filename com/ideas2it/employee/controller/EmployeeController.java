@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * This Application used to maintain the employee details.
  * Create, read, update and delete operations were done in this application.
- * @version  3.0 16-09-2022.
+ * @version  4.0 28-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeController {
@@ -40,8 +40,8 @@ public class EmployeeController {
      * @param employeedto details.
      * @return the boolean value if updated returns true else false.
      */
-    public boolean updateEmployee(EmployeeDTO employeeDto) {
-        return employeeService.updateEmployee(employeeDto);
+    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId) {
+        return employeeService.updateEmployee(employeeDto, employeeId);
     }
 
     /**
@@ -50,8 +50,8 @@ public class EmployeeController {
      * @param employee name from user.
      * @return if employee found returns employeedetails else it returns null .
      */
-    public EmployeeDTO searchEmployee(String employeeName) {
-        return employeeService.searchEmployee(employeeName);
+    public EmployeeDTO searchEmployee(String name) {
+        return employeeService.searchEmployee(name);
     }
 
    /**
@@ -60,7 +60,7 @@ public class EmployeeController {
      * @param employee name from user.
      * @return the boolean value if deletes return true else false.
      */
-   public boolean deleteEmployee(String employeeName) {
-       return employeeService.deleteEmployee(employeeName);
+   public boolean deleteEmployee(int employeeId) {
+       return employeeService.deleteEmployee(employeeId);
    }
 }

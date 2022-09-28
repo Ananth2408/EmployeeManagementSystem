@@ -3,7 +3,7 @@ package com.ideas2it.employee.constant;
 /**
  * Multiple time used names were declared in same constant
  * and utilised whenever we need.
- * @version 3.0 16-09-2022.
+ * @version 4.0 28-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeManagementConstant {
@@ -15,9 +15,11 @@ public class EmployeeManagementConstant {
     public static final String EMPLOYEE_NOT_FOUND = "Employee Not Inserted";
     public static final String FIRST_NAME = "Enter The FirstName:";
     public static final String LAST_NAME = "Enter The LastName:";
+    public static final String EMPLOYEE_ID = "Enter The EmployeeId To Change";
+    public static final String EMPLOYEE_DELETE = "Enter The EmployeeId To Delete";
     public static final String PHONENUMBER = "Enter The Employee PhoneNumber:";
-    public static final String DATE_OF_JOINING = "Enter The Date Of Birth(dd/mm/yyyy):";
-    public static final String DATE_OF_JOINING = "Enter The Date Of Joining(dd/mm/yyyy):";
+    public static final String DATE_OF_BIRTH = "Enter The Date Of Birth(yyyy/mm/dd):";
+    public static final String DATE_OF_JOINING = "Enter The Date Of Joining(yyyy/mm/dd):";
     public static final String EMAIL_ID = "Enter The Email ID:";
     public static final String GENDER = "Enter The Gender:";
     public static final String DOOR_NUMBER = "Enter The Door Number:";

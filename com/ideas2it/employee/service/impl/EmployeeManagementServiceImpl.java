@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * This Application used to maintain the employee details.
  * Create, read, update and delete operations were done in this application.
- * @version  2.1 15-09-2022.
+ * @version  4.0 28-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeManagementServiceImpl implements EmployeeManagementService {
@@ -44,39 +44,23 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     /**
      * {@inheritDoc}
      */
-    public boolean updateEmployee(EmployeeDTO employeeDto) {
+    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId) {
         Employee employee = EmployeeMapper.toEmployee(employeeDto);
-        return employeeDao.updateEmployee(employee); 
+        return employeeDao.updateEmployee(employee, employeeId); 
     }
 
     /**
      * {@inheritDoc}
      */
-    public EmployeeDTO searchEmployee(String employeeName) {
-        List<Employee> employees = employeeDao.displayEmployee();
-        Employee employee = null;
-
-        for(int i = 0; i < employees.size(); i++) {
-            if(employees.get(i).getName().equals(employeeName)) {
-                employee = employees.get(i);
-            }
-        }
-        EmployeeDTO employeeDto = EmployeeMapper.toEmployeeDTO(employee);
+    public EmployeeDTO searchEmployee(String name) {
+        EmployeeDTO employeeDto = EmployeeMapper.toEmployeeDTO(employeeDao.searchEmployee(name));
         return employeeDto;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean deleteEmployee(String employeeName) {
-        List<Employee> employees = employeeDao.displayEmployee();
-        Employee employee = null;
-
-        for(int i = 0; i < employees.size(); i++) {
-            if(employees.get(i).getName().equals(employeeName)) {
-                 employee = employees.get(i);
-            }
-        }
-        return employeeDao.deleteEmployee(employee);
+    public boolean deleteEmployee(int employeeId) {
+        return employeeDao.deleteEmployee(employeeId);
     }
 }

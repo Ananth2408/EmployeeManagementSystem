@@ -2,21 +2,21 @@ package com.ideas2it.employee.dto;
 
 import com.ideas2it.employee.dto.AddressDTO;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Get Employeedetails.
  * Uses getter setter get input from user.
- * @version 3.0 16-09-2022.
+ * @version 4.0 28-09-2022.
  * @author  Ananth K.
  */
 public class EmployeeDTO {
-    private long id;
+    private int id;
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
-    private String phoneNumber;
-    private Date dateOfJoining;
+    private LocalDate dateOfBirth;
+    private long phoneNumber;
+    private LocalDate dateOfJoining;
     private String email;
     private float salary;
     private String gender;
@@ -24,8 +24,9 @@ public class EmployeeDTO {
 
     public EmployeeDTO() {}
 
-    public EmployeeDTO(long id, String firstName, String lastName,Date dateOfBirth, String phonenumber,
-                       Date dateOfJoining, String email, double salary, String gender, AddressDTO address) {
+    public EmployeeDTO(int id, String firstName, String lastName,LocalDate dateOfBirth, long phonenumber,
+                       LocalDate dateOfJoining, String email, float salary, String gender, AddressDTO address) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -37,11 +38,11 @@ public class EmployeeDTO {
         this.address = address;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -61,27 +62,27 @@ public class EmployeeDTO {
         this.lastName = lastName;
     }
 
-    public String getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Date getDateOfJoining() {
+    public LocalDate getDateOfJoining() {
         return dateOfJoining;
     }
 
-    public void setDateOfJoining(Date dateOfJoining) {
+    public void setDateOfJoining(LocalDate dateOfJoining) {
         this.dateOfJoining = dateOfJoining;
     }
 
@@ -93,11 +94,11 @@ public class EmployeeDTO {
         this.email = email;
     }
 
-    public double getSalary() {
+    public float getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(float salary) {
         this.salary = salary;
     }
 
