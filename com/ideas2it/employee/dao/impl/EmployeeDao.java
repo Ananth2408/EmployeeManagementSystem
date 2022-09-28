@@ -23,6 +23,7 @@ import java.util.List;
  * @author  Ananth K.
  */ 
 public class EmployeeDao implements Dao {
+    Connection connection = Factory.getConnection();
 
     /**
      * Save the employee details.
@@ -39,7 +40,7 @@ public class EmployeeDao implements Dao {
              .append(" values (?,?,?,?,?,?,?,?)");
 
         try {    
-            PreparedStatement statement = Factory.getConnection().prepareStatement(query.toString());
+            PreparedStatement statement = connection.prepareStatement(query.toString());
             statement.setString(1, employee.getFirstName());  
             statement.setString(2, employee.getLastName());
             statement.setDate(3, Date.valueOf(employee.getDateOfBirth()));
@@ -86,7 +87,7 @@ public class EmployeeDao implements Dao {
              .append("pincode, type, employee_id) values (?,?,?,?,?,?,?)");
 
         try {
-            PreparedStatement statement = Factory.getConnection().prepareStatement(query.toString());
+            PreparedStatement statement = connection.prepareStatement(query.toString());
             statement.setString(1, address.getDoorNumber());
             statement.setString(2, address.getStreet());
             statement.setString(3, address.getCity());
@@ -118,7 +119,7 @@ public class EmployeeDao implements Dao {
         query.append("select * from employee e, employee_address a where e.employee_id = a.employee_id ");
 
         try {
-            Statement statement = Factory.getConnection().createStatement();
+            Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query.toString());
 
              while (result.next()) {
@@ -146,6 +147,9 @@ public class EmployeeDao implements Dao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally {
+           Factory.closeConnection(); 
+        }
         return employees;
     }
 
@@ -166,7 +170,7 @@ public class EmployeeDao implements Dao {
              .append(" where employee_id = ").append(employeeId);
 
         try {    
-            PreparedStatement statement = Factory.getConnection().prepareStatement(query.toString()); 
+            PreparedStatement statement = connection.prepareStatement(query.toString()); 
             statement.setString(1, employee.getFirstName());  
             statement.setString(2, employee.getLastName());
             statement.setDate(3, Date.valueOf(employee.getDateOfBirth()));
@@ -206,7 +210,7 @@ public class EmployeeDao implements Dao {
              .append(employeeId);
 
         try {
-            PreparedStatement statement = Factory.getConnection().prepareStatement(query.toString());
+            PreparedStatement statement = connection.prepareStatement(query.toString());
             statement.setString(1, address.getDoorNumber());
             statement.setString(2, address.getStreet());
             statement.setString(3, address.getCity());
@@ -240,7 +244,7 @@ public class EmployeeDao implements Dao {
              .append ("and e.employee_id = a.employee_id ");
 
         try {
-            Statement statement = Factory.getConnection().createStatement();
+            Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query.toString());
 
              while (result.next()) {
@@ -267,6 +271,9 @@ public class EmployeeDao implements Dao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        finally {
+           Factory.closeConnection(); 
+        }
         return employee;
     }
 
@@ -285,7 +292,7 @@ public class EmployeeDao implements Dao {
              .append(" where employee_id = ").append (employeeId);
 
         try {
-            PreparedStatement statement = Factory.getConnection().prepareStatement(query.toString());
+            PreparedStatement statement = connection.prepareStatement(query.toString());
             count = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
