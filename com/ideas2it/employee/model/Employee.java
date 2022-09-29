@@ -21,14 +21,17 @@ public class Employee {
     private float salary;
     private String gender;
     private Address address;
+    private String role;
 
     public Employee() {}
 
-    public Employee(int id, String firstName, String lastName,LocalDate dateOfBirth, long phonenumber,
-                    LocalDate dateOfJoining, String email, float salary, String gender, Address address) {
+    public Employee(int id, String firstName, String lastName,String role,
+                    LocalDate dateOfBirth, long phonenumber, LocalDate dateOfJoining,
+                    String email, float salary, String gender, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = role;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.dateOfJoining = dateOfJoining;
@@ -110,6 +113,14 @@ public class Employee {
         this.gender = gender;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -122,6 +133,7 @@ public class Employee {
         StringBuilder stringBuilderDetails = new StringBuilder();
         stringBuilderDetails.append("\nID :").append(getId())
                             .append("\nName:").append(getFirstName()).append(getLastName())
+                            .append("\nRole:").append(getRole())
                             .append("\nDateofbirth:").append(getDateOfBirth())
                             .append("\nPhoneNumber:").append(getPhoneNumber())
                             .append("\nDate of joining:").append(getDateOfJoining())

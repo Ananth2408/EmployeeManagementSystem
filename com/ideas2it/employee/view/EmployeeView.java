@@ -87,6 +87,8 @@ public class EmployeeView {
             employeeDto.setFirstName(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.LAST_NAME);
             employeeDto.setLastName(scanner.nextLine());
+            System.out.println(EmployeeManagementConstant.ROLE);
+            employeeDto.setRole(scanner.nextLine());
 
             do{
                 System.out.println(EmployeeManagementConstant.DATE_OF_BIRTH);
@@ -177,6 +179,8 @@ public class EmployeeView {
             employeeDto.setFirstName(scanner.nextLine());
             System.out.println(EmployeeManagementConstant.LAST_NAME);
             employeeDto.setLastName(scanner.nextLine());
+            System.out.println(EmployeeManagementConstant.ROLE);
+            employeeDto.setRole(scanner.nextLine());
 
             do{
                 System.out.println(EmployeeManagementConstant.DATE_OF_BIRTH);

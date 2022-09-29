@@ -32,6 +32,7 @@ public class EmployeeMapper {
         employeeDto.setEmail(employee.getEmail());
         employeeDto.setGender(employee.getGender());
         employeeDto.setSalary(employee.getSalary());
+        employeeDto.setRole(employee.getRole());
         employeeDto.setAddress(toAddressDTO(employee.getAddress()));
         return employeeDto;
     }
@@ -54,6 +55,7 @@ public class EmployeeMapper {
         employee.setEmail(employeeDto.getEmail());
         employee.setGender(employeeDto.getGender());
         employee.setSalary(employeeDto.getSalary());
+        employee.setRole(employeeDto.getRole());
         employee.setAddress(toAddress(employeeDto.getAddress()));
         return employee;
     }

@@ -36,8 +36,8 @@ public class EmployeeDao implements Dao {
         int count = 0;
         StringBuilder query = new StringBuilder();
         query.append("insert into employee (first_name, last_name, date_of_birth,")
-             .append("phone_number, email_id, gender, date_of_joining, salary)")
-             .append(" values (?,?,?,?,?,?,?,?)");
+             .append("phone_number, email_id, gender, date_of_joining, salary, role)")
+             .append(" values (?,?,?,?,?,?,?,?,?)");
 
         try {    
             PreparedStatement statement = connection.prepareStatement(query.toString());
@@ -49,6 +49,7 @@ public class EmployeeDao implements Dao {
             statement.setString(6, employee.getGender());
             statement.setDate(7, Date.valueOf(employee.getDateOfJoining()));
             statement.setFloat(8, employee.getSalary());
+            statement.setString(9, employee.getRole());
             count = statement.executeUpdate();
             String idQuery = ("select employee_id from employee where email_id = ?");
             PreparedStatement statementId = Factory.getConnection().prepareStatement(idQuery);
@@ -132,15 +133,16 @@ public class EmployeeDao implements Dao {
                 String gender = result.getString(7);
                 LocalDate dateOfJoining = result.getDate(8).toLocalDate();
                 float salary = result.getFloat(9);
-                String doorNumber = result.getString(11);
-                String street = result.getString(12);
-                String city = result.getString(13);
-                String state = result.getString(14);
-                int pincode = result.getInt(15);
-                String type = result.getString(16);
+                String role = result.getString(10);
+                String doorNumber = result.getString(12);
+                String street = result.getString(13);
+                String city = result.getString(14);
+                String state = result.getString(15);
+                int pincode = result.getInt(16);
+                String type = result.getString(17);
 
                 Address address = new Address(doorNumber, street, city, state, pincode, type);
-                Employee employee = new Employee(id, firstName, lastName,dateOfBirth,phoneNumber,
+                Employee employee = new Employee(id, firstName, lastName, role, dateOfBirth,phoneNumber,
                                                  dateOfJoining, email, salary, gender, address);
                 employees.add(employee);
             }
@@ -166,7 +168,7 @@ public class EmployeeDao implements Dao {
         StringBuilder query = new StringBuilder();
         query.append("update employee set first_name = ?,") 
              .append("last_name = ?, date_of_birth = ?, phone_number = ?,")
-             .append("email_id = ?, gender = ?, date_of_joining = ?, salary = ?")
+             .append("email_id = ?, gender = ?, date_of_joining = ?, salary = ?,role = ?")
              .append(" where employee_id = ").append(employeeId);
 
         try {    
@@ -179,6 +181,7 @@ public class EmployeeDao implements Dao {
             statement.setString(6, employee.getGender());
             statement.setDate(7, Date.valueOf(employee.getDateOfJoining()));
             statement.setFloat(8, employee.getSalary());
+            statement.setString(9, employee.getRole());
             count = statement.executeUpdate();
             isUpdated = updateAddress(employee.getAddress(), employeeId);
         } catch (SQLException e) {
@@ -257,16 +260,17 @@ public class EmployeeDao implements Dao {
                 String gender = result.getString(7);
                 LocalDate dateOfJoining = result.getDate(8).toLocalDate();
                 float salary = result.getFloat(9);
-                String doorNumber = result.getString(11);
-                String street = result.getString(12);
-                String city = result.getString(13);
-                String state = result.getString(14);
-                int pincode = result.getInt(15);
-                String type = result.getString(16);
+                String role = result.getString(10);
+                String doorNumber = result.getString(12);
+                String street = result.getString(13);
+                String city = result.getString(14);
+                String state = result.getString(15);
+                int pincode = result.getInt(16);
+                String type = result.getString(17);
 
                 Address address = new Address(doorNumber, street, city, state, pincode, type);
-                employee = new Employee(id, firstName, lastName,dateOfBirth,phoneNumber,
-                                                 dateOfJoining, email, salary, gender, address);
+                employee = new Employee(id, firstName, lastName, role, dateOfBirth,phoneNumber,
+                                        dateOfJoining, email, salary, gender, address);
             }
         } catch (SQLException e) {
             e.printStackTrace();

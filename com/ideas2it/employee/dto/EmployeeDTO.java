@@ -21,14 +21,17 @@ public class EmployeeDTO {
     private float salary;
     private String gender;
     private AddressDTO address;
+    private String role;
 
     public EmployeeDTO() {}
 
-    public EmployeeDTO(int id, String firstName, String lastName,LocalDate dateOfBirth, long phonenumber,
-                       LocalDate dateOfJoining, String email, float salary, String gender, AddressDTO address) {
+    public EmployeeDTO(int id, String firstName, String lastName,String role,
+                    LocalDate dateOfBirth, long phonenumber, LocalDate dateOfJoining,
+                    String email, float salary, String gender, AddressDTO address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = role;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.dateOfJoining = dateOfJoining;
@@ -110,6 +113,14 @@ public class EmployeeDTO {
         this.gender = gender;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public AddressDTO getAddress() {
         return address;
     }
@@ -120,7 +131,9 @@ public class EmployeeDTO {
 
     public String toString() {
         StringBuilder stringBuilderDetails = new StringBuilder();
-        stringBuilderDetails.append("\nName:").append(getFirstName()).append(getLastName())
+        stringBuilderDetails.append("\nEmployeeId:").append(getId())
+                            .append("\nName:").append(getFirstName()).append(getLastName())
+                            .append("\nRole:").append(getRole())
                             .append("\nDateofbirth:").append(getDateOfBirth())
                             .append("\nPhoneNumber:").append(getPhoneNumber())
                             .append("\nDate of joining:").append(getDateOfJoining())
