@@ -30,4 +30,17 @@ public class EmployeeManagementConstant {
     public static final String TYPE = "Enter The Permanent/Temporary:";
     public static final String PINCODE = "Enter The Pincode:";
     public static final String SALARY = "Enter The Salary:";
+    public static final String VALID_FIRST_NAME = "([A-Za-z]{2,})";
+    public static final String VALID_LAST_NAME = "([A-Za-z]+)";
+    public static final String VALID_ROLE = "([A-Za-z]{2,})";
+    public static final String VALID_PHONE_NUMBER = "([6-9][0-9]{9})";
+    public static final String VALID_EMAIL = "([a-z0-9]{2,}[@]{1}[a-z\\.]([a-z]{3,}|[a-z\\.][a-z]{2}))";
+    public static final String VALID_SALARY = "([0-9]*[\\.]?[0-9]{2})";
+    public static final String VALID_GENDER = "([A-Za-z]{2,})";
+    public static final String VALID_DOOR_NUMBER = "([no|No|NO]?[#]?[A-Za-z]*[-/:]?[0-9]+[-/:]?[0-9]*)";
+    public static final String VALID_STREET =  "([A-Za-z]{6,}[0-9]*)";
+    public static final String VALID_CITY = "([A-Za-z]{4,30})";
+    public static final String VALID_STATE = "([A-Za-z]{4,30})";
+    public static final String VALID_PINCODE = "([0-9]{6})";
+    public static final String VALID_TYPE = "([A-Za-z]{6,})";
 }    

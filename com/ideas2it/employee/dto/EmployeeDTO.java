@@ -135,7 +135,7 @@ public class EmployeeDTO {
                             .append("\nName:").append(getFirstName()).append(getLastName())
                             .append("\nRole:").append(getRole())
                             .append("\nDateofbirth:").append(getDateOfBirth())
-                            .append("\nPhoneNumber:").append(getPhoneNumber())
+                            .append("\nPhoneNumber:").append("+91 ").append(getPhoneNumber())
                             .append("\nDate of joining:").append(getDateOfJoining())
                             .append("\nEmail:").append(getEmail())
                             .append("\nSalary:").append(getSalary())

@@ -23,7 +23,7 @@ public class EmployeeController {
      * @param employeedto details.
      */
     public boolean addEmployee(EmployeeDTO employeeDto) {
-        return employeeService.addEmployee(employeeDto); 
+        return employeeService.addEmployee(employeeDto);
     }
 
     /**
