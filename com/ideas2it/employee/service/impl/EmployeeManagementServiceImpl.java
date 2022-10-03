@@ -5,8 +5,11 @@ import com.ideas2it.employee.dto.EmployeeDTO;
 import com.ideas2it.employee.mapper.EmployeeMapper;
 import com.ideas2it.employee.dao.Dao;
 import com.ideas2it.employee.dao.impl.EmployeeDao;
+import com.ideas2it.employee.exception.DateFormatException;
 import com.ideas2it.employee.service.EmployeeManagementService;
+import com.ideas2it.employee.util.EmployeeManagementUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +21,7 @@ import java.util.List;
  */
 public class EmployeeManagementServiceImpl implements EmployeeManagementService {
     Dao employeeDao = new EmployeeDao();
+    EmployeeManagementUtil util = new EmployeeManagementUtil();
     
     /**
      * {@inheritDoc}
@@ -62,5 +66,19 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      */
     public boolean deleteEmployee(int employeeId) {
         return employeeDao.deleteEmployee(employeeId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isValidData(String pattern, String field) {
+        return util.isValidData(pattern, field);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public LocalDate date(String date) throws DateFormatException {
+        return util.date(date);
     }
 }

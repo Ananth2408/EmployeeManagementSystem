@@ -5,6 +5,7 @@ import com.ideas2it.employee.service.EmployeeManagementService;
 import com.ideas2it.employee.service.impl.EmployeeManagementServiceImpl;
 import com.ideas2it.employee.view.EmployeeView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,26 @@ public class EmployeeController {
      * @param employee name from user.
      * @return the boolean value if deletes return true else false.
      */
-   public boolean deleteEmployee(int employeeId) {
-       return employeeService.deleteEmployee(employeeId);
-   }
+    public boolean deleteEmployee(int employeeId) {
+        return employeeService.deleteEmployee(employeeId);
+    }
+
+    /**
+     * Used to validate the given input is valid or not.
+     * @param pattern is regex pattern.
+     * @param field is values, input from the users.
+     * @return if it is valid it returns true else rturns false.
+     */
+    public boolean isValidData(String pattern, String field) {
+        return employeeService.isValidData(pattern, field);
+    }
+
+     /**
+     * Used to validate the given input is valid or not.
+     * @param date from the user.
+     * @return if it is valid it returns localdate else ask again.
+     */
+     public LocalDate date(String date) {
+        return employeeService.date(date);
+    }  
 }

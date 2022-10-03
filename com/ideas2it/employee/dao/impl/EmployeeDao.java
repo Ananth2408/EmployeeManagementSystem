@@ -1,9 +1,10 @@
 package com.ideas2it.employee.dao.impl;
 
 import com.ideas2it.employee.dao.Dao;
-import com.ideas2it.employee.dao.factory.Factory;
+import com.ideas2it.employee.util.connectionutil.CustomConnection;
 import com.ideas2it.employee.model.Address;
 import com.ideas2it.employee.model.Employee;
+import com.ideas2it.employee.exception.InvalidException;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -32,7 +33,7 @@ public class EmployeeDao implements Dao {
     @Override
     public boolean addEmployee(Employee employee) {
         boolean isAdded= false;
-        Connection connection = Factory.getConnection();
+        Connection connection = CustomConnection.getConnection();
         int count = 0;
         StringBuilder query = new StringBuilder();
         query.append("insert into employee (first_name, last_name, date_of_birth,")
@@ -52,7 +53,7 @@ public class EmployeeDao implements Dao {
             statement.setString(9, employee.getRole());
             count = statement.executeUpdate();
             String idQuery = ("select employee_id from employee where email_id = ?");
-            PreparedStatement statementId = Factory.getConnection().prepareStatement(idQuery);
+            PreparedStatement statementId = connection.prepareStatement(idQuery);
             statementId.setString(1, employee.getEmail());
             ResultSet result = statementId.executeQuery();       
             int employeeId = 0;
@@ -65,7 +66,7 @@ public class EmployeeDao implements Dao {
             e.printStackTrace(); 
         } 
         finally {
-            Factory.closeConnection();
+            CustomConnection.closeConnection();
         }  
         if (count > 0 && isAdded) {
             isAdded = true;
@@ -82,7 +83,7 @@ public class EmployeeDao implements Dao {
     @Override
     public boolean addAddress(Address address, int employeeId) {
         boolean isAdded= false;
-        Connection connection = Factory.getConnection();
+        Connection connection = CustomConnection.getConnection();
         int count = 0;
         StringBuilder query = new StringBuilder();
         query.append("insert into employee_address (door_number, street, city, state,")
@@ -102,7 +103,7 @@ public class EmployeeDao implements Dao {
             e.printStackTrace();
         }
         finally {
-           Factory.closeConnection(); 
+           CustomConnection.closeConnection(); 
         }  
         if (count > 0) {
             isAdded = true;
@@ -117,7 +118,7 @@ public class EmployeeDao implements Dao {
     @Override 
     public List<Employee> displayEmployee() {
         List<Employee> employees = new ArrayList();
-        Connection connection = Factory.getConnection();
+        Connection connection = CustomConnection.getConnection();
         StringBuilder query = new StringBuilder();
         query.append("select * from employee e, employee_address a where e.employee_id = a.employee_id ");
 
@@ -145,7 +146,7 @@ public class EmployeeDao implements Dao {
                 String type = result.getString(17);
 
                 Address address = new Address(doorNumber, street, city, state, pincode, type);
-                Employee employee = new Employee(id, firstName, lastName, role, dateOfBirth,phoneNumber,
+                Employee employee = new Employee(id, firstName, lastName, role, dateOfBirth, phoneNumber,
                                                  dateOfJoining, email, salary, gender, address);
                 employees.add(employee);
             }
@@ -153,7 +154,7 @@ public class EmployeeDao implements Dao {
             e.printStackTrace();
         }
         finally {
-           Factory.closeConnection(); 
+           CustomConnection.closeConnection(); 
         }
         return employees;
     }
@@ -167,7 +168,7 @@ public class EmployeeDao implements Dao {
     @Override
     public boolean updateEmployee(Employee employee, int employeeId) {
         boolean isUpdated = false;
-        Connection connection = Factory.getConnection();
+        Connection connection = CustomConnection.getConnection();
         int count = 0;
         StringBuilder query = new StringBuilder();
         query.append("update employee set first_name = ?,") 
@@ -192,7 +193,7 @@ public class EmployeeDao implements Dao {
             e.printStackTrace(); 
         } 
         finally{
-            Factory.closeConnection();  
+            CustomConnection.closeConnection();  
         }     
         if (count > 0 && isUpdated) {
             isUpdated = true;
@@ -209,7 +210,7 @@ public class EmployeeDao implements Dao {
     @Override
     public boolean updateAddress(Address address, int employeeId) {
         boolean isUpdate= false;
-        Connection connection = Factory.getConnection();
+        Connection connection = CustomConnection.getConnection();
         int count = 0;
         StringBuilder query = new StringBuilder();
         query.append("update employee_address set door_number = ?, street = ?,") 
@@ -230,7 +231,7 @@ public class EmployeeDao implements Dao {
             e.printStackTrace();
         }
         finally {
-           Factory.closeConnection(); 
+           CustomConnection.closeConnection(); 
         }
         if (count > 0) {
             isUpdate = true;
@@ -246,7 +247,7 @@ public class EmployeeDao implements Dao {
     @Override 
     public Employee searchEmployee(String name) {
         Employee employee = null;
-        Connection connection = Factory.getConnection();
+        Connection connection = CustomConnection.getConnection();
         StringBuilder query = new StringBuilder();
         query.append("select * from employee e, employee_address a where e.first_name = ")
              .append("'").append(name).append("'") 
@@ -282,7 +283,7 @@ public class EmployeeDao implements Dao {
             e.printStackTrace();
         }
         finally {
-           Factory.closeConnection(); 
+           CustomConnection.closeConnection(); 
         }
         return employee;
     }
@@ -296,7 +297,7 @@ public class EmployeeDao implements Dao {
     @Override
     public boolean deleteEmployee(int employeeId) {
         boolean isDeleted= false;
-        Connection connection = Factory.getConnection();
+        Connection connection = CustomConnection.getConnection();
         int count = 0;
         StringBuilder query = new StringBuilder();
         query.append("delete from employee ")
@@ -309,7 +310,7 @@ public class EmployeeDao implements Dao {
             e.printStackTrace();
         }
         finally {
-            Factory.closeConnection();
+            CustomConnection.closeConnection();
         }
         if (count > 0) {
              isDeleted = true;

@@ -1,9 +1,9 @@
-package com.ideas2it.employee.dao.factory;
+package com.ideas2it.employee.util.connectionutil;
 
-import java.sql.Connection;  
-import java.sql.DriverManager;  
-import java.sql.PreparedStatement;  
-import java.sql.ResultSet;  
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -12,19 +12,19 @@ import java.sql.SQLException;
  * @version 4.0 28-09-2022.
  * @author  Ananth K.
  */
-public class Factory {
+public class CustomConnection {
     private static String databaseURL = "jdbc:mysql://localhost:3306/employee_management";
     private static String user = "root";
     private static String password = "Ac@9798@ks";
     private static Connection connection = null;
 
-    private Factory() {}
+    private CustomConnection() {}
 
     /**
      * This makes the connection between the database and java application.
      */
     public static Connection getConnection() {
-        
+
         try {
             if (connection == null || connection.isClosed())
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -33,7 +33,7 @@ public class Factory {
             System.out.println("Could not find database driver class");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("An error occurred. Maybe user/password is invalid");
+            System.out.println("Something went wrong tyr again.");
             e.printStackTrace();
         }
         return connection;

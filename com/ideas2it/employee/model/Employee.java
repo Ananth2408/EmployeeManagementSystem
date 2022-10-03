@@ -26,7 +26,7 @@ public class Employee {
     public Employee() {}
 
     public Employee(int id, String firstName, String lastName,String role,
-                    LocalDate dateOfBirth, long phonenumber, LocalDate dateOfJoining,
+                    LocalDate dateOfBirth, long phoneNumber, LocalDate dateOfJoining,
                     String email, float salary, String gender, Address address) {
         this.id = id;
         this.firstName = firstName;

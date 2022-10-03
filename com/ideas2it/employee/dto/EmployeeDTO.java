@@ -26,7 +26,7 @@ public class EmployeeDTO {
     public EmployeeDTO() {}
 
     public EmployeeDTO(int id, String firstName, String lastName,String role,
-                    LocalDate dateOfBirth, long phonenumber, LocalDate dateOfJoining,
+                    LocalDate dateOfBirth, long phoneNumber, LocalDate dateOfJoining,
                     String email, float salary, String gender, AddressDTO address) {
         this.id = id;
         this.firstName = firstName;
@@ -135,7 +135,7 @@ public class EmployeeDTO {
                             .append("\nName:").append(getFirstName()).append(getLastName())
                             .append("\nRole:").append(getRole())
                             .append("\nDateofbirth:").append(getDateOfBirth())
-                            .append("\nPhoneNumber:").append("+91 ").append(getPhoneNumber())
+                            .append("\nPhoneNumber:").append("+91").append(getPhoneNumber())
                             .append("\nDate of joining:").append(getDateOfJoining())
                             .append("\nEmail:").append(getEmail())
                             .append("\nSalary:").append(getSalary())

@@ -4,7 +4,6 @@ import com.ideas2it.employee.constant.EmployeeManagementConstant;
 import com.ideas2it.employee.controller.EmployeeController;
 import com.ideas2it.employee.dto.AddressDTO;
 import com.ideas2it.employee.dto.EmployeeDTO;
-import com.ideas2it.employee.util.EmployeeManagementUtil;
 
 import java.time.LocalDate;
 import java.text.ParseException;
@@ -25,8 +24,7 @@ import java.util.Scanner;
 public class EmployeeView {
     Scanner scanner = new Scanner(System.in);
     EmployeeController employeeController = new EmployeeController();
-    EmployeeManagementUtil util = new EmployeeManagementUtil();
-
+    
     /**
      * Selecting operation to be done with employee details.
      * This have main menu to operation to be done.
@@ -90,10 +88,14 @@ public class EmployeeView {
         employeeDto.setEmail(getEmail());
         employeeDto.setGender(getGender());
         employeeDto.setSalary(getSalary());
-        employeeDto.setAddress(new AddressDTO(getDoorNumber(), getStreet(), 
-                                              getCity(), getState(), getPincode(),
-                                              getType()));
- 
+        addressDto.setDoorNumber(getDoorNumber());
+        addressDto.setStreet(getStreet());
+        addressDto.setCity(getCity());
+        addressDto.setState(getState());
+        addressDto.setType(getType());
+        addressDto.setPinCode(getPincode());
+        employeeDto.setAddress(addressDto);
+
         if (employeeController.addEmployee(employeeDto)) {
             System.out.println("Employee Details Added");
         } else {
@@ -187,258 +189,319 @@ public class EmployeeView {
         }
     }
 
+    /**
+     * Get the firstname of the employee from the user.
+     * @return if the given name is valid it returns the name else ask again.
+     */
     public String getFirstName() {
         boolean isValid = true;
-        String firstName;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.FIRST_NAME);
-            firstName = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidFirstName(EmployeeManagementConstant.VALID_FIRST_NAME, firstName)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_FIRST_NAME, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return firstName;
+        return field;
     }
 
+   /**
+     * Get the lastname of the employee from the user.
+     * @return if the given name is valid it returns the name else ask again.
+     */
     public String getLastName() {
         boolean isValid = true;
-        String lastName;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.LAST_NAME);
-            lastName = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidLastName(EmployeeManagementConstant.VALID_LAST_NAME, lastName)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_LAST_NAME, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return lastName;
+        return field;
     }
 
+    /**
+     * Get the role of the employee from the user.
+     * @return if the given role is valid it returns the role else ask again.
+     */
     public String getRole() {
         boolean isValid = true;
-        String role;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.ROLE);
-            role = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidRole(EmployeeManagementConstant.VALID_ROLE, role)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_ROLE, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return role;
+        return field;
     }
 
+    /**
+     * Get the phonenumber of the employee from the user.
+     * @return if the given phonenumber is valid it returns the phonenumber else ask again.
+     */
     public long getPhoneNumber() {
         boolean isValid = true;
-        String phoneNumber;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.PHONENUMBER);
-            phoneNumber = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidPhoneNumber(EmployeeManagementConstant.VALID_PHONE_NUMBER, phoneNumber)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_PHONE_NUMBER, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return Long.parseLong(phoneNumber);
+        return Long.parseLong(field);
     }
 
+    /**
+     * Get the email id of the employee from the user.
+     * @return if the given email id is valid it returns the email id else ask again.
+     */
     public String getEmail() {
         boolean isValid = true;
-        String email;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.EMAIL_ID);
-            email = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidFirstName(EmployeeManagementConstant.VALID_EMAIL, email)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_EMAIL, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return email;
+        return field;
     }
 
+    /**
+     * Get the birth date of the employee from the user.
+     * @return if the given birth date is valid it returns the birth date else ask again.
+     */
     public LocalDate getBirthDate() {
         boolean isValid = true;
-        String dateOfBirth;
+        String date;
 
         do{
             System.out.println(EmployeeManagementConstant.DATE_OF_BIRTH);
-            dateOfBirth = scanner.nextLine();
+            date = scanner.nextLine();
 
-            if(util.dateOfBirth(dateOfBirth) != null) {
+            if(employeeController.date(date) != null) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
         } while (isValid);
-        return util.dateOfBirth(dateOfBirth);
+        return employeeController.date(date);
     }
 
+    /**
+     * Get the birth date and joining date of the employee from the user.
+     * @return if the given birth and joining date is valid 
+     * it returns the birth and joining date else ask again.
+     */
     public LocalDate getJoiningDate() {
         boolean isValid = true;
-        String dateOfJoining;
+        String date;
 
         do{
             System.out.println(EmployeeManagementConstant.DATE_OF_JOINING);
-            dateOfJoining = scanner.nextLine();
+            date = scanner.nextLine();
 
-            if(util.dateOfJoining(dateOfJoining) != null) {
+            if(employeeController.date(date) != null) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
         } while (isValid);
-        return util.dateOfJoining(dateOfJoining);
+        return employeeController.date(date);
     }
 
+    /**
+     * Get the salary of the employee from the user.
+     * @return if the given salary is valid it returns the salary else ask again.
+     */
     public float getSalary() {
         boolean isValid = true;
-        String salary;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.SALARY);
-            salary = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidSalary(EmployeeManagementConstant.VALID_SALARY, salary)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_SALARY, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return Float.parseFloat(salary);
+        return Float.parseFloat(field);
     }
 
+    /**
+     * Get the gender of the employee from the user.
+     * @return if the given gender is valid it returns the gender else ask again.
+     */
     public String getGender() {
         boolean isValid = true;
-        String gender;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.GENDER);
-            gender = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidGender(EmployeeManagementConstant.VALID_GENDER, gender)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_GENDER, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return gender;
+        return field;
     }
 
+    /**
+     * Get the door number of the employee from the user.
+     * @return if the given door number is valid it returns the door number else ask again.
+     */
     public String getDoorNumber() {
         boolean isValid = true;
-        String doorNumber;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.DOOR_NUMBER);
-            doorNumber = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidDoorNumber(EmployeeManagementConstant.VALID_DOOR_NUMBER, doorNumber)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_DOOR_NUMBER, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return doorNumber;
+        return field;
     }
 
+    /**
+     * Get the street of the employee from the user.
+     * @return if the given street is valid it returns the street else ask again.
+     */
     public String getStreet() {
         boolean isValid = true;
-        String street;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.STREET_NAME);
-            street = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidStreet(EmployeeManagementConstant.VALID_STREET, street)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_STREET, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return street;
+        return field;
     }
 
+    /**
+     * Get the city of the employee from the user.
+     * @return if the given city is valid it returns the city else ask again.
+     */
     public String getCity() {
         boolean isValid = true;
-        String city;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.CITY_NAME);
-            city = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidCity(EmployeeManagementConstant.VALID_CITY, city)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_CITY, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return city;
+        return field;
     }
 
+    /**
+     * Get the state of the employee from the user.
+     * @return if the given state is valid it returns the state else ask again.
+     */
     public String getState() {
         boolean isValid = true;
-        String state;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.STATE);
-            state = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidState(EmployeeManagementConstant.VALID_STATE, state)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_STATE, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return state;
+        return field;
     }
 
+    /**
+     * Get the pincode of the employee from the user.
+     * @return if the given pincode is valid it returns the pincode else ask again.
+     */
     public int getPincode() {
         boolean isValid = true;
-        String pincode;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.PINCODE);
-            pincode = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidPincode(EmployeeManagementConstant.VALID_PINCODE, pincode)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_PINCODE, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return Integer.parseInt(pincode);
+        return Integer.parseInt(field);
     }
 
+    /**
+     * Get the address type of the employee from the user.
+     * @return if the given address type is valid it returns the address type else ask again.
+     */
     public String getType() {
         boolean isValid = true;
-        String type;
+        String field;
 
         do{
             System.out.println(EmployeeManagementConstant.TYPE);
-            type = scanner.nextLine();
+            field = scanner.nextLine();
 
-            if(util.isValidType(EmployeeManagementConstant.VALID_TYPE, type)) {
+            if(employeeController.isValidData(EmployeeManagementConstant.VALID_TYPE, field)) {
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return type;
+        return field;
     }
 }

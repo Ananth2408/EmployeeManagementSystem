@@ -2,6 +2,7 @@ package com.ideas2it.employee.service;
 
 import com.ideas2it.employee.dto.EmployeeDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -47,4 +48,19 @@ public interface EmployeeManagementService {
      * @return the boolean value if deleted it returns true else false.
      */
     public boolean deleteEmployee(int employeeId);
+
+    /**
+     * Used to validate the given input is valid or not.
+     * @param pattern is regex pattern.
+     * @param field is values, input from the users.
+     * @return if it is valid it returns true else rturns false.
+     */
+    public boolean isValidData(String pattern, String field);
+
+    /**
+     * Used to validate the given input is valid or not.
+     * @param date from the user.
+     * @return if it is valid it returns localdate else ask again.
+     */
+    public LocalDate date(String date);
 }

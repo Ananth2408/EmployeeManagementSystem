@@ -4,7 +4,7 @@ import com.ideas2it.employee.dto.EmployeeDTO;
 
 import java.time.format.DateTimeParseException;
 import java.time.LocalDate;
-import java.util.regex.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -16,82 +16,28 @@ import java.util.regex.Pattern;
 public class EmployeeManagementUtil {
 
     /**
-     * Date of joining were validated and returned.
-     * @param date from the user
-     * @return Date of Birth
+     * Used to validate the given input is valid or not.
+     * @param date from the user.
+     * @return if it is valid it returns localdate else ask again.
      */
-    public LocalDate dateOfBirth(String dateOfBirth) {
-        LocalDate birthDate = null;
+    public LocalDate date(String date) {
+        LocalDate localDate = null;
 
         try {
-            birthDate = LocalDate.parse(dateOfBirth);
+            localDate = LocalDate.parse(date);
         } catch (DateTimeParseException exception) {
             System.out.println("please enter valid date");
         }
-        return birthDate;
+        return localDate;
     }
 
     /**
-     * Date of joining were validated and returned.
-     * @param date from the user
-     * @return Date of joining
+     * Used to validate the given input is valid or not.
+     * @param pattern is regex pattern.
+     * @param field is values, input from the users.
+     * @return if it is valid it returns true else rturns false.
      */
-    public LocalDate dateOfJoining(String dateOfJoining) {
-        LocalDate joinDate = null;
-
-        try {
-            joinDate = LocalDate.parse(dateOfJoining);
-        } catch (DateTimeParseException exception) {
-            System.out.println("please enter valid date");
-        }
-        return joinDate;
-    }
-
-    public boolean isValidFirstName(String pattern, String firstName) {
-        return Pattern.matches(pattern, firstName);
-    }
-
-    public boolean isValidLastName(String pattern, String lastName) {
-        return Pattern.matches(pattern, lastName);
-    }
-
-    public boolean isValidRole(String pattern, String role) {
-        return Pattern.matches(pattern, role);
-    }
-
-    public boolean isValidPhoneNumber(String pattern, String phoneNumber) {
-        return Pattern.matches(pattern, phoneNumber);
-    }
-
-    public boolean isValidGender(String pattern, String gender) {
-        return Pattern.matches(pattern, gender);
-    }
-
-    public boolean isValidSalary(String pattern, String Salary) {
-        return Pattern.matches(pattern, Salary);
-    }
-
-    public boolean isValidDoorNumber(String pattern, String doorNumber) {
-        return Pattern.matches(pattern, doorNumber);
-    }
-
-    public boolean isValidStreet(String pattern, String street) {
-        return Pattern.matches(pattern, street);
-    }
-
-    public boolean isValidCity(String pattern, String city) {
-        return Pattern.matches(pattern, city);
-    }
-
-    public boolean isValidState(String pattern, String state) {
-        return Pattern.matches(pattern, state);
-    }
-
-    public boolean isValidPincode(String pattern, String pincode) {
-        return Pattern.matches(pattern, pincode);
-    }
-
-    public boolean isValidType(String pattern, String type) {
-        return Pattern.matches(pattern, type);
+    public boolean isValidData(String pattern, String field) {
+        return Pattern.matches(pattern, field);
     }
 }
