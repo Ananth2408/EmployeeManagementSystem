@@ -5,7 +5,7 @@ import com.ideas2it.employee.dto.EmployeeDTO;
 import com.ideas2it.employee.mapper.EmployeeMapper;
 import com.ideas2it.employee.dao.Dao;
 import com.ideas2it.employee.dao.impl.EmployeeDao;
-import com.ideas2it.employee.exception.DateFormatException;
+import com.ideas2it.employee.exception.EmployeeManagementSystemException;
 import com.ideas2it.employee.service.EmployeeManagementService;
 import com.ideas2it.employee.util.EmployeeManagementUtil;
 
@@ -26,7 +26,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     /**
      * {@inheritDoc}
      */
-    public boolean addEmployee(EmployeeDTO employeeDto) {
+    @Override
+    public boolean addEmployee(EmployeeDTO employeeDto)
+                               throws EmployeeManagementSystemException {
         Employee employee = EmployeeMapper.toEmployee(employeeDto);
         return employeeDao.addEmployee(employee); 
     }
@@ -34,7 +36,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     /**
      * {@inheritDoc}
      */
-    public List<EmployeeDTO> displayEmployee() {
+    @Override
+    public List<EmployeeDTO> displayEmployee()
+                                throws EmployeeManagementSystemException {
         List<Employee> employees = employeeDao.displayEmployee();
         List<EmployeeDTO> employeeDtos = new ArrayList<EmployeeDTO>();
 
@@ -48,7 +52,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     /**
      * {@inheritDoc}
      */
-    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId) {
+    @Override
+    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId)
+                                  throws EmployeeManagementSystemException {
         Employee employee = EmployeeMapper.toEmployee(employeeDto);
         return employeeDao.updateEmployee(employee, employeeId); 
     }
@@ -56,7 +62,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     /**
      * {@inheritDoc}
      */
-    public EmployeeDTO searchEmployee(String name) {
+    @Override
+    public EmployeeDTO searchEmployee(String name) 
+                                      throws EmployeeManagementSystemException{
         EmployeeDTO employeeDto = EmployeeMapper.toEmployeeDTO(employeeDao.searchEmployee(name));
         return employeeDto;
     }
@@ -64,13 +72,16 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     /**
      * {@inheritDoc}
      */
-    public boolean deleteEmployee(int employeeId) {
+    @Override
+    public boolean deleteEmployee(int employeeId)
+                                  throws EmployeeManagementSystemException {
         return employeeDao.deleteEmployee(employeeId);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isValidData(String pattern, String field) {
         return util.isValidData(pattern, field);
     }
@@ -78,7 +89,8 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     /**
      * {@inheritDoc}
      */
-    public LocalDate date(String date) throws DateFormatException {
-        return util.date(date);
+    @Override
+    public LocalDate date(String date) {
+        return util.dates(date);
     }
 }

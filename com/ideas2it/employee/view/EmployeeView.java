@@ -4,6 +4,7 @@ import com.ideas2it.employee.constant.EmployeeManagementConstant;
 import com.ideas2it.employee.controller.EmployeeController;
 import com.ideas2it.employee.dto.AddressDTO;
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.exception.EmployeeManagementSystemException;
 
 import java.time.LocalDate;
 import java.text.ParseException;
@@ -78,6 +79,7 @@ public class EmployeeView {
      */
     public void createEmployee() {
         EmployeeDTO employeeDto = new EmployeeDTO();
+        AddressDTO addressDto = new AddressDTO();
 
         employeeDto.setFirstName(getFirstName());
         employeeDto.setLastName(getLastName());
@@ -96,10 +98,12 @@ public class EmployeeView {
         addressDto.setPinCode(getPincode());
         employeeDto.setAddress(addressDto);
 
+        try {
         if (employeeController.addEmployee(employeeDto)) {
             System.out.println("Employee Details Added");
-        } else {
-            System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+        }
+        } catch (EmployeeManagementSystemException e) {
+            System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
     }
 
@@ -107,6 +111,8 @@ public class EmployeeView {
      * Print all the saved employee details.
      */
     public void displayEmployee() {
+
+        try {
         List<EmployeeDTO> employees = employeeController.displayEmployee();
 
         if (!employees.isEmpty()) {
@@ -116,8 +122,9 @@ public class EmployeeView {
                 EmployeeDTO employee = iterator.next();
                 System.out.println(employee.toString());
             }
-        } else {
-            System.out.println(EmployeeManagementConstant.EMPLOYEE_NOT_FOUND);
+        }
+        } catch (EmployeeManagementSystemException e) {
+            System.out.println(e.getErrorCode() + " " + e.getMessage());
         }   
     }
         
@@ -148,11 +155,13 @@ public class EmployeeView {
         addressDto.setPinCode(getPincode());
         employeeDto.setSalary(getSalary());
         employeeDto.setAddress(addressDto);     
- 
+
+        try {
         if (employeeController.updateEmployee(employeeDto, employeeId)) {
             System.out.println("Employee Details Updated");
-        } else {
-            System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+        }
+        } catch (EmployeeManagementSystemException e) {
+            System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
     }
 
@@ -165,12 +174,17 @@ public class EmployeeView {
 
         System.out.println(EmployeeManagementConstant.FIRST_NAME);
         String name = scanner.next();
+
+        try{
         EmployeeDTO employeeDto = employeeController.searchEmployee(name);
 
         if (employeeDto != null) {
             System.out.println(employeeDto);
         } else {
-            System.out.println("Not found the Employee");
+            System.out.println("error");
+        }
+        } catch (EmployeeManagementSystemException e) {
+            System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
     }
 
@@ -181,11 +195,13 @@ public class EmployeeView {
     public void deleteEmployee() {
         System.out.println(EmployeeManagementConstant.EMPLOYEE_DELETE);
         int employeeId = Integer.valueOf(scanner.nextLine());
-  
+
+        try {
         if (employeeController.deleteEmployee(employeeId)) {
             System.out.println("Employee Details Deleted");
-        } else {
-            System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+        }
+        } catch (EmployeeManagementSystemException e) {
+            System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
     }
 

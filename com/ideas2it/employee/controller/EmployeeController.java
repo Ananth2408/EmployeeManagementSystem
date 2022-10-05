@@ -4,6 +4,7 @@ import com.ideas2it.employee.dto.EmployeeDTO;
 import com.ideas2it.employee.service.EmployeeManagementService;
 import com.ideas2it.employee.service.impl.EmployeeManagementServiceImpl;
 import com.ideas2it.employee.view.EmployeeView;
+import com.ideas2it.employee.exception.EmployeeManagementSystemException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,7 +24,8 @@ public class EmployeeController {
      * @return the boolean value of added employee details.
      * @param employeedto details.
      */
-    public boolean addEmployee(EmployeeDTO employeeDto) {
+    public boolean addEmployee(EmployeeDTO employeeDto) 
+                               throws EmployeeManagementSystemException {
         return employeeService.addEmployee(employeeDto);
     }
 
@@ -31,7 +33,8 @@ public class EmployeeController {
      * Display the all employee details from the saved details.
      * @return the employeeDeatil.
      */
-    public List<EmployeeDTO> displayEmployee() {
+    public List<EmployeeDTO> displayEmployee()
+                               throws EmployeeManagementSystemException {
         return employeeService.displayEmployee();
     }
 
@@ -41,7 +44,8 @@ public class EmployeeController {
      * @param employeedto details.
      * @return the boolean value if updated returns true else false.
      */
-    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId) {
+    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId)
+                                  throws EmployeeManagementSystemException {
         return employeeService.updateEmployee(employeeDto, employeeId);
     }
 
@@ -51,7 +55,8 @@ public class EmployeeController {
      * @param employee name from user.
      * @return if employee found returns employeedetails else it returns null .
      */
-    public EmployeeDTO searchEmployee(String name) {
+    public EmployeeDTO searchEmployee(String name) 
+                                      throws EmployeeManagementSystemException {
         return employeeService.searchEmployee(name);
     }
 
@@ -61,7 +66,8 @@ public class EmployeeController {
      * @param employee name from user.
      * @return the boolean value if deletes return true else false.
      */
-    public boolean deleteEmployee(int employeeId) {
+    public boolean deleteEmployee(int employeeId)
+                                  throws EmployeeManagementSystemException {
         return employeeService.deleteEmployee(employeeId);
     }
 

@@ -21,8 +21,10 @@ public class EmployeeMapper {
      * @return EmployeeDto details
      */    
     public static EmployeeDTO toEmployeeDTO(Employee employee) {
-        EmployeeDTO employeeDto = new EmployeeDTO();
+        EmployeeDTO employeeDto = null;
 
+        if (null != employee) {
+        employeeDto = new EmployeeDTO();
         employeeDto.setId(employee.getId());
         employeeDto.setFirstName(employee.getFirstName());
         employeeDto.setLastName(employee.getLastName());
@@ -34,6 +36,7 @@ public class EmployeeMapper {
         employeeDto.setSalary(employee.getSalary());
         employeeDto.setRole(employee.getRole());
         employeeDto.setAddress(toAddressDTO(employee.getAddress()));
+        }
         return employeeDto;
     }
 

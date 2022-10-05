@@ -20,7 +20,7 @@ public class EmployeeManagementUtil {
      * @param date from the user.
      * @return if it is valid it returns localdate else ask again.
      */
-    public LocalDate date(String date) {
+    public LocalDate dates(String date) {
         LocalDate localDate = null;
 
         try {

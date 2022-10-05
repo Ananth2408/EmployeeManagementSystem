@@ -4,7 +4,7 @@ import com.ideas2it.employee.dao.Dao;
 import com.ideas2it.employee.util.connectionutil.CustomConnection;
 import com.ideas2it.employee.model.Address;
 import com.ideas2it.employee.model.Employee;
-import com.ideas2it.employee.exception.InvalidException;
+import com.ideas2it.employee.exception.EmployeeManagementSystemException;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -31,7 +31,7 @@ public class EmployeeDao implements Dao {
      * @return if employee details added it returns true else it returns false.
      */
     @Override
-    public boolean addEmployee(Employee employee) {
+    public boolean addEmployee(Employee employee) throws EmployeeManagementSystemException {
         boolean isAdded= false;
         Connection connection = CustomConnection.getConnection();
         int count = 0;
@@ -39,32 +39,33 @@ public class EmployeeDao implements Dao {
         query.append("insert into employee (first_name, last_name, date_of_birth,")
              .append("phone_number, email_id, gender, date_of_joining, salary, role)")
              .append(" values (?,?,?,?,?,?,?,?,?)");
+        try {
+        PreparedStatement statement = connection.prepareStatement(query.toString());
+        statement.setString(1, employee.getFirstName());
+        statement.setString(2, employee.getLastName());
+        statement.setDate(3, Date.valueOf(employee.getDateOfBirth()));
+        statement.setLong(4, employee.getPhoneNumber());
+        statement.setString(5, employee.getEmail());
+        statement.setString(6, employee.getGender());
+        statement.setDate(7, Date.valueOf(employee.getDateOfJoining()));
+        statement.setFloat(8, employee.getSalary());
+        statement.setString(9, employee.getRole());
+        count = statement.executeUpdate();
 
-        try {    
-            PreparedStatement statement = connection.prepareStatement(query.toString());
-            statement.setString(1, employee.getFirstName());  
-            statement.setString(2, employee.getLastName());
-            statement.setDate(3, Date.valueOf(employee.getDateOfBirth()));
-            statement.setLong(4, employee.getPhoneNumber());
-            statement.setString(5, employee.getEmail());
-            statement.setString(6, employee.getGender());
-            statement.setDate(7, Date.valueOf(employee.getDateOfJoining()));
-            statement.setFloat(8, employee.getSalary());
-            statement.setString(9, employee.getRole());
-            count = statement.executeUpdate();
-            String idQuery = ("select employee_id from employee where email_id = ?");
-            PreparedStatement statementId = connection.prepareStatement(idQuery);
-            statementId.setString(1, employee.getEmail());
-            ResultSet result = statementId.executeQuery();       
-            int employeeId = 0;
+        String idQuery = ("select employee_id from employee where email_id = ?");
+        PreparedStatement statementId = connection.prepareStatement(idQuery);
+        statementId.setString(1, employee.getEmail());
+        ResultSet result = statementId.executeQuery();       
+        int employeeId = 0;
 
-            while (result.next()) {
-                employeeId = result.getInt(1);
-            }
-            isAdded = addAddress(employee.getAddress(), employeeId); 
-        } catch (SQLException e) { 
-            e.printStackTrace(); 
-        } 
+        while (result.next()) {
+            employeeId = result.getInt(1);
+        }
+        isAdded = addAddress(employee.getAddress(), employeeId);
+        } catch (SQLException e) {
+            throw new EmployeeManagementSystemException
+            ("Oops! error occured in inserting data, please try again", "ErrorCode 101");
+        }  
         finally {
             CustomConnection.closeConnection();
         }  
@@ -81,7 +82,8 @@ public class EmployeeDao implements Dao {
      * @return if employee details added it returns true else it returns false.
      */
     @Override
-    public boolean addAddress(Address address, int employeeId) {
+    public boolean addAddress(Address address, int employeeId) 
+                              throws EmployeeManagementSystemException {
         boolean isAdded= false;
         Connection connection = CustomConnection.getConnection();
         int count = 0;
@@ -100,7 +102,8 @@ public class EmployeeDao implements Dao {
             statement.setInt(7, employeeId);
             count = statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+             throw new EmployeeManagementSystemException
+             ("Oops! error occured in inserting data, please try again", "ErrorCode 101");
         }
         finally {
            CustomConnection.closeConnection(); 
@@ -116,7 +119,7 @@ public class EmployeeDao implements Dao {
      * @return employee list were returned.
      */
     @Override 
-    public List<Employee> displayEmployee() {
+    public List<Employee> displayEmployee() throws EmployeeManagementSystemException {
         List<Employee> employees = new ArrayList();
         Connection connection = CustomConnection.getConnection();
         StringBuilder query = new StringBuilder();
@@ -146,12 +149,14 @@ public class EmployeeDao implements Dao {
                 String type = result.getString(17);
 
                 Address address = new Address(doorNumber, street, city, state, pincode, type);
-                Employee employee = new Employee(id, firstName, lastName, role, dateOfBirth, phoneNumber,
-                                                 dateOfJoining, email, salary, gender, address);
+                Employee employee = new Employee(id, firstName, lastName, role, dateOfBirth, 
+                                                 phoneNumber, dateOfJoining, email, salary, 
+                                                 gender, address);
                 employees.add(employee);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new EmployeeManagementSystemException 
+             ("Oops! error occured in data retrival , please try again", "ErrorCode 102");
         }
         finally {
            CustomConnection.closeConnection(); 
@@ -166,7 +171,8 @@ public class EmployeeDao implements Dao {
      * @return boolean value if update returns true else returns false.
      */
     @Override
-    public boolean updateEmployee(Employee employee, int employeeId) {
+    public boolean updateEmployee(Employee employee, int employeeId)
+                                  throws EmployeeManagementSystemException {
         boolean isUpdated = false;
         Connection connection = CustomConnection.getConnection();
         int count = 0;
@@ -190,7 +196,8 @@ public class EmployeeDao implements Dao {
             count = statement.executeUpdate();
             isUpdated = updateAddress(employee.getAddress(), employeeId);
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            throw new EmployeeManagementSystemException
+             ("Oops! error occured in updating data, please try again", "ErrorCode 103");
         } 
         finally{
             CustomConnection.closeConnection();  
@@ -208,7 +215,8 @@ public class EmployeeDao implements Dao {
      * @return boolean value if update returns true else returns false.
      */
     @Override
-    public boolean updateAddress(Address address, int employeeId) {
+    public boolean updateAddress(Address address, int employeeId)
+                                 throws EmployeeManagementSystemException {
         boolean isUpdate= false;
         Connection connection = CustomConnection.getConnection();
         int count = 0;
@@ -228,7 +236,8 @@ public class EmployeeDao implements Dao {
             statement.setString(6, address.getType());
             count = statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new EmployeeManagementSystemException
+             ("Oops! error occured in updating data, please try again", "ErrorCode 103");
         }
         finally {
            CustomConnection.closeConnection(); 
@@ -245,7 +254,8 @@ public class EmployeeDao implements Dao {
      * @param employee name from the user. 
      */
     @Override 
-    public Employee searchEmployee(String name) {
+    public Employee searchEmployee(String name) 
+                                   throws EmployeeManagementSystemException {
         Employee employee = null;
         Connection connection = CustomConnection.getConnection();
         StringBuilder query = new StringBuilder();
@@ -280,7 +290,8 @@ public class EmployeeDao implements Dao {
                                         dateOfJoining, email, salary, gender, address);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new EmployeeManagementSystemException
+             ("Oops! error occured in Searching data, please try again", "ErrorCode 104");
         }
         finally {
            CustomConnection.closeConnection(); 
@@ -295,7 +306,8 @@ public class EmployeeDao implements Dao {
      * @return boolean value if employee deleted it returns true else false.
      */
     @Override
-    public boolean deleteEmployee(int employeeId) {
+    public boolean deleteEmployee(int employeeId) 
+                                  throws EmployeeManagementSystemException {
         boolean isDeleted= false;
         Connection connection = CustomConnection.getConnection();
         int count = 0;
@@ -307,7 +319,8 @@ public class EmployeeDao implements Dao {
             PreparedStatement statement = connection.prepareStatement(query.toString());
             count = statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new EmployeeManagementSystemException
+             ("Oops! error occured in deleting data, please try again", "ErrorCode 105");
         }
         finally {
             CustomConnection.closeConnection();
