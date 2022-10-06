@@ -63,4 +63,12 @@ public interface Dao {
      */
     boolean deleteEmployee(int employeeId)
                            throws EmployeeManagementSystemException;
+
+     /**
+     * Used to validate the given employee present in the dat or not.
+     * @param employee id from the user.
+     * @return if employee id persents returns true else returns false.
+     */
+    public boolean isEmployeeIDExists(int employeeId)
+                                      throws EmployeeManagementSystemException;
 }

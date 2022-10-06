@@ -93,4 +93,13 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     public LocalDate date(String date) {
         return util.dates(date);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEmployeeIDExists(int employeeId)
+                                      throws EmployeeManagementSystemException {
+        return employeeDao.isEmployeeIDExists(employeeId);
+    }
 }

@@ -69,4 +69,12 @@ public interface EmployeeManagementService {
      * @return if it is valid it returns localdate else ask again.
      */
     public LocalDate date(String date);
+
+    /**
+     * Used to validate the given employee present in the dat or not.
+     * @param employee id from the user.
+     * @return if employee id persents returns true else returns false.
+     */
+    public boolean isEmployeeIDExists(int employeeId)
+                                      throws EmployeeManagementSystemException;
 }

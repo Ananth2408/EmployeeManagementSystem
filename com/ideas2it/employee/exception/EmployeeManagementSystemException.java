@@ -1,5 +1,10 @@
 package com.ideas2it.employee.exception;
 
+/**
+ * Used handle the exception in this application.
+ * @version 4.0 28-09-2022.
+ * @author  Ananth K.
+ */
 public class EmployeeManagementSystemException extends Exception {
 
     private String  errorCode;

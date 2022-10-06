@@ -131,8 +131,10 @@ public class EmployeeDTO {
 
     public String toString() {
         StringBuilder stringBuilderDetails = new StringBuilder();
-        stringBuilderDetails.append("\nEmployeeId:").append(getId())
-                            .append("\nName:").append(getFirstName()).append(getLastName())
+        stringBuilderDetails.append("\n\n\nEmployeeDetails")
+                            .append("\nEmployeeId:").append(getId())
+                            .append("\nName:").append(getFirstName())
+                            .append(" ").append(getLastName())
                             .append("\nRole:").append(getRole())
                             .append("\nDateofbirth:").append(getDateOfBirth())
                             .append("\nPhoneNumber:").append("+91").append(getPhoneNumber())

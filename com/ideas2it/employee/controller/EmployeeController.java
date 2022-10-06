@@ -1,10 +1,10 @@
 package com.ideas2it.employee.controller;
 
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.exception.EmployeeManagementSystemException;
 import com.ideas2it.employee.service.EmployeeManagementService;
 import com.ideas2it.employee.service.impl.EmployeeManagementServiceImpl;
 import com.ideas2it.employee.view.EmployeeView;
-import com.ideas2it.employee.exception.EmployeeManagementSystemException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -88,5 +88,15 @@ public class EmployeeController {
      */
      public LocalDate date(String date) {
         return employeeService.date(date);
-    }  
+    }
+
+     /**
+     * Used to validate the given employee present in the dat or not.
+     * @param employee id from the user.
+     * @return if employee id persents returns true else returns false.
+     */
+    public boolean isEmployeeIDExists(int employeeId)
+                                      throws EmployeeManagementSystemException {
+        return employeeService.isEmployeeIDExists(employeeId);
+    } 
 }
