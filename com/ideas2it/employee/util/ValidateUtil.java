@@ -1,0 +1,74 @@
+package com.ideas2it.employee.util;
+
+import com.ideas2it.employee.dto.EmployeeDTO;
+
+import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Multiple times implemented values were placed here,
+ * Get the values from the user and validate them.
+ * @version  4.1 10-10-2022.
+ * @author  Ananth K.
+ */
+public class ValidateUtil {
+
+    /**
+     * Used validate the given date of birth is valid or not.
+     * @param birthdate from the user.
+     * @return is vaid return true else false.
+     */
+    public boolean isValidBirthDate(String birthDate) {
+       boolean isValid = false;
+
+       try {
+           LocalDate dateOfBirth = LocalDate.parse(birthDate);
+           LocalDate currentDate = LocalDate.now();
+           int age = Period.between(dateOfBirth, currentDate).getYears();
+
+           if ((age > 18) && (age < 60)) {
+               isValid = true;
+           }    
+        } catch (DateTimeParseException exception) {
+            System.out.println("please enter valid date");
+        }
+       return isValid;
+    }
+
+    /**
+     * Used validate the given date of joining is valid or not.
+     * @param joiningdate from the user.
+     * @return is vaid return true else false.
+     */            
+    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate) {
+        boolean isValid = false;
+    
+        try {
+            LocalDate dateOfJoining = LocalDate.parse(joiningDate);
+            LocalDate currentDate = LocalDate.now();
+
+            if ((currentDate.compareTo(dateOfJoining)) >= 0) {
+
+                if (18 > Period.between(birthDate, dateOfJoining).getYears()) {
+                    isValid = true;
+                }
+            }
+        } catch (DateTimeParseException exception) {
+            System.out.println("please enter valid date");
+        }
+        return isValid;
+    }      
+
+    /**
+     * Used to validate the given input is valid or not.
+     * @param pattern is regex pattern.
+     * @param field is values, input from the users.
+     * @return if it is valid it returns true else returns false.
+     */
+    public boolean isValidData(String pattern, String field) {
+        return Pattern.matches(pattern, field);
+    }
+}

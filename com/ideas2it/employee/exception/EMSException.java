@@ -2,14 +2,19 @@ package com.ideas2it.employee.exception;
 
 /**
  * Used handle the exception in this application.
- * @version 4.0 28-09-2022.
+ * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
-public class EmployeeManagementSystemException extends Exception {
+public class EMSException extends Exception {
 
     private String  errorCode;
 
-    public EmployeeManagementSystemException(String exception, String errorCode) {
+    /**
+     * This is used to throw the error from the methods.
+     * @param exception throwed
+     * @param errorcode used to refer the exception.
+     */
+    public EMSException(String exception, String errorCode) {
     super(exception);
     this.setErrorCode(errorCode);
     }

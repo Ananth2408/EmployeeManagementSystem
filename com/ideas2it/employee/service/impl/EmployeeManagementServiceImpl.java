@@ -1,34 +1,35 @@
 package com.ideas2it.employee.service.impl;
 
-import com.ideas2it.employee.model.Employee;
-import com.ideas2it.employee.dto.EmployeeDTO;
-import com.ideas2it.employee.mapper.EmployeeMapper;
+import com.ideas2it.employee.exception.EMSException;
 import com.ideas2it.employee.dao.Dao;
 import com.ideas2it.employee.dao.impl.EmployeeDao;
-import com.ideas2it.employee.exception.EmployeeManagementSystemException;
+import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.mapper.EmployeeMapper;
+import com.ideas2it.employee.model.Employee;
 import com.ideas2it.employee.service.EmployeeManagementService;
-import com.ideas2it.employee.util.EmployeeManagementUtil;
+import com.ideas2it.employee.util.ValidateUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This Application used to maintain the employee details.
  * Create, read, update and delete operations were done in this application.
- * @version  4.0 28-09-2022.
+ * @version  4.1 10-10-2022.
  * @author  Ananth K.
  */
 public class EmployeeManagementServiceImpl implements EmployeeManagementService {
     Dao employeeDao = new EmployeeDao();
-    EmployeeManagementUtil util = new EmployeeManagementUtil();
+    ValidateUtil util = new ValidateUtil();
     
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean addEmployee(EmployeeDTO employeeDto)
-                               throws EmployeeManagementSystemException {
+                               throws EMSException {
         Employee employee = EmployeeMapper.toEmployee(employeeDto);
         return employeeDao.addEmployee(employee); 
     }
@@ -38,12 +39,11 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      */
     @Override
     public List<EmployeeDTO> displayEmployee()
-                                throws EmployeeManagementSystemException {
+                                throws EMSException {
         List<Employee> employees = employeeDao.displayEmployee();
-        List<EmployeeDTO> employeeDtos = new ArrayList<EmployeeDTO>();
+        List<EmployeeDTO> employeeDtos = new ArrayList();
 
-        for (int i = 0; i < employees.size(); i++) {
-            Employee employee = employees.get(i);
+        for (Employee employee : employees) {
             employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
         }
         return employeeDtos;
@@ -54,7 +54,7 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      */
     @Override
     public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId)
-                                  throws EmployeeManagementSystemException {
+                                  throws EMSException {
         Employee employee = EmployeeMapper.toEmployee(employeeDto);
         return employeeDao.updateEmployee(employee, employeeId); 
     }
@@ -63,10 +63,16 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public EmployeeDTO searchEmployee(String name) 
-                                      throws EmployeeManagementSystemException{
-        EmployeeDTO employeeDto = EmployeeMapper.toEmployeeDTO(employeeDao.searchEmployee(name));
-        return employeeDto;
+    public List<EmployeeDTO> searchEmployee(String name) 
+                                      throws EMSException{
+        List<Employee> employees = employeeDao.searchEmployee(name);
+        List<EmployeeDTO> employeeDtos = new ArrayList();
+
+        for (Employee employee : employees) {
+            
+            employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
+        }
+        return employeeDtos;
     }
 
     /**
@@ -74,7 +80,7 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      */
     @Override
     public boolean deleteEmployee(int employeeId)
-                                  throws EmployeeManagementSystemException {
+                                  throws EMSException {
         return employeeDao.deleteEmployee(employeeId);
     }
 
@@ -90,8 +96,16 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public LocalDate date(String date) {
-        return util.dates(date);
+    public boolean isValidBirthDate(String birthDate) {
+        return util.isValidBirthDate(birthDate);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate) {
+        return util.isValidJoiningDate(birthDate, joiningDate);
     }
 
     /**
@@ -99,7 +113,33 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      */
     @Override
     public boolean isEmployeeIDExists(int employeeId)
-                                      throws EmployeeManagementSystemException {
+                                      throws EMSException {
         return employeeDao.isEmployeeIDExists(employeeId);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValidPhoneNumber(String phoneNumber) throws EMSException{
+        List<EmployeeDTO> employeeDtos = displayEmployee();
+        List<Long> duplicateList = employeeDtos.stream()
+                                          .map(employeeDto -> Long.valueOf(employeeDto.getPhoneNumber()))
+                                          .collect(Collectors.toList());
+
+    return duplicateList.contains(Long.parseLong(phoneNumber));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValidEmail(String email) throws EMSException{
+        List<EmployeeDTO> employeeDtos = displayEmployee();
+        List<String> duplicateList = employeeDtos.stream()
+                                          .map(employeeDto -> employeeDto.getEmail())
+                                          .collect(Collectors.toList());
+
+    return duplicateList.contains(email);
+    }   
 }

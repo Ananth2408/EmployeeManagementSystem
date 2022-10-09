@@ -4,11 +4,11 @@ import com.ideas2it.employee.constant.EmployeeManagementConstant;
 import com.ideas2it.employee.controller.EmployeeController;
 import com.ideas2it.employee.dto.AddressDTO;
 import com.ideas2it.employee.dto.EmployeeDTO;
-import com.ideas2it.employee.exception.EmployeeManagementSystemException;
-import com.ideas2it.employee.util.EmployeeManagementUtil;
+import com.ideas2it.employee.exception.EMSException;
+import com.ideas2it.employee.util.ValidateUtil;
 
-import java.time.LocalDate;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
@@ -20,13 +20,13 @@ import java.util.Scanner;
  * Get the details of the employee from the user
  * and save the details.
  * Perform create, read, update and exit operations.
- * @version 4.0 28-09-2022.
+ * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
 public class EmployeeView {
     Scanner scanner = new Scanner(System.in);
     EmployeeController employeeController = new EmployeeController();
-    EmployeeManagementUtil util = new EmployeeManagementUtil();
+    ValidateUtil util = new ValidateUtil();
     
     /**
      * Selecting operation to be done with employee details.
@@ -37,9 +37,11 @@ public class EmployeeView {
         int operations = 0;
 
         do {
+
             try {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_MENU);
                 operations = Integer.valueOf(scanner.nextLine());
+
                 switch (operations) {
                     case 1:
                         createEmployee();
@@ -80,32 +82,25 @@ public class EmployeeView {
      */
     public void createEmployee() {
         EmployeeDTO employeeDto = new EmployeeDTO();
-        AddressDTO addressDto = new AddressDTO();
-
-        employeeDto.setFirstName(getFirstName());
-        employeeDto.setLastName(getLastName());
-        employeeDto.setRole(getRole());
-        employeeDto.setDateOfBirth(getBirthDate());
-        employeeDto.setPhoneNumber(getPhoneNumber());
-        employeeDto.setDateOfJoining(getJoiningDate());
-        employeeDto.setEmail(getEmail());
-        employeeDto.setGender(getGender());
-        employeeDto.setSalary(getSalary());
-        addressDto.setDoorNumber(getDoorNumber());
-        addressDto.setStreet(getStreet());
-        addressDto.setCity(getCity());
-        addressDto.setState(getState());
-        addressDto.setType(getType());
-        addressDto.setPinCode(getPincode());
-        employeeDto.setAddress(addressDto);
 
         try {
+            employeeDto.setFirstName(getFirstName());
+            employeeDto.setLastName(getLastName());
+            employeeDto.setRole(getRole());
+            employeeDto.setDateOfBirth(getBirthDate());
+            employeeDto.setPhoneNumber(getPhoneNumber());
+            employeeDto.setDateOfJoining(getJoiningDate(employeeDto.getDateOfBirth()));
+            employeeDto.setEmail(getEmail());
+            employeeDto.setGender(getGender());
+            employeeDto.setSalary(getSalary());
+            employeeDto.setAddress(getAddress());
+
             if (employeeController.addEmployee(employeeDto)) {
                 System.out.println("Employee Details Added");
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
-        } catch (EmployeeManagementSystemException e) {
+        } catch (EMSException e) {
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
     }
@@ -116,19 +111,16 @@ public class EmployeeView {
     public void displayEmployee() {
 
         try {
-            List<EmployeeDTO> employees = employeeController.displayEmployee();
+            List<EmployeeDTO> employeeDtos = employeeController.displayEmployee();
 
-            if (!employees.isEmpty()) {
-                Iterator<EmployeeDTO> iterator = employees.iterator();
-
-                while (iterator.hasNext()) {
-                    EmployeeDTO employee = iterator.next();
-                    System.out.println(employee.toString());
+            if (!employeeDtos.isEmpty()) {
+                for (EmployeeDTO employeeDto : employeeDtos) {
+                    System.out.println(employeeDto.toString());
                 }
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
-        } catch (EmployeeManagementSystemException e) {
+        } catch (EMSException e) {
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }   
     }
@@ -145,37 +137,33 @@ public class EmployeeView {
         int employeeId = getEmployeeID();
 
         try {
+
             if (employeeController.isEmployeeIDExists(employeeId)) {
                 employeeDto.setFirstName(getFirstName());
                 employeeDto.setLastName(getLastName());
                 employeeDto.setRole(getRole());
                 employeeDto.setDateOfBirth(getBirthDate());
                 employeeDto.setPhoneNumber(getPhoneNumber());
-                employeeDto.setDateOfJoining(getJoiningDate());
+                employeeDto.setDateOfJoining(getJoiningDate(employeeDto.getDateOfBirth()));
                 employeeDto.setEmail(getEmail());
                 employeeDto.setGender(getGender());
-                addressDto.setDoorNumber(getDoorNumber());
-                addressDto.setStreet(getStreet());
-                addressDto.setCity(getCity());
-                addressDto.setState(getState());
-                addressDto.setType(getType());
-                addressDto.setPinCode(getPincode());
                 employeeDto.setSalary(getSalary());
-                employeeDto.setAddress(addressDto);  
+                employeeDto.setAddress(getAddress());  
 
             try {
+
                 if (employeeController.updateEmployee(employeeDto, employeeId)) {
                     System.out.println("Employee Details Updated");
                 } else {
                     System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
                 }
-            } catch (EmployeeManagementSystemException e) {
+            } catch (EMSException e) {
                 System.out.println(e.getErrorCode() + " " + e.getMessage());
             } 
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS);
             }
-        } catch (EmployeeManagementSystemException e) {
+        } catch (EMSException e) {
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }  
     }
@@ -190,17 +178,19 @@ public class EmployeeView {
         System.out.println(EmployeeManagementConstant.FIRST_NAME);
         String name = scanner.nextLine();
 
-        try{
-            EmployeeDTO employeeDto = employeeController.searchEmployee(name);
+        try {
+            List<EmployeeDTO> employeeDtos = employeeController.searchEmployee(name);
 
-            if (employeeDto != null) {
-                System.out.println(employeeDto);
+            if (!employeeDtos.isEmpty()) {
+                for (EmployeeDTO employeeDto : employeeDtos) {
+                    System.out.println(employeeDto.toString());
+                }
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
-        } catch (EmployeeManagementSystemException e) {
+        } catch (EMSException e) {
             System.out.println(e.getErrorCode() + " " + e.getMessage());
-        }
+        } 
     }
 
     /**
@@ -212,12 +202,13 @@ public class EmployeeView {
         int employeeId = getEmployeeID();
 
         try {
+
             if (employeeController.deleteEmployee(employeeId)) {
                 System.out.println("Employee Details Deleted");
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS);
             }
-        } catch (EmployeeManagementSystemException e) {
+        } catch (EMSException e) {
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
     }
@@ -260,7 +251,7 @@ public class EmployeeView {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return util.toCapital(firstName);
+        return firstName;
     }
 
    /**
@@ -281,7 +272,7 @@ public class EmployeeView {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return util.toCapital(lastName);
+        return lastName;
     }
 
     /**
@@ -302,25 +293,30 @@ public class EmployeeView {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return util.toCapital(role);
+        return role;
     }
 
     /**
      * Get the phonenumber of the employee from the user.
      * @return if the given phonenumber is valid it returns the phonenumber else ask again.
      */
-    public long getPhoneNumber() {
+    public long getPhoneNumber() throws EMSException{
         boolean isValid = true;
         String phoneNumber;
 
         do{
             System.out.println(EmployeeManagementConstant.PHONENUMBER);
             phoneNumber = scanner.nextLine();
-
+            
             if(employeeController.isValidData(EmployeeManagementConstant.VALID_PHONE_NUMBER, phoneNumber)) {
-                isValid = false;
+
+                if(!(employeeController.isValidPhoneNumber(phoneNumber))) {
+                    isValid = false;
+                } else {
+                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_DUPLICATE);
+                }
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
         } while (isValid);
         return Long.parseLong(phoneNumber);
@@ -330,7 +326,7 @@ public class EmployeeView {
      * Get the email id of the employee from the user.
      * @return if the given email id is valid it returns the email id else ask again.
      */
-    public String getEmail() {
+    public String getEmail() throws EMSException{
         boolean isValid = true;
         String email;
 
@@ -339,7 +335,12 @@ public class EmployeeView {
             email = scanner.nextLine();
 
             if(employeeController.isValidData(EmployeeManagementConstant.VALID_EMAIL, email)) {
-                isValid = false;
+
+                if(!(employeeController.isValidEmail(email))) {
+                    isValid = false;
+                } else {
+                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_DUPLICATE);
+                }
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
@@ -354,18 +355,20 @@ public class EmployeeView {
     public LocalDate getBirthDate() {
         boolean isValid = true;
         String dateOfBirth;
+        LocalDate localDate = null;
 
         do{
             System.out.println(EmployeeManagementConstant.DATE_OF_BIRTH);
             dateOfBirth = scanner.nextLine();
 
-            if(employeeController.date(dateOfBirth) != null) {
+            if(employeeController.isValidBirthDate(dateOfBirth)) {
+                localDate = LocalDate.parse(dateOfBirth);
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
         } while (isValid);
-        return employeeController.date(dateOfBirth);
+        return localDate;
     }
 
     /**
@@ -373,21 +376,24 @@ public class EmployeeView {
      * @return if the given birth and joining date is valid 
      * it returns the birth and joining date else ask again.
      */
-    public LocalDate getJoiningDate() {
+    public LocalDate getJoiningDate(LocalDate dateOfBirth) {
+        EmployeeDTO employeeDto = new EmployeeDTO();
         boolean isValid = true;
         String dateOfJoining;
+        LocalDate localDate = null;
 
         do{
             System.out.println(EmployeeManagementConstant.DATE_OF_JOINING);
             dateOfJoining = scanner.nextLine();
 
-            if(employeeController.date(dateOfJoining) != null) {
+            if(employeeController.isValidJoiningDate(dateOfBirth ,dateOfJoining)) {
+                localDate = LocalDate.parse(dateOfJoining); 
                 isValid = false;
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
         } while (isValid);
-        return employeeController.date(dateOfJoining);
+        return localDate;
     }
 
     /**
@@ -471,7 +477,7 @@ public class EmployeeView {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return util.toCapital(street);
+        return street;
     }
 
     /**
@@ -492,7 +498,7 @@ public class EmployeeView {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return util.toCapital(city);
+        return city;
     }
 
     /**
@@ -513,7 +519,7 @@ public class EmployeeView {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
             }
         } while (isValid);
-        return util.toCapital(state);
+        return state;
     }
 
     /**
@@ -557,4 +563,44 @@ public class EmployeeView {
         } while (isValid);
         return type;
     }
+
+    public List<AddressDTO> getAddress() {
+        List<AddressDTO> addressDtos= new ArrayList();
+        
+        do {  
+            AddressDTO addressDto = new AddressDTO();
+            addressDto.setType(getType());
+            addressDto.setDoorNumber(getDoorNumber());
+            addressDto.setStreet(getStreet());
+            addressDto.setCity(getCity());
+            addressDto.setState(getState());
+            addressDto.setPinCode(getPincode());
+            addressDtos.add(addressDto);
+        } while (getResponse());
+        return addressDtos;
+    }
+
+     public boolean getResponse() {
+         boolean isCheck = false;
+         boolean isValid;
+         System.out.println("You want to add address again press y for yes/ press n for no");
+             do {
+                isValid = true;
+  
+                switch (scanner.nextLine()) {
+                    case "y":
+                        isCheck = true;
+                        break;
+
+                    case "n":
+                        isCheck = false;
+                        break;
+
+                    default:
+                        isValid = false;
+                        System.out.println("error"); 
+                 }
+             } while (!isValid);
+         return isCheck;
+    } 
 }

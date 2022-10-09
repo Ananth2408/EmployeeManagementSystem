@@ -3,11 +3,13 @@ package com.ideas2it.employee.dto;
 import com.ideas2it.employee.dto.AddressDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Get Employeedetails.
  * Uses getter setter get input from user.
- * @version 4.0 28-09-2022.
+ * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
 public class EmployeeDTO {
@@ -20,14 +22,15 @@ public class EmployeeDTO {
     private String email;
     private float salary;
     private String gender;
-    private AddressDTO address;
+    private List<AddressDTO> address;
     private String role;
 
     public EmployeeDTO() {}
 
     public EmployeeDTO(int id, String firstName, String lastName,String role,
-                    LocalDate dateOfBirth, long phoneNumber, LocalDate dateOfJoining,
-                    String email, float salary, String gender, AddressDTO address) {
+                       LocalDate dateOfBirth, long phoneNumber, 
+                       LocalDate dateOfJoining,String email, float salary, 
+                       String gender, List<AddressDTO> address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -121,11 +124,11 @@ public class EmployeeDTO {
         this.role = role;
     }
 
-    public AddressDTO getAddress() {
+    public List<AddressDTO> getAddress() {
         return address;
     }
 
-    public void setAddress(AddressDTO address) {
+    public void setAddress(List<AddressDTO> address) {
         this.address = address;
     }
 
@@ -137,7 +140,8 @@ public class EmployeeDTO {
                             .append(" ").append(getLastName())
                             .append("\nRole:").append(getRole())
                             .append("\nDateofbirth:").append(getDateOfBirth())
-                            .append("\nPhoneNumber:").append("+91").append(getPhoneNumber())
+                            .append("\nPhoneNumber:").append("+91")
+                            .append(getPhoneNumber())
                             .append("\nDate of joining:").append(getDateOfJoining())
                             .append("\nEmail:").append(getEmail())
                             .append("\nSalary:").append(getSalary())

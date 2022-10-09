@@ -3,11 +3,13 @@ package com.ideas2it.employee.model;
 import com.ideas2it.employee.model.Address;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Get Employeedetails.
  * Uses getter setter methods get input from user.
- * @version 4.0 28-09-2022.
+ * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
 public class Employee {
@@ -20,14 +22,15 @@ public class Employee {
     private String email;
     private float salary;
     private String gender;
-    private Address address;
+    private List<Address> address;
     private String role;
 
     public Employee() {}
 
     public Employee(int id, String firstName, String lastName,String role,
-                    LocalDate dateOfBirth, long phoneNumber, LocalDate dateOfJoining,
-                    String email, float salary, String gender, Address address) {
+                    LocalDate dateOfBirth, long phoneNumber, 
+                    LocalDate dateOfJoining, String email, float salary,
+                    String gender, List<Address> address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -121,22 +124,24 @@ public class Employee {
         this.role = role;
     }
 
-    public Address getAddress() {
+    public List<Address> getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(List<Address> address) {
         this.address = address;
     }
 
     public String toString() {
         StringBuilder stringBuilderDetails = new StringBuilder();
         stringBuilderDetails.append("\nID :").append(getId())
-                            .append("\nName:").append(getFirstName()).append(getLastName())
+                            .append("\nName:").append(getFirstName())
+                            .append(getLastName())
                             .append("\nRole:").append(getRole())
                             .append("\nDateofbirth:").append(getDateOfBirth())
                             .append("\nPhoneNumber:").append(getPhoneNumber())
-                            .append("\nDate of joining:").append(getDateOfJoining())
+                            .append("\nDate of joining:")
+                            .append(getDateOfJoining())
                             .append("\nEmail:").append(getEmail())
                             .append("\nSalary:").append(getSalary())
                             .append("\nGender:").append(getGender())

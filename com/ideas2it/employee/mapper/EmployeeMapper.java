@@ -1,15 +1,18 @@
 package com.ideas2it.employee.mapper;
 
-import com.ideas2it.employee.model.Address;
 import com.ideas2it.employee.dto.AddressDTO;
-import com.ideas2it.employee.model.Employee;
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.model.Address;
+import com.ideas2it.employee.model.Employee;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Mapper convert the modelDto details to model details and
  * model to modelDto details
  *
- * @Version 4.0 28-09-2022
+ * @Version 4.1 10-10-2022
  * @author  Ananth k.
  */
 public class EmployeeMapper {
@@ -22,20 +25,28 @@ public class EmployeeMapper {
      */    
     public static EmployeeDTO toEmployeeDTO(Employee employee) {
         EmployeeDTO employeeDto = null;
+        List<AddressDTO> addressDto = new ArrayList<AddressDTO>();
+        
+            if (null != employee) {
+                employeeDto = new EmployeeDTO();
+                employeeDto.setId(employee.getId());
+                employeeDto.setFirstName(employee.getFirstName());
+                employeeDto.setLastName(employee.getLastName());
+                employeeDto.setDateOfBirth(employee.getDateOfBirth());
+                employeeDto.setPhoneNumber(employee.getPhoneNumber());
+                employeeDto.setDateOfJoining(employee.getDateOfJoining());
+                employeeDto.setEmail(employee.getEmail());
+                employeeDto.setGender(employee.getGender());
+                employeeDto.setSalary(employee.getSalary());
+                employeeDto.setRole(employee.getRole());
 
-        if (null != employee) {
-        employeeDto = new EmployeeDTO();
-        employeeDto.setId(employee.getId());
-        employeeDto.setFirstName(employee.getFirstName());
-        employeeDto.setLastName(employee.getLastName());
-        employeeDto.setDateOfBirth(employee.getDateOfBirth());
-        employeeDto.setPhoneNumber(employee.getPhoneNumber());
-        employeeDto.setDateOfJoining(employee.getDateOfJoining());
-        employeeDto.setEmail(employee.getEmail());
-        employeeDto.setGender(employee.getGender());
-        employeeDto.setSalary(employee.getSalary());
-        employeeDto.setRole(employee.getRole());
-        employeeDto.setAddress(toAddressDTO(employee.getAddress()));
+                if (null != employee.getAddress()) {
+
+                    for (Address address: employee.getAddress()) {
+                         addressDto.add(toAddressDTO(address));
+                    }
+                    employeeDto.setAddress(addressDto);
+               }
         }
         return employeeDto;
     }
@@ -48,6 +59,7 @@ public class EmployeeMapper {
      */  
     public static Employee toEmployee(EmployeeDTO employeeDto) {
         Employee employee = new Employee();
+        List<Address> address = new ArrayList<Address>();
 
         employee.setId(employeeDto.getId());
         employee.setFirstName(employeeDto.getFirstName());
@@ -59,7 +71,14 @@ public class EmployeeMapper {
         employee.setGender(employeeDto.getGender());
         employee.setSalary(employeeDto.getSalary());
         employee.setRole(employeeDto.getRole());
-        employee.setAddress(toAddress(employeeDto.getAddress()));
+
+        if (null != employeeDto.getAddress()) {
+
+            for (AddressDTO addressDto: employeeDto.getAddress()) {
+                address.add(toAddress(addressDto));
+            }
+        employee.setAddress(address);
+        }
         return employee;
     }
 

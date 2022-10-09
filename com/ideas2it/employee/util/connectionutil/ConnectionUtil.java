@@ -1,5 +1,8 @@
 package com.ideas2it.employee.util.connectionutil;
 
+import com.ideas2it.employee.constant.EmployeeManagementConstant;
+import com.ideas2it.employee.exception.EMSException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,32 +12,47 @@ import java.sql.SQLException;
 /**
  * This makes the connection between the database and our application.
  * From this connection we can manipulate the data in database.
- * @version 4.0 28-09-2022.
+ * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
-public class CustomConnection {
+public class ConnectionUtil {
     private static String databaseURL = "jdbc:mysql://localhost:3306/employee_management";
     private static String user = "root";
     private static String password = "Ac@9798@ks";
     private static Connection connection = null;
+    private static ConnectionUtil connectionUtil = null;
 
-    private CustomConnection() {}
+    private ConnectionUtil() {}
+
+    /**
+     * This used to call the connection between the database and application
+     * @return connection util
+     */
+    public static ConnectionUtil getConnectionUtil() {
+
+        if (connectionUtil == null) {
+            connectionUtil = new ConnectionUtil();
+        }
+        return connectionUtil;
+    }
 
     /**
      * This makes the connection between the database and java application.
+     * @return connection
      */
-    public static Connection getConnection() {
+    public Connection getConnection() throws EMSException{
 
         try {
+
             if (connection == null || connection.isClosed())
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(databaseURL, user, password);
         } catch (ClassNotFoundException e) {
-            System.out.println("Could not find database driver class");
-            e.printStackTrace();
+            throw new EMSException(EmployeeManagementConstant.CONNECTION_EXCEPTION,
+                                   EmployeeManagementConstant.ERROR_CODE107);
         } catch (SQLException e) {
-            System.out.println("Something went wrong tyr again.");
-            e.printStackTrace();
+            throw new EMSException(EmployeeManagementConstant.CONNECTION_EXCEPTION,
+                                   EmployeeManagementConstant.ERROR_CODE107);
         }
         return connection;
     }
@@ -43,14 +61,16 @@ public class CustomConnection {
      * Used to close the opened connection between the database
      * and java application
      */
-    public static void closeConnection() {
+    public void closeConnection() throws EMSException {
 
        try {
+
            if (connection != null) {
                connection.close();
            }
        } catch (SQLException e) {
-           e.printStackTrace();
+           throw new EMSException(EmployeeManagementConstant.CONNECTION_CLOSE_EXCEPTION,
+                                  EmployeeManagementConstant.ERROR_CODE108);
        }
     }
 }

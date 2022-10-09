@@ -1,7 +1,7 @@
 package com.ideas2it.employee.service;
 
 import com.ideas2it.employee.dto.EmployeeDTO;
-import com.ideas2it.employee.exception.EmployeeManagementSystemException;
+import com.ideas2it.employee.exception.EMSException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @interface EmployeeManagementService.
  * Employee details manipulation were done. 
- * @version 4.0 28-09-2022.
+ * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
 public interface EmployeeManagementService {
@@ -20,14 +20,14 @@ public interface EmployeeManagementService {
      * @param employee object from the view class.
      */
     public boolean addEmployee(EmployeeDTO employeeDto) 
-                               throws EmployeeManagementSystemException;
+                               throws EMSException;
 
     /**
      * Display the all employee details from the saved dteails.
      * @return the employeeDeatil from the service class.
      */
     public List<EmployeeDTO> displayEmployee()
-                               throws EmployeeManagementSystemException;
+                               throws EMSException;
 
     /**
      * Update employee details by employee name,
@@ -36,7 +36,7 @@ public interface EmployeeManagementService {
      * @return the boolean value if updated it returns true else false.
      */
     public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId)
-                                  throws EmployeeManagementSystemException;
+                                  throws EMSException;
 
     /**
      * Search employee details by employee name,
@@ -44,8 +44,8 @@ public interface EmployeeManagementService {
      * @param employee name from user.
      * @return if employee found returns employee else it returns null .
      */
-    public EmployeeDTO searchEmployee(String name)
-                                      throws EmployeeManagementSystemException;
+    public List<EmployeeDTO> searchEmployee(String name)
+                                      throws EMSException;
 
     /**
      * Delete employee details by employee name,
@@ -53,7 +53,7 @@ public interface EmployeeManagementService {
      * @return the boolean value if deleted it returns true else false.
      */
     public boolean deleteEmployee(int employeeId)
-                                  throws EmployeeManagementSystemException;
+                                  throws EMSException;
 
     /**
      * Used to validate the given input is valid or not.
@@ -68,7 +68,14 @@ public interface EmployeeManagementService {
      * @param date from the user.
      * @return if it is valid it returns localdate else ask again.
      */
-    public LocalDate date(String date);
+    public boolean isValidBirthDate(String birthDate);
+
+    /**
+     * Used to validate the given input is valid or not.
+     * @param date from the user.
+     * @return if it is valid it returns localdate else ask again.
+     */
+    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate);
 
     /**
      * Used to validate the given employee present in the dat or not.
@@ -76,5 +83,19 @@ public interface EmployeeManagementService {
      * @return if employee id persents returns true else returns false.
      */
     public boolean isEmployeeIDExists(int employeeId)
-                                      throws EmployeeManagementSystemException;
+                                      throws EMSException;
+
+   /**
+     * Used to validate the given phone number is duplicate or not.
+     * @param phonenumber from the user.
+     * @return if valid returns true else false.
+     */
+   public boolean isValidPhoneNumber(String phoneNumber) throws EMSException;
+
+   /**
+     * Used to validate the given phone number is duplicate or not.
+     * @param phonenumber from the user.
+     * @return if valid returns true else false.
+     */
+   public boolean isValidEmail(String email) throws EMSException;
 }
