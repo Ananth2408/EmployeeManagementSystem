@@ -2,66 +2,93 @@ package com.ideas2it.employee.dto;
 
 import com.ideas2it.employee.dto.AddressDTO;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Get Employeedetails.
  * Uses getter setter get input from user.
- * @version 3.0 16-09-2022.
+ * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
 public class EmployeeDTO {
-    private String name;
-    private String id;
-    private String phoneNumber;
-    private Date dateOfJoining;
+    private int id;
+    private String firstName;
+    private String lastName;
+    private LocalDate dateOfBirth;
+    private long phoneNumber;
+    private LocalDate dateOfJoining;
     private String email;
-    private double salary;
-    private String bloodGroup;
-    private AddressDTO address;
+    private float salary;
+    private String gender;
+    private List<AddressDTO> address;
+    private String role;
 
     public EmployeeDTO() {}
 
-    public EmployeeDTO(String name, String id, String phonenumber, Date dateOfJoining,
-                   String email, double salary, String bloodGroup, AddressDTO address) {
-        this.name = name;
+    public EmployeeDTO(int id, String firstName, String lastName,String role,
+                       LocalDate dateOfBirth, long phoneNumber, 
+                       LocalDate dateOfJoining,String email, float salary, 
+                       String gender, List<AddressDTO> address) {
         this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.dateOfJoining = dateOfJoining;
         this.email = email;
         this.salary = salary;
-        this.bloodGroup = bloodGroup;
+        this.gender = gender;
+        this.address = address;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getPhoneNumber() {
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getDateOfJoining() {
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public LocalDate getDateOfJoining() {
         return dateOfJoining;
     }
 
-    public void setDateOfJoining(Date dateOfJoining) {
+    public void setDateOfJoining(LocalDate dateOfJoining) {
         this.dateOfJoining = dateOfJoining;
     }
 
@@ -73,39 +100,52 @@ public class EmployeeDTO {
         this.email = email;
     }
 
-    public double getSalary() {
+    public float getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(float salary) {
         this.salary = salary;
     }
 
-    public String getBloodGroup() {
-        return bloodGroup;
+    public String getGender() {
+        return gender;
     }
 
-    public void setBloodGroup(String bloodGroup) {
-        this.bloodGroup = bloodGroup;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public AddressDTO getAddress() {
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public List<AddressDTO> getAddress() {
         return address;
     }
 
-    public void setAddress(AddressDTO address) {
+    public void setAddress(List<AddressDTO> address) {
         this.address = address;
     }
 
     public String toString() {
         StringBuilder stringBuilderDetails = new StringBuilder();
-        stringBuilderDetails.append("\nName:").append(getName())
-                            .append("\nId:").append(getId())
-                            .append("\nPhoneNumber:").append(getPhoneNumber())
+        stringBuilderDetails.append("\n\n\nEmployeeDetails")
+                            .append("\nEmployeeId:").append(getId())
+                            .append("\nName:").append(getFirstName())
+                            .append(" ").append(getLastName())
+                            .append("\nRole:").append(getRole())
+                            .append("\nDateofbirth:").append(getDateOfBirth())
+                            .append("\nPhoneNumber:").append("+91")
+                            .append(getPhoneNumber())
                             .append("\nDate of joining:").append(getDateOfJoining())
                             .append("\nEmail:").append(getEmail())
                             .append("\nSalary:").append(getSalary())
-                            .append("\nBlood Group:").append(getBloodGroup())
+                            .append("\nGender:").append(getGender())
                             .append(getAddress());
         return stringBuilderDetails.toString();
     }

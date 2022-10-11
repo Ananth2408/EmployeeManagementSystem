@@ -3,7 +3,7 @@ package com.ideas2it.employee.model;
 /**
  * Get Employeeaddress from the user.
  * Uses getter setter to get input from user.
- * @version 4.0 25-09-2022.
+ * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
 public class Address {
@@ -17,12 +17,13 @@ public class Address {
     public Address() {}
 
     public Address(String doorNumber, String street, String city, String state,
-                   int pinCode) {
+                   int pinCode, String type) {
         this.doorNumber = doorNumber;
         this.street = street;
         this.city = city;
         this.state = state;
         this.pinCode = pinCode;
+        this.type = type;
     }
 
     public String getDoorNumber() {
