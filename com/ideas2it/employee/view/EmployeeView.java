@@ -6,6 +6,8 @@ import com.ideas2it.employee.dto.AddressDTO;
 import com.ideas2it.employee.dto.EmployeeDTO;
 import com.ideas2it.employee.exception.EMSException;
 import com.ideas2it.employee.util.ValidateUtil;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -27,6 +29,7 @@ public class EmployeeView {
     Scanner scanner = new Scanner(System.in);
     EmployeeController employeeController = new EmployeeController();
     ValidateUtil util = new ValidateUtil();
+    Logger logger = LogManager.getLogger(EmployeeView.class);
     
     /**
      * Selecting operation to be done with employee details.
@@ -65,12 +68,12 @@ public class EmployeeView {
 
                     case 6:
                         System.out.println("Thank you");
-                        System.exit(0);
 
                     default:
                         System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
                 }
             } catch (NumberFormatException numberFormatError) {
+                logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
             }
         } while (6 != operations);
@@ -96,11 +99,13 @@ public class EmployeeView {
             employeeDto.setAddress(getAddress());
 
             if (employeeController.addEmployee(employeeDto)) {
+                logger.info("Employee Details Added");
                 System.out.println("Employee Details Added");
             } else {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
         } catch (EMSException e) {
+            logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
     }
@@ -114,6 +119,7 @@ public class EmployeeView {
             List<EmployeeDTO> employeeDtos = employeeController.displayEmployee();
 
             if (!employeeDtos.isEmpty()) {
+
                 for (EmployeeDTO employeeDto : employeeDtos) {
                     System.out.println(employeeDto.toString());
                 }
@@ -121,6 +127,7 @@ public class EmployeeView {
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
             }
         } catch (EMSException e) {
+            logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }   
     }
@@ -153,17 +160,21 @@ public class EmployeeView {
             try {
 
                 if (employeeController.updateEmployee(employeeDto, employeeId)) {
-                    System.out.println("Employee Details Updated");
+                    logger.info("Employee Details Updated" + employeeId);
+                    System.out.println("Employee Details Updated" + employeeId);
                 } else {
                     System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
                 }
             } catch (EMSException e) {
+                logger.error(e.getErrorCode() + " " + e.getMessage());
                 System.out.println(e.getErrorCode() + " " + e.getMessage());
             } 
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS);
+                logger.info(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
+                System.out.println(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
             }
         } catch (EMSException e) {
+            logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }  
     }
@@ -186,9 +197,11 @@ public class EmployeeView {
                     System.out.println(employeeDto.toString());
                 }
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                logger.info(EmployeeManagementConstant.EMPLOYEE_NOT_FOUND + name);
+                System.out.println(EmployeeManagementConstant.EMPLOYEE_NOT_FOUND + name);
             }
         } catch (EMSException e) {
+            logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         } 
     }
@@ -204,11 +217,14 @@ public class EmployeeView {
         try {
 
             if (employeeController.deleteEmployee(employeeId)) {
-                System.out.println("Employee Details Deleted");
+                logger.info("Employee" + employeeId + "has been deleted");
+                System.out.println("Employee" + employeeId + "has been deleted");
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS);
+                logger.info(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
+                System.out.println(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
             }
         } catch (EMSException e) {
+            logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
     }
@@ -358,15 +374,20 @@ public class EmployeeView {
         LocalDate localDate = null;
 
         do{
-            System.out.println(EmployeeManagementConstant.DATE_OF_BIRTH);
-            dateOfBirth = scanner.nextLine();
+            try {
+                System.out.println(EmployeeManagementConstant.DATE_OF_BIRTH);
+                dateOfBirth = scanner.nextLine();
 
-            if(employeeController.isValidBirthDate(dateOfBirth)) {
-                localDate = LocalDate.parse(dateOfBirth);
-                isValid = false;
-            } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
-            }
+                if(employeeController.isValidBirthDate(dateOfBirth)) {
+                    localDate = LocalDate.parse(dateOfBirth);
+                    isValid = false;
+                } else {
+                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                }
+            } catch (EMSException e) {
+                logger.error(e.getErrorCode() + " " + e.getMessage());
+                System.out.println(e.getErrorCode() + " " + e.getMessage());
+            } 
         } while (isValid);
         return localDate;
     }
@@ -383,15 +404,20 @@ public class EmployeeView {
         LocalDate localDate = null;
 
         do{
-            System.out.println(EmployeeManagementConstant.DATE_OF_JOINING);
-            dateOfJoining = scanner.nextLine();
+            try {
+                System.out.println(EmployeeManagementConstant.DATE_OF_JOINING);
+                dateOfJoining = scanner.nextLine();
 
-            if(employeeController.isValidJoiningDate(dateOfBirth ,dateOfJoining)) {
-                localDate = LocalDate.parse(dateOfJoining); 
-                isValid = false;
-            } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
-            }
+                if(employeeController.isValidJoiningDate(dateOfBirth ,dateOfJoining)) {
+                    localDate = LocalDate.parse(dateOfJoining); 
+                    isValid = false;
+                } else {
+                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                }
+            } catch (EMSException e) {
+                logger.error(e.getErrorCode() + " " + e.getMessage());
+                System.out.println(e.getErrorCode() + " " + e.getMessage());
+            } 
         } while (isValid);
         return localDate;
     }
@@ -598,7 +624,7 @@ public class EmployeeView {
 
                     default:
                         isValid = false;
-                        System.out.println("error"); 
+                        System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR); 
                  }
              } while (!isValid);
          return isCheck;

@@ -96,7 +96,7 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public boolean isValidBirthDate(String birthDate) {
+    public boolean isValidBirthDate(String birthDate) throws EMSException{
         return util.isValidBirthDate(birthDate);
     }
 
@@ -104,7 +104,8 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate) {
+    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate)
+                                      throws EMSException {
         return util.isValidJoiningDate(birthDate, joiningDate);
     }
 

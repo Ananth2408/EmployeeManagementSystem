@@ -84,7 +84,7 @@ public class EmployeeController {
      * @param date from the user.
      * @return if it is valid it returns true else false.
      */
-     public boolean isValidBirthDate(String birthDate) {
+     public boolean isValidBirthDate(String birthDate) throws EMSException {
         return employeeService.isValidBirthDate(birthDate);
     }
 
@@ -93,7 +93,8 @@ public class EmployeeController {
      * @param date from the user.
      * @return if it is valid it returns true else false.
      */
-     public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate) {
+     public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate)
+                                                           throws EMSException {
         return employeeService.isValidJoiningDate(birthDate, joiningDate);
     }
 
