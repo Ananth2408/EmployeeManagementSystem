@@ -2,6 +2,8 @@ package com.ideas2it.employee.util.connectionutil;
 
 import com.ideas2it.employee.constant.EmployeeManagementConstant;
 import com.ideas2it.employee.exception.EMSException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,6 +23,7 @@ public class ConnectionUtil {
     private static String password = "Ac@9798@ks";
     private static Connection connection = null;
     private static ConnectionUtil connectionUtil = null;
+    Logger logger = LogManager.getLogger(ConnectionUtil.class);
 
     private ConnectionUtil() {}
 
@@ -48,9 +51,11 @@ public class ConnectionUtil {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(databaseURL, user, password);
         } catch (ClassNotFoundException e) {
+            logger.fatal(e.getMessage());
             throw new EMSException(EmployeeManagementConstant.CONNECTION_EXCEPTION,
                                    EmployeeManagementConstant.ERROR_CODE107);
         } catch (SQLException e) {
+            logger.fatal(e.getMessage());
             throw new EMSException(EmployeeManagementConstant.CONNECTION_EXCEPTION,
                                    EmployeeManagementConstant.ERROR_CODE107);
         }
@@ -69,6 +74,7 @@ public class ConnectionUtil {
                connection.close();
            }
        } catch (SQLException e) {
+           logger.fatal(e.getMessage());
            throw new EMSException(EmployeeManagementConstant.CONNECTION_CLOSE_EXCEPTION,
                                   EmployeeManagementConstant.ERROR_CODE108);
        }

@@ -13,13 +13,13 @@ public class EmployeeManagementConstant {
     public static final String EMPLOYEE_OPERATION_ERROR = "Enter Valid Operation.";
     public static final String EMPLOYEE_MANAGEMENT_ERROR = "Enter The Valid Data.";
     public static final String EMPLOYEE_MANAGEMENT_DUPLICATE = "Duplicate Value, Reenter The Value";
-    public static final String EMPLOYEE_NOT_FOUND = "Employee Not Inserted";
+    public static final String EMPLOYEE_NOT_FOUND = "Employee Not Found :";
     public static final String FIRST_NAME = "Enter The FirstName (eg.Ananth karnan):";
     public static final String LAST_NAME = "Enter The LastName:";
     public static final String ROLE = "Enter The Role Of Emoployee";
     public static final String EMPLOYEE_ID = "Enter The EmployeeId To Change";
     public static final String EMPLOYEE_DELETE = "Enter The EmployeeId To Delete";
-    public static final String EMPLOYEE_ID_NOT_EXISTS = "Employee ID Doesn't Exists";
+    public static final String EMPLOYEE_ID_NOT_EXISTS = "Employee ID Doesn't Exists :";
     public static final String PHONENUMBER = "Enter The Employee PhoneNumber(10numbers):";
     public static final String DATE_OF_BIRTH = "Enter The Date Of Birth(yyyy-mm-dd):";
     public static final String DATE_OF_JOINING = "Enter The Date Of Joining(yyyy-mm-dd):";
@@ -54,6 +54,7 @@ public class EmployeeManagementConstant {
     public static final String ERROR_CODE106 = "Error code 106 :";
     public static final String ERROR_CODE107 = "Error code 107 :";
     public static final String ERROR_CODE108 = "Error code 108 :";
+    public static final String ERROR_CODE109 = "Error code 109 :";
     public static final String INSERTION_EXCEPTION = "Oops! error occured in inserting data, please try again";
     public static final String DISPLAYING_EXCEPTION = "Oops! error occured in displaying , please try again";
     public static final String UPDATION_EXCEPTION = "Oops! error occured in updating data, please try again";
@@ -62,4 +63,5 @@ public class EmployeeManagementConstant {
     public static final String IDNOTEXISTS_EXCEPTION = "Oops! error occured id doesn't exists, please try again";
     public static final String CONNECTION_EXCEPTION = "Oops! error occured connection not created, please try again";
     public static final String CONNECTION_CLOSE_EXCEPTION = "Oops! error occured connection not closed, please try again";
+    public static final String DATE_EXCEPTION = "Enter Valid Date";
 }    

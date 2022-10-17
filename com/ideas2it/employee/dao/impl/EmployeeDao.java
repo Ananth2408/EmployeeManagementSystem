@@ -6,6 +6,8 @@ import com.ideas2it.employee.exception.EMSException;
 import com.ideas2it.employee.model.Address;
 import com.ideas2it.employee.model.Employee;
 import com.ideas2it.employee.util.connectionutil.ConnectionUtil;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -26,6 +28,7 @@ import java.util.List;
  */ 
 public class EmployeeDao implements Dao {
     ConnectionUtil connectionUtil = ConnectionUtil.getConnectionUtil();
+    Logger logger = LogManager.getLogger(EmployeeDao.class);
     /**
      * Save the employee details.
      * @param employee details.
@@ -35,6 +38,7 @@ public class EmployeeDao implements Dao {
     public boolean addEmployee(Employee employee) throws EMSException {
         boolean isAdded= false;
         int count = 0;
+        int employeeId = 0;
         StringBuilder query = new StringBuilder();
         query.append("insert into employee (first_name, last_name, date_of_birth,")
              .append("phone_number, email_id, gender, date_of_joining, salary, role)")
@@ -57,14 +61,14 @@ public class EmployeeDao implements Dao {
             String idQuery = ("select employee_id from employee where email_id = ?");
             PreparedStatement statementId = connection.prepareStatement(idQuery);
             statementId.setString(1, employee.getEmail());
-            ResultSet result = statementId.executeQuery();       
-            int employeeId = 0;
+            ResultSet result = statementId.executeQuery();
 
             while (result.next()) {
                 employeeId = result.getInt(1);
             }
             isAdded = addAddress(employee.getAddress(), employeeId);
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new EMSException
             (EmployeeManagementConstant.INSERTION_EXCEPTION, 
               EmployeeManagementConstant.ERROR_CODE101);
@@ -75,6 +79,7 @@ public class EmployeeDao implements Dao {
 
         if (count > 0 && isAdded) {
             isAdded = true;
+            logger.info("Employee created EmployeeId =" + employeeId);
         }
         return isAdded;  
     }
@@ -108,6 +113,7 @@ public class EmployeeDao implements Dao {
                 statement.setInt(7, employeeId);
                 count = statement.executeUpdate();
             } catch (SQLException e) {
+                logger.error(e.getMessage());
                 throw new EMSException
                 (EmployeeManagementConstant.INSERTION_EXCEPTION,
                  EmployeeManagementConstant.ERROR_CODE101);
@@ -153,6 +159,7 @@ public class EmployeeDao implements Dao {
                 employees.add(employee);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new EMSException 
              (EmployeeManagementConstant.DISPLAYING_EXCEPTION,
                EmployeeManagementConstant.ERROR_CODE102);
@@ -193,6 +200,7 @@ public class EmployeeDao implements Dao {
                 addresss.add(address);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new EMSException 
              (EmployeeManagementConstant.DISPLAYING_EXCEPTION,
               EmployeeManagementConstant.ERROR_CODE102);
@@ -236,6 +244,7 @@ public class EmployeeDao implements Dao {
             count = statement.executeUpdate();
             isUpdated = updateAddress(employee.getAddress(), employeeId);
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new EMSException
              (EmployeeManagementConstant.UPDATION_EXCEPTION,
                EmployeeManagementConstant.ERROR_CODE103);
@@ -280,9 +289,10 @@ public class EmployeeDao implements Dao {
                 statement.setString(6, address.getType());
                 count = statement.executeUpdate();
             } catch (SQLException e) {
+                logger.error(e.getMessage());
                 throw new EMSException
-             (EmployeeManagementConstant.UPDATION_EXCEPTION,
-               EmployeeManagementConstant.ERROR_CODE103);
+                (EmployeeManagementConstant.UPDATION_EXCEPTION,
+                 EmployeeManagementConstant.ERROR_CODE103);
         }
         }
 
@@ -328,6 +338,7 @@ public class EmployeeDao implements Dao {
             employees.add(employee);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new EMSException
              (EmployeeManagementConstant.SEARCHING_EXCEPTION,
                EmployeeManagementConstant.ERROR_CODE104);
@@ -368,6 +379,7 @@ public class EmployeeDao implements Dao {
                 addresss.add(address);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new EMSException 
              (EmployeeManagementConstant.DISPLAYING_EXCEPTION,
                EmployeeManagementConstant.ERROR_CODE102);
@@ -398,6 +410,7 @@ public class EmployeeDao implements Dao {
             PreparedStatement statement = connection.prepareStatement(query.toString());
             count = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new EMSException
              (EmployeeManagementConstant.DELETING_EXCEPTION,
                EmployeeManagementConstant.ERROR_CODE105);
@@ -413,7 +426,7 @@ public class EmployeeDao implements Dao {
     }
 
      /**
-     * Used to validate the given employee present in the dat or not.
+     * Used to validate the given employee present in the data or not.
      * @param employee id from the user.
      * @return if employee id persents returns true else returns false.
      */
@@ -433,6 +446,7 @@ public class EmployeeDao implements Dao {
                 isExists = true;
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new EMSException
              (EmployeeManagementConstant.IDNOTEXISTS_EXCEPTION,
                EmployeeManagementConstant.ERROR_CODE106);

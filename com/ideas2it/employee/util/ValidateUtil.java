@@ -1,6 +1,10 @@
 package com.ideas2it.employee.util;
 
+import com.ideas2it.employee.constant.EmployeeManagementConstant;
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.exception.EMSException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.time.format.DateTimeParseException;
 import java.time.LocalDate;
@@ -15,13 +19,14 @@ import java.util.regex.Pattern;
  * @author  Ananth K.
  */
 public class ValidateUtil {
+    Logger logger = LogManager.getLogger(ValidateUtil.class);
 
     /**
      * Used validate the given date of birth is valid or not.
      * @param birthdate from the user.
      * @return is vaid return true else false.
      */
-    public boolean isValidBirthDate(String birthDate) {
+    public boolean isValidBirthDate(String birthDate) throws EMSException {
        boolean isValid = false;
 
        try {
@@ -33,7 +38,10 @@ public class ValidateUtil {
                isValid = true;
            }    
         } catch (DateTimeParseException exception) {
-            System.out.println("please enter valid date");
+            logger.info(exception.getMessage());
+            throw new EMSException
+            (EmployeeManagementConstant.DATE_EXCEPTION, 
+             EmployeeManagementConstant.ERROR_CODE109);
         }
        return isValid;
     }
@@ -43,7 +51,8 @@ public class ValidateUtil {
      * @param joiningdate from the user.
      * @return is vaid return true else false.
      */            
-    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate) {
+    public boolean isValidJoiningDate(LocalDate birthDate,
+                     String joiningDate) throws EMSException {
         boolean isValid = false;
     
         try {
@@ -52,12 +61,15 @@ public class ValidateUtil {
 
             if ((currentDate.compareTo(dateOfJoining)) >= 0) {
 
-                if (18 > Period.between(birthDate, dateOfJoining).getYears()) {
+                if (18 < Period.between(birthDate, dateOfJoining).getYears()) {
                     isValid = true;
                 }
             }
         } catch (DateTimeParseException exception) {
-            System.out.println("please enter valid date");
+            logger.info(exception.getMessage());
+            throw new EMSException
+            (EmployeeManagementConstant.DATE_EXCEPTION, 
+             EmployeeManagementConstant.ERROR_CODE109);
         }
         return isValid;
     }      

@@ -68,14 +68,15 @@ public interface EmployeeManagementService {
      * @param date from the user.
      * @return if it is valid it returns localdate else ask again.
      */
-    public boolean isValidBirthDate(String birthDate);
+    public boolean isValidBirthDate(String birthDate) throws EMSException;
 
     /**
      * Used to validate the given input is valid or not.
      * @param date from the user.
      * @return if it is valid it returns localdate else ask again.
      */
-    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate);
+    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate)
+                                                           throws EMSException;
 
     /**
      * Used to validate the given employee present in the dat or not.
