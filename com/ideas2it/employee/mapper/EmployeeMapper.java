@@ -91,6 +91,7 @@ public class EmployeeMapper {
     public static AddressDTO toAddressDTO(Address address) {
         AddressDTO addressDto = new AddressDTO();
 
+        addressDto.setId(address.getId());
         addressDto.setDoorNumber(address.getDoorNumber());
         addressDto.setStreet(address.getStreet());
         addressDto.setCity(address.getCity());
@@ -109,6 +110,7 @@ public class EmployeeMapper {
     public static Address toAddress(AddressDTO addressDto) {
         Address address = new Address();
 
+        address.setId(addressDto.getId());
         address.setDoorNumber(addressDto.getDoorNumber());
         address.setStreet(addressDto.getStreet());
         address.setCity(addressDto.getCity());

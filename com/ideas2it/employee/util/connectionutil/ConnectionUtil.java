@@ -4,12 +4,10 @@ import com.ideas2it.employee.constant.EmployeeManagementConstant;
 import com.ideas2it.employee.exception.EMSException;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.HibernateException;
 
 /**
  * This makes the connection between the database and our application.
@@ -18,11 +16,8 @@ import java.sql.SQLException;
  * @author  Ananth K.
  */
 public class ConnectionUtil {
-    private static String databaseURL = "jdbc:mysql://localhost:3306/employee_management";
-    private static String user = "root";
-    private static String password = "Ac@9798@ks";
-    private static Connection connection = null;
     private static ConnectionUtil connectionUtil = null;
+    private static SessionFactory sessionFactory = null;
     Logger logger = LogManager.getLogger(ConnectionUtil.class);
 
     private ConnectionUtil() {}
@@ -39,44 +34,17 @@ public class ConnectionUtil {
         return connectionUtil;
     }
 
-    /**
-     * This makes the connection between the database and java application.
-     * @return connection
-     */
-    public Connection getConnection() throws EMSException{
+    public Session getSession() throws EMSException{    
 
         try {
-
-            if (connection == null || connection.isClosed())
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                connection = DriverManager.getConnection(databaseURL, user, password);
-        } catch (ClassNotFoundException e) {
-            logger.fatal(e.getMessage());
-            throw new EMSException(EmployeeManagementConstant.CONNECTION_EXCEPTION,
-                                   EmployeeManagementConstant.ERROR_CODE107);
-        } catch (SQLException e) {
-            logger.fatal(e.getMessage());
-            throw new EMSException(EmployeeManagementConstant.CONNECTION_EXCEPTION,
+            if (sessionFactory == null) {
+                sessionFactory = new Configuration()
+                    .configure("configure.cfg.xml").buildSessionFactory();
+            }
+        } catch (HibernateException e) {
+             throw new EMSException(EmployeeManagementConstant.CONNECTION_EXCEPTION,
                                    EmployeeManagementConstant.ERROR_CODE107);
         }
-        return connection;
-    }
-
-    /**
-     * Used to close the opened connection between the database
-     * and java application
-     */
-    public void closeConnection() throws EMSException {
-
-       try {
-
-           if (connection != null) {
-               connection.close();
-           }
-       } catch (SQLException e) {
-           logger.fatal(e.getMessage());
-           throw new EMSException(EmployeeManagementConstant.CONNECTION_CLOSE_EXCEPTION,
-                                  EmployeeManagementConstant.ERROR_CODE108);
-       }
+        return sessionFactory.getCurrentSession();
     }
 }

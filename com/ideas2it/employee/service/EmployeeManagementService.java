@@ -19,7 +19,7 @@ public interface EmployeeManagementService {
      * @return the boolean value.
      * @param employee object from the view class.
      */
-    public boolean addEmployee(EmployeeDTO employeeDto) 
+    public int addEmployee(EmployeeDTO employeeDto) 
                                throws EMSException;
 
     /**
@@ -35,7 +35,7 @@ public interface EmployeeManagementService {
      * @param employee object from the view.
      * @return the boolean value if updated it returns true else false.
      */
-    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId)
+    public boolean updateEmployee(EmployeeDTO employeeDto)
                                   throws EMSException;
 
     /**
@@ -44,7 +44,7 @@ public interface EmployeeManagementService {
      * @param employee name from user.
      * @return if employee found returns employee else it returns null .
      */
-    public List<EmployeeDTO> searchEmployee(String name)
+   public List<EmployeeDTO> searchEmployee(String name)
                                       throws EMSException;
 
     /**
@@ -52,7 +52,7 @@ public interface EmployeeManagementService {
      * if name found it deletes emplyee deatils else it doesn't.
      * @return the boolean value if deleted it returns true else false.
      */
-    public boolean deleteEmployee(int employeeId)
+    public void deleteEmployee(int employeeId)
                                   throws EMSException;
 
     /**
@@ -83,7 +83,7 @@ public interface EmployeeManagementService {
      * @param employee id from the user.
      * @return if employee id persents returns true else returns false.
      */
-    public boolean isEmployeeIDExists(int employeeId)
+    public EmployeeDTO isEmployeeIDExists(int employeeId)
                                       throws EMSException;
 
    /**

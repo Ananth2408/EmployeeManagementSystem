@@ -28,10 +28,10 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public boolean addEmployee(EmployeeDTO employeeDto)
+    public int addEmployee(EmployeeDTO employeeDto)
                                throws EMSException {
         Employee employee = EmployeeMapper.toEmployee(employeeDto);
-        return employeeDao.addEmployee(employee); 
+        return employeeDao.addEmployee(employee);
     }
 
     /**
@@ -53,10 +53,15 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId)
+    public boolean updateEmployee(EmployeeDTO employeeDto)
                                   throws EMSException {
+        boolean isUpdated = false;
         Employee employee = EmployeeMapper.toEmployee(employeeDto);
-        return employeeDao.updateEmployee(employee, employeeId); 
+
+        if (null != (employeeDao.updateEmployee(employee))) {
+            isUpdated = true;
+        }
+        return isUpdated; 
     }
 
     /**
@@ -79,9 +84,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public boolean deleteEmployee(int employeeId)
+    public void deleteEmployee(int employeeId)
                                   throws EMSException {
-        return employeeDao.deleteEmployee(employeeId);
+        employeeDao.deleteEmployee(employeeId);
     }
 
     /**
@@ -113,9 +118,12 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public boolean isEmployeeIDExists(int employeeId)
+    public EmployeeDTO isEmployeeIDExists(int employeeId)
                                       throws EMSException {
-        return employeeDao.isEmployeeIDExists(employeeId);
+        List<EmployeeDTO> employeeDtos = displayEmployee();
+        EmployeeDTO employeeDto = employeeDtos.stream().filter(x -> x.getId() == (employeeId))
+                                  .findFirst().orElse(null);;
+        return employeeDto;
     }
 
     /**
@@ -142,5 +150,5 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
                                           .collect(Collectors.toList());
 
     return duplicateList.contains(email);
-    }   
+    }
 }

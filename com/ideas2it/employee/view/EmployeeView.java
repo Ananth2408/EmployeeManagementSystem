@@ -68,6 +68,7 @@ public class EmployeeView {
 
                     case 6:
                         System.out.println("Thank you");
+                        break;
 
                     default:
                         System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
@@ -97,13 +98,9 @@ public class EmployeeView {
             employeeDto.setGender(getGender());
             employeeDto.setSalary(getSalary());
             employeeDto.setAddress(getAddress());
-
-            if (employeeController.addEmployee(employeeDto)) {
-                logger.info("Employee Details Added");
-                System.out.println("Employee Details Added");
-            } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
-            }
+            int employeeId = employeeController.addEmployee(employeeDto);
+            logger.info("Employee Details Created" + "ID=" + employeeId);
+            System.out.println("Employee Details Added" + "ID=" + employeeId);
         } catch (EMSException e) {
             logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
@@ -133,42 +130,86 @@ public class EmployeeView {
     }
         
     /**
-     * Update the employee details by the name get from the user.
+     * Update the employee details by the id get from the user.
      * If it's not updated shows error.
      */
     public void updateEmployee() {
-        EmployeeDTO employeeDto = new EmployeeDTO();
-        AddressDTO addressDto = new AddressDTO();
-        boolean isValid = true;
         System.out.println(EmployeeManagementConstant.EMPLOYEE_ID);
         int employeeId = getEmployeeID();
+        int operations = 0;
+        EmployeeDTO employeeDto = null;
+        boolean isUpdated = false;
 
         try {
+            employeeDto = employeeController.isEmployeeIDExists(employeeId);
 
-            if (employeeController.isEmployeeIDExists(employeeId)) {
-                employeeDto.setFirstName(getFirstName());
-                employeeDto.setLastName(getLastName());
-                employeeDto.setRole(getRole());
-                employeeDto.setDateOfBirth(getBirthDate());
-                employeeDto.setPhoneNumber(getPhoneNumber());
-                employeeDto.setDateOfJoining(getJoiningDate(employeeDto.getDateOfBirth()));
-                employeeDto.setEmail(getEmail());
-                employeeDto.setGender(getGender());
-                employeeDto.setSalary(getSalary());
-                employeeDto.setAddress(getAddress());  
+            if (null != employeeDto ) {
 
-            try {
+                do {
+                    try {
+                        System.out.println(EmployeeManagementConstant.EMPLOYEE_UPDATE_MENU);
+                        operations = Integer.valueOf(scanner.nextLine());
 
-                if (employeeController.updateEmployee(employeeDto, employeeId)) {
+                        switch (operations) {
+                            case 1:
+                                employeeDto.setFirstName(getFirstName());
+                                break;
+
+                            case 2:
+                                employeeDto.setLastName(getLastName());
+                                break;
+
+                            case 3:
+                                employeeDto.setRole(getRole());
+                                break;
+
+                            case 4:
+                                employeeDto.setDateOfBirth(getBirthDate());
+                                break;
+
+                            case 5:
+                                employeeDto.setDateOfJoining(getJoiningDate(employeeDto.getDateOfBirth()));
+                                break;
+
+                            case 6:
+                                employeeDto.setPhoneNumber(getPhoneNumber());
+                                break;
+
+                            case 7:
+                                employeeDto.setEmail(getEmail());
+                                break;
+
+                            case 8:
+                                employeeDto.setGender(getGender());
+                                break;
+
+                            case 9:
+                                employeeDto.setSalary(getSalary());
+                                break;
+
+                            case 10:
+                                employeeDto.setAddress(updateAddress(employeeDto));
+                                break;
+
+                            case 11:
+                                isUpdated = true;
+                                break;
+
+                            default:
+                                System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                        }
+                    } catch (NumberFormatException numberFormatError) {
+                        logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                        System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                    }
+                } while (!(isUpdated));
+
+                if (employeeController.updateEmployee(employeeDto)) {
                     logger.info("Employee Details Updated" + employeeId);
                     System.out.println("Employee Details Updated" + employeeId);
                 } else {
                     System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
                 }
-            } catch (EMSException e) {
-                logger.error(e.getErrorCode() + " " + e.getMessage());
-                System.out.println(e.getErrorCode() + " " + e.getMessage());
-            } 
             } else {
                 logger.info(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
                 System.out.println(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
@@ -179,6 +220,76 @@ public class EmployeeView {
         }  
     }
 
+    /**
+     * Used to get the type of the adrees from the address
+     * from that we get the address data and upate them individulay
+     * @param employeeDto employee details.
+     */
+    public List<AddressDTO> updateAddress(EmployeeDTO employeeDto) {
+        List<AddressDTO> addressDtos = employeeDto.getAddress();
+        AddressDTO addressDto = addressDtos.stream()
+                                .filter(x -> x.getType().equals(getType()))
+                                .findFirst().orElse(null);
+        addressDtos.add(setAddress(addressDto));
+        return addressDtos;
+    }
+
+    /**
+     * Update the employee address details by the id get from the user.
+     * If it's not updated shows error.
+     * @param addressDto address details from employee details.
+     */
+    public AddressDTO setAddress(AddressDTO addressDto) {
+        int operations = 0;
+        boolean isUpdated = false;
+
+        if (null != addressDto) {
+  
+            do {
+
+                try {
+                    System.out.println(EmployeeManagementConstant.EMPLOYEE_ADDRESSUPDATE_MENU);
+                    operations = Integer.valueOf(scanner.nextLine());
+
+                    switch (operations) {
+                        case 1:
+                            addressDto.setDoorNumber(getDoorNumber());
+                            break;
+
+                        case 2:
+                            addressDto.setStreet(getStreet());
+                            break;
+
+                        case 3:
+                            addressDto.setCity(getCity());
+                            break;
+
+                        case 4:
+                            addressDto.setState(getState());
+                            break;
+
+                        case 5:
+                            addressDto.setPinCode(getPincode());
+                            break;
+
+                        case 6:
+                            isUpdated = true;
+                            break;
+
+                        default:
+                            System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                        }
+                    } catch (NumberFormatException numberFormatError) {
+                        logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                        System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                    }
+            } while(!(isUpdated));
+        } else {
+            System.out.println("Enter valid address type");
+        }
+        return addressDto;
+    }
+        
     /**
      * Search employee details by the employee name given by the user,
      * If name found it prints employee details
@@ -216,7 +327,8 @@ public class EmployeeView {
 
         try {
 
-            if (employeeController.deleteEmployee(employeeId)) {
+            if (null != employeeController.isEmployeeIDExists(employeeId)) {
+                employeeController.deleteEmployee(employeeId);
                 logger.info("Employee" + employeeId + "has been deleted");
                 System.out.println("Employee" + employeeId + "has been deleted");
             } else {
@@ -448,19 +560,38 @@ public class EmployeeView {
      * @return if the given gender is valid it returns the gender else ask again.
      */
     public String getGender() {
-        boolean isValid = true;
-        String gender;
-
+        boolean isValid = false;
+        String gender = null;
+        int operations = 0;
         do{
-            System.out.println(EmployeeManagementConstant.GENDER);
-            gender = scanner.nextLine();
+            try {
+                System.out.println(EmployeeManagementConstant.EMPLOYEE_GENDER_MENU);
+                operations = Integer.valueOf(scanner.nextLine());
+            
+                switch (operations) {
+                    case 1:
+                        gender = "male";
+                        isValid = true;
+                        break;
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_GENDER, gender)) {
-                isValid = false;
-            } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                     case 2:
+                         gender = "female";
+                         isValid = true;
+                         break;
+
+                     case 3:
+                         gender = "others";
+                         isValid = true;
+                         break;
+
+                     default:
+                         System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                 }
+             } catch (NumberFormatException numberFormatError) {
+                logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
             }
-        } while (isValid);
+        } while (!(isValid));
         return gender;
     }
 
@@ -574,19 +705,34 @@ public class EmployeeView {
      * @return if the given address type is valid it returns the address type else ask again.
      */
     public String getType() {
-        boolean isValid = true;
-        String type;
+        boolean isValid = false;
+        String type = null;
+        int operations = 0;
 
         do{
-            System.out.println(EmployeeManagementConstant.TYPE);
-            type = scanner.nextLine();
+            try {
+                System.out.println(EmployeeManagementConstant.EMPLOYEE_TYPE_MENU);
+                operations = Integer.valueOf(scanner.nextLine());
+            
+                switch (operations) {
+                    case 1:
+                        type = "permanent";
+                        isValid = true;
+                        break;
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_TYPE, type)) {
-                isValid = false;
-            } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                     case 2:
+                         type = "temporary";
+                         isValid = true;
+                         break;
+
+                     default:
+                         System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                 }
+             } catch (NumberFormatException numberFormatError) {
+                logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
             }
-        } while (isValid);
+        } while (!(isValid));
         return type;
     }
 

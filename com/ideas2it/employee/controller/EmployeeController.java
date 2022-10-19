@@ -24,7 +24,7 @@ public class EmployeeController {
      * @return the boolean value of added employee details.
      * @param employeedto details.
      */
-    public boolean addEmployee(EmployeeDTO employeeDto) throws EMSException {
+    public int addEmployee(EmployeeDTO employeeDto) throws EMSException {
         return employeeService.addEmployee(employeeDto);
     }
 
@@ -42,9 +42,9 @@ public class EmployeeController {
      * @param employeedto details.
      * @return the boolean value if updated returns true else false.
      */
-    public boolean updateEmployee(EmployeeDTO employeeDto, int employeeId)
+    public boolean updateEmployee(EmployeeDTO employeeDto)
                                                      throws EMSException {
-        return employeeService.updateEmployee(employeeDto, employeeId);
+        return employeeService.updateEmployee(employeeDto);
     }
 
     /**
@@ -64,9 +64,9 @@ public class EmployeeController {
      * @param employee name from user.
      * @return the boolean value if deletes return true else false.
      */
-    public boolean deleteEmployee(int employeeId)
+    public void deleteEmployee(int employeeId)
                                   throws EMSException {
-        return employeeService.deleteEmployee(employeeId);
+        employeeService.deleteEmployee(employeeId);
     }
 
     /**
@@ -84,7 +84,7 @@ public class EmployeeController {
      * @param date from the user.
      * @return if it is valid it returns true else false.
      */
-     public boolean isValidBirthDate(String birthDate) throws EMSException {
+    public boolean isValidBirthDate(String birthDate) throws EMSException {
         return employeeService.isValidBirthDate(birthDate);
     }
 
@@ -93,7 +93,7 @@ public class EmployeeController {
      * @param date from the user.
      * @return if it is valid it returns true else false.
      */
-     public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate)
+    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate)
                                                            throws EMSException {
         return employeeService.isValidJoiningDate(birthDate, joiningDate);
     }
@@ -103,7 +103,7 @@ public class EmployeeController {
      * @param employee id from the user.
      * @return if employee id persents returns true else returns false.
      */
-    public boolean isEmployeeIDExists(int employeeId)
+   public EmployeeDTO isEmployeeIDExists(int employeeId)
                                     throws EMSException {
         return employeeService.isEmployeeIDExists(employeeId);
     }
