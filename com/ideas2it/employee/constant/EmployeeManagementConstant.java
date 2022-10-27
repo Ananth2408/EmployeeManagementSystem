@@ -10,6 +10,16 @@ public class EmployeeManagementConstant {
 
     public static final String EMPLOYEE_MANAGEMENT_MENU = "Enter the opertaion to done \n1. Add \n2. Display" 
                                                            + "\n3. Update \n4. Search \n5. Delete \n6. Exit";
+    public static final String EMPLOYEE_UPDATE_MENU = "Enter the update opertaion to done \n1. Firstname" 
+                                                               + "\n2. Lastname \n3. Role \n4. Dateofbirth"
+                                                               + "\n5. Dateofjoining" + "\n6. Phonenumber"
+                                                               + "\n7. EmailID \n8. Gender \n9. Salary"
+                                                               + "\n10. Address \n11. Save and Update";
+    public static final String EMPLOYEE_ADDRESSUPDATE_MENU = "Enter the update opertaion to done \n1. DoorNumber" 
+                                                              + "\n2. Street \n3. City \n4.State"
+                                                              + "\n5. Pincode" + "\n6. Save and Update";
+    public static final String EMPLOYEE_GENDER_MENU = "Enter the gender \n1. Male \n2. Female \n3. Others";
+    public static final String EMPLOYEE_TYPE_MENU = "Enter the Adddress Type \n1. Permanent \n2. Temporary";
     public static final String EMPLOYEE_OPERATION_ERROR = "Enter Valid Operation.";
     public static final String EMPLOYEE_MANAGEMENT_ERROR = "Enter The Valid Data.";
     public static final String EMPLOYEE_MANAGEMENT_DUPLICATE = "Duplicate Value, Reenter The Value";
@@ -39,13 +49,11 @@ public class EmployeeManagementConstant {
     public static final String VALID_PHONE_NUMBER = "([6-9][0-9]{9})";
     public static final String VALID_EMAIL = "(([a-z0-9]([.][a-z0-9]+)*){6,}[@]{1}[a-z]{2,8}[\\.]([a-z]{3,}([a-z\\.][a-z]{2})*))";
     public static final String VALID_SALARY = "([0-9]*[\\.]?[0-9]{2})";
-    public static final String VALID_GENDER = "([A-Za-z]{2,})";
     public static final String VALID_DOOR_NUMBER = "([a-zA-z0-9:-]{1,10})";
     public static final String VALID_STREET =  "([0-9]*([A-Za-z]{4,})+([ ]?[A-Za-z]{2,}?))";
     public static final String VALID_CITY = "(([A-Za-z]{4,})+([ ]?[A-Za-z]{2,}?))";
     public static final String VALID_STATE = "(([A-Za-z]{4,})+([ ]?[A-Za-z]{2,}?))";
     public static final String VALID_PINCODE = "([0-9]{6})";
-    public static final String VALID_TYPE = "([A-Za-z]{6,})";
     public static final String ERROR_CODE101 = "Error code 101 :";
     public static final String ERROR_CODE102 = "Error code 102 :";
     public static final String ERROR_CODE103 = "Error code 103 :";
@@ -60,7 +68,7 @@ public class EmployeeManagementConstant {
     public static final String UPDATION_EXCEPTION = "Oops! error occured in updating data, please try again";
     public static final String SEARCHING_EXCEPTION = "Oops! error occured in searching data, please try again";
     public static final String DELETING_EXCEPTION = "Oops! error occured in deleting data, please try again";
-    public static final String IDNOTEXISTS_EXCEPTION = "Oops! error occured id doesn't exists, please try again";
+    public static final String IDNOTEXISTS_EXCEPTION = "Oops! internal server error, please try again";
     public static final String CONNECTION_EXCEPTION = "Oops! error occured connection not created, please try again";
     public static final String CONNECTION_CLOSE_EXCEPTION = "Oops! error occured connection not closed, please try again";
     public static final String DATE_EXCEPTION = "Enter Valid Date";

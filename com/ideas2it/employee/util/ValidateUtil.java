@@ -39,6 +39,7 @@ public class ValidateUtil {
            }    
         } catch (DateTimeParseException exception) {
             logger.info(exception.getMessage());
+            System.out.println(exception.getMessage());
             throw new EMSException
             (EmployeeManagementConstant.DATE_EXCEPTION, 
              EmployeeManagementConstant.ERROR_CODE109);

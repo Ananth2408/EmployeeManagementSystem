@@ -19,28 +19,13 @@ public interface Dao {
      * @param employee details.
      * @return if employee details added it returns true else it returns false.
      */
-    boolean addEmployee(Employee employee)
+   public int addEmployee(Employee employee)
                         throws EMSException;
-
-    /**
-     * Save the address details.
-     * @param address details.
-     * @param address details.
-     */
-    boolean addAddress(List<Address> address, int employeeId)
-                       throws EMSException;
 
     /**
      * Print emplyoee detail.
      */
-    List<Employee> displayEmployee()
-                       throws EMSException;
-
-    /**
-     * Print emplyoee address detail.
-     * @param employee id from the user
-     */
-    List<Address> displayAddress(int id)
+    public List<Employee> displayEmployee()
                        throws EMSException;
 
     /**
@@ -49,17 +34,8 @@ public interface Dao {
      * @param employee details.
      * @return if employee updated returns true else it returns false .
      */
-    boolean updateEmployee(Employee employee, int employeeId)
+    public Employee updateEmployee(Employee employee)
                            throws EMSException;
-
-    /**
-     * Update address details by employee name,
-     * If name found it update address details else it doesn't.
-     * @param address details.
-     * @param employee id.
-     */
-    boolean updateAddress(List<Address> address, int employeeId)
-                          throws EMSException;
 
     /**
      * Print emplyoee detail searching by their name.
@@ -68,26 +44,13 @@ public interface Dao {
     public List<Employee> searchEmployee(String name)
                            throws EMSException;
 
-    /**
-     * Print emplyoee address detail.
-     * @param employee id from the user
-     */
-    public List<Address> searchAddress(int id)
-                           throws EMSException;
 
     /**
      * Delete employee details by employee name,
      * if name found it deletes employee deatils else it doesn't.
      * @param employee name.
      */
-    boolean deleteEmployee(int employeeId)
+    public void deleteEmployee(int employeeId)
                            throws EMSException;
 
-     /**
-     * Used to validate the given employee present in the dat or not.
-     * @param employee id from the user.
-     * @return if employee id persents returns true else returns false.
-     */
-    public boolean isEmployeeIDExists(int employeeId)
-                                      throws EMSException;
 }
