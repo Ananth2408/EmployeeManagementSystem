@@ -1,7 +1,8 @@
 package com.ideas2it.employee.util;
 
-import com.ideas2it.employee.constant.EmployeeManagementConstant;
+import com.ideas2it.employee.constant.Constant;
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.dto.ProjectDTO;
 import com.ideas2it.employee.exception.EMSException;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -39,10 +40,9 @@ public class ValidateUtil {
            }    
         } catch (DateTimeParseException exception) {
             logger.info(exception.getMessage());
-            System.out.println(exception.getMessage());
             throw new EMSException
-            (EmployeeManagementConstant.DATE_EXCEPTION, 
-             EmployeeManagementConstant.ERROR_CODE109);
+            (Constant.DATE_EXCEPTION, 
+             Constant.ERROR_CODE109);
         }
        return isValid;
     }
@@ -69,11 +69,60 @@ public class ValidateUtil {
         } catch (DateTimeParseException exception) {
             logger.info(exception.getMessage());
             throw new EMSException
-            (EmployeeManagementConstant.DATE_EXCEPTION, 
-             EmployeeManagementConstant.ERROR_CODE109);
+            (Constant.DATE_EXCEPTION, 
+             Constant.ERROR_CODE109);
         }
         return isValid;
     }      
+
+    /**
+     * Used validate the given date of joining is valid or not.
+     * @param joiningdate from the user.
+     * @return is vaid return true else false.
+     */            
+    public boolean isValidStartDate(String startDate)
+                                        throws EMSException {
+        boolean isValid = false;
+    
+        try {
+            LocalDate startingDate = LocalDate.parse(startDate);
+            LocalDate currentDate = LocalDate.now();
+
+            if ((currentDate.compareTo(startingDate)) >= 0) {
+                isValid = true;
+            }
+        } catch (DateTimeParseException exception) {
+            logger.info(exception.getMessage());
+            throw new EMSException
+            (Constant.DATE_EXCEPTION, 
+             Constant.ERROR_CODE109);
+        }
+        return isValid;
+    }
+
+    /**
+     * Used validate the given date of joining is valid or not.
+     * @param joiningdate from the user.
+     * @return is vaid return true else false.
+     */            
+    public boolean isValidDate(LocalDate startDate,
+                     String date) throws EMSException {
+        boolean isValid = false;
+    
+        try {
+            LocalDate localDate = LocalDate.parse(date);
+
+            if ((startDate.compareTo(localDate)) < 0) {
+                isValid = true;
+            }
+        } catch (DateTimeParseException exception) {
+            logger.info(exception.getMessage());
+            throw new EMSException
+            (Constant.DATE_EXCEPTION, 
+             Constant.ERROR_CODE109);
+        }
+        return isValid;
+    }
 
     /**
      * Used to validate the given input is valid or not.

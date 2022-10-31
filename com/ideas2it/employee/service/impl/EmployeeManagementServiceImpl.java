@@ -1,12 +1,14 @@
 package com.ideas2it.employee.service.impl;
 
 import com.ideas2it.employee.exception.EMSException;
-import com.ideas2it.employee.dao.Dao;
-import com.ideas2it.employee.dao.impl.EmployeeDao;
+import com.ideas2it.employee.dao.EmployeeDao;
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.dto.ProjectDTO;
 import com.ideas2it.employee.mapper.EmployeeMapper;
 import com.ideas2it.employee.model.Employee;
 import com.ideas2it.employee.service.EmployeeManagementService;
+import com.ideas2it.employee.service.ProjectManagementService;
+import com.ideas2it.employee.service.impl.ProjectManagementServiceImpl;
 import com.ideas2it.employee.util.ValidateUtil;
 
 import java.time.LocalDate;
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
  * @author  Ananth K.
  */
 public class EmployeeManagementServiceImpl implements EmployeeManagementService {
-    Dao employeeDao = new EmployeeDao();
+    EmployeeDao employeeDao = new EmployeeDao();
     ValidateUtil util = new ValidateUtil();
     
     /**
@@ -38,9 +40,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public List<EmployeeDTO> displayEmployee()
+    public List<EmployeeDTO> getAllEmployee()
                                 throws EMSException {
-        List<Employee> employees = employeeDao.displayEmployee();
+        List<Employee> employees = employeeDao.getAllEmployee();
         List<EmployeeDTO> employeeDtos = new ArrayList();
 
         for (Employee employee : employees) {
@@ -118,9 +120,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      * {@inheritDoc}
      */
     @Override
-    public EmployeeDTO isEmployeeIDExists(int employeeId)
+    public EmployeeDTO employeeExists(int employeeId)
                                       throws EMSException {
-        List<EmployeeDTO> employeeDtos = displayEmployee();
+        List<EmployeeDTO> employeeDtos = getAllEmployee();
         EmployeeDTO employeeDto = employeeDtos.stream().filter(x -> x.getId() == (employeeId))
                                   .findFirst().orElse(null);;
         return employeeDto;
@@ -131,7 +133,7 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      */
     @Override
     public boolean isValidPhoneNumber(String phoneNumber) throws EMSException{
-        List<EmployeeDTO> employeeDtos = displayEmployee();
+        List<EmployeeDTO> employeeDtos = getAllEmployee();
         List<Long> duplicateList = employeeDtos.stream()
                                           .map(employeeDto -> Long.valueOf(employeeDto.getPhoneNumber()))
                                           .collect(Collectors.toList());
@@ -144,7 +146,7 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
      */
     @Override
     public boolean isValidEmail(String email) throws EMSException{
-        List<EmployeeDTO> employeeDtos = displayEmployee();
+        List<EmployeeDTO> employeeDtos = getAllEmployee();
         List<String> duplicateList = employeeDtos.stream()
                                           .map(employeeDto -> employeeDto.getEmail())
                                           .collect(Collectors.toList());

@@ -1,6 +1,6 @@
 package com.ideas2it.employee.util.connectionutil;
 
-import com.ideas2it.employee.constant.EmployeeManagementConstant;
+import com.ideas2it.employee.constant.Constant;
 import com.ideas2it.employee.exception.EMSException;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -42,9 +42,9 @@ public class ConnectionUtil {
                     .configure("configure.cfg.xml").buildSessionFactory();
             }
         } catch (HibernateException e) {
-             throw new EMSException(EmployeeManagementConstant.CONNECTION_EXCEPTION,
-                                   EmployeeManagementConstant.ERROR_CODE107);
+             throw new EMSException(Constant.CONNECTION_EXCEPTION,
+                                      Constant.ERROR_CODE107);
         }
-        return sessionFactory.getCurrentSession();
+        return sessionFactory.openSession();
     }
 }

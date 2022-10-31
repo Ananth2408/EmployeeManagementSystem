@@ -2,8 +2,10 @@ package com.ideas2it.employee.mapper;
 
 import com.ideas2it.employee.dto.AddressDTO;
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.dto.ProjectDTO;
 import com.ideas2it.employee.model.Address;
 import com.ideas2it.employee.model.Employee;
+import com.ideas2it.employee.model.Project;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class EmployeeMapper {
     public static EmployeeDTO toEmployeeDTO(Employee employee) {
         EmployeeDTO employeeDto = null;
         List<AddressDTO> addressDto = new ArrayList<AddressDTO>();
+        List<ProjectDTO> projectDto = new ArrayList<ProjectDTO>();
         
             if (null != employee) {
                 employeeDto = new EmployeeDTO();
@@ -47,6 +50,14 @@ public class EmployeeMapper {
                     }
                     employeeDto.setAddress(addressDto);
                }
+
+               if (null != employee.getProject()) {
+
+                    for (Project project: employee.getProject()) {
+                         projectDto.add(toProjectDTO(project));
+                    }
+                    employeeDto.setProject(projectDto);
+               }
         }
         return employeeDto;
     }
@@ -60,7 +71,7 @@ public class EmployeeMapper {
     public static Employee toEmployee(EmployeeDTO employeeDto) {
         Employee employee = new Employee();
         List<Address> address = new ArrayList<Address>();
-
+        List<Project> projects = new ArrayList<Project>();
         employee.setId(employeeDto.getId());
         employee.setFirstName(employeeDto.getFirstName());
         employee.setLastName(employeeDto.getLastName());
@@ -78,6 +89,14 @@ public class EmployeeMapper {
                 address.add(toAddress(addressDto));
             }
         employee.setAddress(address);
+        }
+
+        if (null != employeeDto.getProject()) {
+
+            for (ProjectDTO projectDto: employeeDto.getProject()) {
+                projects.add(toProject(projectDto));
+            }
+        employee.setProject(projects);
         }
         return employee;
     }
@@ -102,7 +121,7 @@ public class EmployeeMapper {
     }
 
     /**
-     * Coverts AddressDtodetails to Addressdetails
+     * Converts AddressDtodetails to Addressdetails
      *
      * @param AddressDto Details
      * @return Address details
@@ -118,5 +137,31 @@ public class EmployeeMapper {
         address.setPinCode(addressDto.getPinCode());
         address.setType(addressDto.getType());
         return address;
+    }
+
+    public static ProjectDTO toProjectDTO(Project project) {
+        ProjectDTO projectDto = new ProjectDTO();
+        projectDto.setId(project.getId());
+        projectDto.setProjectName(project.getProjectName());
+        projectDto.setTechnology(project.getTechnology());
+        projectDto.setClientName(project.getClientName());
+        projectDto.setClientMailId(project.getClientMailId());
+        projectDto.setStartDate(project.getStartDate());
+        projectDto.setDueDate(project.getDueDate());
+        projectDto.setEndDate(project.getEndDate());
+        return projectDto;
+    }
+
+    public static Project toProject(ProjectDTO projectDto) {
+        Project project = new Project();
+        project.setId(projectDto.getId());
+        project.setProjectName(projectDto.getProjectName());
+        project.setTechnology(projectDto.getTechnology());
+        project.setClientName(projectDto.getClientName());
+        project.setClientMailId(projectDto.getClientMailId());
+        project.setStartDate(projectDto.getStartDate());
+        project.setDueDate(projectDto.getDueDate());
+        project.setEndDate(projectDto.getEndDate());
+        return project;
     }
 }

@@ -1,6 +1,7 @@
 package com.ideas2it.employee.dto;
 
 import com.ideas2it.employee.dto.AddressDTO;
+import com.ideas2it.employee.dto.ProjectDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,13 +25,14 @@ public class EmployeeDTO {
     private String gender;
     private List<AddressDTO> address;
     private String role;
+    private List<ProjectDTO> project;
 
     public EmployeeDTO() {}
 
     public EmployeeDTO(int id, String firstName, String lastName,String role,
                        LocalDate dateOfBirth, long phoneNumber, 
                        LocalDate dateOfJoining,String email, float salary, 
-                       String gender, List<AddressDTO> address) {
+                       String gender, List<AddressDTO> address, List<ProjectDTO> Project) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,6 +44,7 @@ public class EmployeeDTO {
         this.salary = salary;
         this.gender = gender;
         this.address = address;
+        this.project = project;
     }
 
     public int getId() {
@@ -132,6 +135,14 @@ public class EmployeeDTO {
         this.address = address;
     }
 
+    public List<ProjectDTO> getProject() {
+        return project;
+    }
+
+    public void setProject(List<ProjectDTO> project) {
+        this.project = project;
+    }
+
     public String toString() {
         StringBuilder stringBuilderDetails = new StringBuilder();
         stringBuilderDetails.append("\n\n\nEmployeeDetails")
@@ -146,7 +157,7 @@ public class EmployeeDTO {
                             .append("\nEmail:").append(getEmail())
                             .append("\nSalary:").append(getSalary())
                             .append("\nGender:").append(getGender())
-                            .append(getAddress());
+                            .append(getAddress()).append(getProject());
         return stringBuilderDetails.toString();
     }
 }
