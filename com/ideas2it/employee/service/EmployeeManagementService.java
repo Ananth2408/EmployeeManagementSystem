@@ -1,6 +1,7 @@
 package com.ideas2it.employee.service;
 
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.dto.ProjectDTO;
 import com.ideas2it.employee.exception.EMSException;
 
 import java.time.LocalDate;
@@ -26,7 +27,7 @@ public interface EmployeeManagementService {
      * Display the all employee details from the saved dteails.
      * @return the employeeDeatil from the service class.
      */
-    public List<EmployeeDTO> displayEmployee()
+    public List<EmployeeDTO> getAllEmployee()
                                throws EMSException;
 
     /**
@@ -44,7 +45,7 @@ public interface EmployeeManagementService {
      * @param employee name from user.
      * @return if employee found returns employee else it returns null .
      */
-   public List<EmployeeDTO> searchEmployee(String name)
+    public List<EmployeeDTO> searchEmployee(String name)
                                       throws EMSException;
 
     /**
@@ -83,7 +84,7 @@ public interface EmployeeManagementService {
      * @param employee id from the user.
      * @return if employee id persents returns true else returns false.
      */
-    public EmployeeDTO isEmployeeIDExists(int employeeId)
+    public EmployeeDTO employeeExists(int employeeId)
                                       throws EMSException;
 
    /**

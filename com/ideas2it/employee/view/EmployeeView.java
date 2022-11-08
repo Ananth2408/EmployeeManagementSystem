@@ -1,9 +1,10 @@
 package com.ideas2it.employee.view;
 
-import com.ideas2it.employee.constant.EmployeeManagementConstant;
+import com.ideas2it.employee.constant.Constant;
 import com.ideas2it.employee.controller.EmployeeController;
 import com.ideas2it.employee.dto.AddressDTO;
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.dto.ProjectDTO;
 import com.ideas2it.employee.exception.EMSException;
 import com.ideas2it.employee.util.ValidateUtil;
 import org.apache.logging.log4j.Logger;
@@ -42,7 +43,7 @@ public class EmployeeView {
         do {
 
             try {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_MENU);
+                System.out.println(Constant.EMPLOYEE_MANAGEMENT_MENU);
                 operations = Integer.valueOf(scanner.nextLine());
 
                 switch (operations) {
@@ -71,11 +72,11 @@ public class EmployeeView {
                         break;
 
                     default:
-                        System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                        System.out.println(Constant.OPERATION_ERROR);
                 }
             } catch (NumberFormatException numberFormatError) {
-                logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                logger.error(Constant.OPERATION_ERROR);
+                System.out.println(Constant.OPERATION_ERROR);
             }
         } while (6 != operations);
     }
@@ -86,6 +87,8 @@ public class EmployeeView {
      */
     public void createEmployee() {
         EmployeeDTO employeeDto = new EmployeeDTO();
+        boolean isResponse;
+        List<ProjectDTO> projectDtos = new ArrayList();
 
         try {
             employeeDto.setFirstName(getFirstName());
@@ -98,6 +101,11 @@ public class EmployeeView {
             employeeDto.setGender(getGender());
             employeeDto.setSalary(getSalary());
             employeeDto.setAddress(getAddress());
+            isResponse = getResponse("project");
+
+            if (isResponse) {
+                employeeDto.setProject(getProject(projectDtos));
+            }
             int employeeId = employeeController.addEmployee(employeeDto);
             logger.info("Employee Details Created" + "ID=" + employeeId);
             System.out.println("Employee Details Added" + "ID=" + employeeId);
@@ -113,7 +121,7 @@ public class EmployeeView {
     public void displayEmployee() {
 
         try {
-            List<EmployeeDTO> employeeDtos = employeeController.displayEmployee();
+            List<EmployeeDTO> employeeDtos = employeeController.getAllEmployee();
 
             if (!employeeDtos.isEmpty()) {
 
@@ -121,7 +129,7 @@ public class EmployeeView {
                     System.out.println(employeeDto.toString());
                 }
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                System.out.println(Constant.INVALID_DATA);
             }
         } catch (EMSException e) {
             logger.error(e.getErrorCode() + " " + e.getMessage());
@@ -134,20 +142,20 @@ public class EmployeeView {
      * If it's not updated shows error.
      */
     public void updateEmployee() {
-        System.out.println(EmployeeManagementConstant.EMPLOYEE_ID);
+        System.out.println(Constant.EMPLOYEE_ID);
         int employeeId = getEmployeeID();
         int operations = 0;
         EmployeeDTO employeeDto = null;
         boolean isUpdated = false;
 
         try {
-            employeeDto = employeeController.isEmployeeIDExists(employeeId);
+            employeeDto = employeeController.employeeExists(employeeId);
 
             if (null != employeeDto ) {
 
                 do {
                     try {
-                        System.out.println(EmployeeManagementConstant.EMPLOYEE_UPDATE_MENU);
+                        System.out.println(Constant.EMPLOYEE_UPDATE_MENU);
                         operations = Integer.valueOf(scanner.nextLine());
 
                         switch (operations) {
@@ -192,15 +200,19 @@ public class EmployeeView {
                                 break;
 
                             case 11:
+                                employeeDto.setProject(getProject(employeeDto.getProject()));
+                                break;
+
+                            case 12:
                                 isUpdated = true;
                                 break;
 
                             default:
-                                System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                                System.out.println(Constant.OPERATION_ERROR);
                         }
                     } catch (NumberFormatException numberFormatError) {
-                        logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
-                        System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                        logger.error(Constant.OPERATION_ERROR);
+                        System.out.println(Constant.OPERATION_ERROR);
                     }
                 } while (!(isUpdated));
 
@@ -208,11 +220,11 @@ public class EmployeeView {
                     logger.info("Employee Details Updated" + employeeId);
                     System.out.println("Employee Details Updated" + employeeId);
                 } else {
-                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                    System.out.println(Constant.INVALID_DATA);
                 }
             } else {
-                logger.info(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
+                logger.info(Constant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
+                System.out.println(Constant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
             }
         } catch (EMSException e) {
             logger.error(e.getErrorCode() + " " + e.getMessage());
@@ -248,7 +260,7 @@ public class EmployeeView {
             do {
 
                 try {
-                    System.out.println(EmployeeManagementConstant.EMPLOYEE_ADDRESSUPDATE_MENU);
+                    System.out.println(Constant.EMPLOYEE_ADDRESSUPDATE_MENU);
                     operations = Integer.valueOf(scanner.nextLine());
 
                     switch (operations) {
@@ -277,11 +289,11 @@ public class EmployeeView {
                             break;
 
                         default:
-                            System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                            System.out.println(Constant.OPERATION_ERROR);
                         }
                     } catch (NumberFormatException numberFormatError) {
-                        logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
-                        System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                        logger.error(Constant.OPERATION_ERROR);
+                        System.out.println(Constant.OPERATION_ERROR);
                     }
             } while(!(isUpdated));
         } else {
@@ -297,7 +309,7 @@ public class EmployeeView {
      */
     public void searchEmployee() {
 
-        System.out.println(EmployeeManagementConstant.FIRST_NAME);
+        System.out.println(Constant.FIRST_NAME);
         String name = scanner.nextLine();
 
         try {
@@ -308,8 +320,8 @@ public class EmployeeView {
                     System.out.println(employeeDto.toString());
                 }
             } else {
-                logger.info(EmployeeManagementConstant.EMPLOYEE_NOT_FOUND + name);
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_NOT_FOUND + name);
+                logger.info(Constant.EMPLOYEE_NOT_FOUND + name);
+                System.out.println(Constant.EMPLOYEE_NOT_FOUND + name);
             }
         } catch (EMSException e) {
             logger.error(e.getErrorCode() + " " + e.getMessage());
@@ -322,18 +334,18 @@ public class EmployeeView {
      * If name not found it shows error.
      */
     public void deleteEmployee() {
-        System.out.println(EmployeeManagementConstant.EMPLOYEE_DELETE);
+        System.out.println(Constant.EMPLOYEE_DELETE);
         int employeeId = getEmployeeID();
 
         try {
 
-            if (null != employeeController.isEmployeeIDExists(employeeId)) {
+            if (null != employeeController.employeeExists(employeeId)) {
                 employeeController.deleteEmployee(employeeId);
                 logger.info("Employee" + employeeId + "has been deleted");
                 System.out.println("Employee" + employeeId + "has been deleted");
             } else {
-                logger.info(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
+                logger.info(Constant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
+                System.out.println(Constant.EMPLOYEE_ID_NOT_EXISTS + employeeId);
             }
         } catch (EMSException e) {
             logger.error(e.getErrorCode() + " " + e.getMessage());
@@ -352,10 +364,10 @@ public class EmployeeView {
         do{
             employeeId = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_EMPLOYEE_ID, employeeId)) {
+            if(employeeController.isValidData(Constant.VALID_ID, employeeId)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return Integer.valueOf(employeeId);
@@ -370,13 +382,13 @@ public class EmployeeView {
         String firstName;
 
         do{
-            System.out.println(EmployeeManagementConstant.FIRST_NAME);
+            System.out.println(Constant.FIRST_NAME);
             firstName = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_FIRST_NAME, firstName)) {
+            if(employeeController.isValidData(Constant.VALID_FIRST_NAME, firstName)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return firstName;
@@ -391,13 +403,13 @@ public class EmployeeView {
         String lastName;
 
         do{
-            System.out.println(EmployeeManagementConstant.LAST_NAME);
+            System.out.println(Constant.LAST_NAME);
             lastName = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_LAST_NAME, lastName)) {
+            if(employeeController.isValidData(Constant.VALID_LAST_NAME, lastName)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return lastName;
@@ -412,13 +424,13 @@ public class EmployeeView {
         String role;
 
         do{
-            System.out.println(EmployeeManagementConstant.ROLE);
+            System.out.println(Constant.ROLE);
             role = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_ROLE, role)) {
+            if(employeeController.isValidData(Constant.VALID_ROLE, role)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return role;
@@ -433,18 +445,18 @@ public class EmployeeView {
         String phoneNumber;
 
         do{
-            System.out.println(EmployeeManagementConstant.PHONENUMBER);
+            System.out.println(Constant.PHONENUMBER);
             phoneNumber = scanner.nextLine();
             
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_PHONE_NUMBER, phoneNumber)) {
+            if(employeeController.isValidData(Constant.VALID_PHONE_NUMBER, phoneNumber)) {
 
                 if(!(employeeController.isValidPhoneNumber(phoneNumber))) {
                     isValid = false;
                 } else {
-                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_DUPLICATE);
+                    System.out.println(Constant.DUPLICATE);
                 }
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                System.out.println(Constant.INVALID_DATA);
             }
         } while (isValid);
         return Long.parseLong(phoneNumber);
@@ -459,18 +471,18 @@ public class EmployeeView {
         String email;
 
         do{
-            System.out.println(EmployeeManagementConstant.EMAIL_ID);
+            System.out.println(Constant.EMAIL_ID);
             email = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_EMAIL, email)) {
+            if(employeeController.isValidData(Constant.VALID_EMAIL, email)) {
 
                 if(!(employeeController.isValidEmail(email))) {
                     isValid = false;
                 } else {
-                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_DUPLICATE);
+                    System.out.println(Constant.DUPLICATE);
                 }
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return email;
@@ -487,14 +499,14 @@ public class EmployeeView {
 
         do{
             try {
-                System.out.println(EmployeeManagementConstant.DATE_OF_BIRTH);
+                System.out.println(Constant.DATE_OF_BIRTH);
                 dateOfBirth = scanner.nextLine();
 
                 if(employeeController.isValidBirthDate(dateOfBirth)) {
                     localDate = LocalDate.parse(dateOfBirth);
                     isValid = false;
                 } else {
-                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                    System.out.println(Constant.INVALID_DATA);
                 }
             } catch (EMSException e) {
                 logger.error(e.getErrorCode() + " " + e.getMessage());
@@ -517,14 +529,14 @@ public class EmployeeView {
 
         do{
             try {
-                System.out.println(EmployeeManagementConstant.DATE_OF_JOINING);
+                System.out.println(Constant.DATE_OF_JOINING);
                 dateOfJoining = scanner.nextLine();
 
                 if(employeeController.isValidJoiningDate(dateOfBirth ,dateOfJoining)) {
                     localDate = LocalDate.parse(dateOfJoining); 
                     isValid = false;
                 } else {
-                    System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);
+                    System.out.println(Constant.INVALID_DATA);
                 }
             } catch (EMSException e) {
                 logger.error(e.getErrorCode() + " " + e.getMessage());
@@ -543,13 +555,13 @@ public class EmployeeView {
         String salary;
 
         do{
-            System.out.println(EmployeeManagementConstant.SALARY);
+            System.out.println(Constant.SALARY);
             salary = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_SALARY, salary)) {
+            if(employeeController.isValidData(Constant.VALID_SALARY, salary)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return Float.parseFloat(salary);
@@ -565,7 +577,7 @@ public class EmployeeView {
         int operations = 0;
         do{
             try {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_GENDER_MENU);
+                System.out.println(Constant.EMPLOYEE_GENDER_MENU);
                 operations = Integer.valueOf(scanner.nextLine());
             
                 switch (operations) {
@@ -585,11 +597,11 @@ public class EmployeeView {
                          break;
 
                      default:
-                         System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                         System.out.println(Constant.OPERATION_ERROR);
                  }
              } catch (NumberFormatException numberFormatError) {
-                logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                logger.error(Constant.OPERATION_ERROR);
+                System.out.println(Constant.OPERATION_ERROR);
             }
         } while (!(isValid));
         return gender;
@@ -604,13 +616,13 @@ public class EmployeeView {
         String doorNumber;
 
         do{
-            System.out.println(EmployeeManagementConstant.DOOR_NUMBER);
+            System.out.println(Constant.DOOR_NUMBER);
             doorNumber = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_DOOR_NUMBER, doorNumber)) {
+            if(employeeController.isValidData(Constant.VALID_DOOR_NUMBER, doorNumber)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return doorNumber;
@@ -625,13 +637,13 @@ public class EmployeeView {
         String street;
 
         do{
-            System.out.println(EmployeeManagementConstant.STREET_NAME);
+            System.out.println(Constant.STREET_NAME);
             street = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_STREET, street)) {
+            if(employeeController.isValidData(Constant.VALID_STREET, street)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return street;
@@ -646,13 +658,13 @@ public class EmployeeView {
         String city;
 
         do{
-            System.out.println(EmployeeManagementConstant.CITY_NAME);
+            System.out.println(Constant.CITY_NAME);
             city = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_CITY, city)) {
+            if(employeeController.isValidData(Constant.VALID_CITY, city)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return city;
@@ -667,13 +679,13 @@ public class EmployeeView {
         String state;
 
         do{
-            System.out.println(EmployeeManagementConstant.STATE);
+            System.out.println(Constant.STATE);
             state = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_STATE, state)) {
+            if(employeeController.isValidData(Constant.VALID_STATE, state)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return state;
@@ -688,13 +700,13 @@ public class EmployeeView {
         String pincode;
 
         do{
-            System.out.println(EmployeeManagementConstant.PINCODE);
+            System.out.println(Constant.PINCODE);
             pincode = scanner.nextLine();
 
-            if(employeeController.isValidData(EmployeeManagementConstant.VALID_PINCODE, pincode)) {
+            if(employeeController.isValidData(Constant.VALID_PINCODE, pincode)) {
                 isValid = false;
             } else {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR);   
+                System.out.println(Constant.INVALID_DATA);   
             }
         } while (isValid);
         return Integer.parseInt(pincode);
@@ -711,7 +723,7 @@ public class EmployeeView {
 
         do{
             try {
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_TYPE_MENU);
+                System.out.println(Constant.EMPLOYEE_TYPE_MENU);
                 operations = Integer.valueOf(scanner.nextLine());
             
                 switch (operations) {
@@ -726,11 +738,11 @@ public class EmployeeView {
                          break;
 
                      default:
-                         System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                         System.out.println(Constant.OPERATION_ERROR);
                  }
              } catch (NumberFormatException numberFormatError) {
-                logger.error(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
-                System.out.println(EmployeeManagementConstant.EMPLOYEE_OPERATION_ERROR);
+                logger.error(Constant.OPERATION_ERROR);
+                System.out.println(Constant.OPERATION_ERROR);
             }
         } while (!(isValid));
         return type;
@@ -748,31 +760,75 @@ public class EmployeeView {
             addressDto.setState(getState());
             addressDto.setPinCode(getPincode());
             addressDtos.add(addressDto);
-        } while (getResponse());
+        } while (getResponse("address"));
         return addressDtos;
     }
 
-     public boolean getResponse() {
-         boolean isCheck = false;
+    public List<ProjectDTO> getProject(List<ProjectDTO> projectList) {
+       ProjectDTO projectDto = null;
+       boolean isResponse;
+       List<ProjectDTO> projectDtos = projectList;
+
+       try {
+
+           do {
+               projectDto = employeeController.getProject(getProjectID());
+
+               if (null != projectDto) {
+                   projectDtos.add(projectDto);
+               } else {
+                   System.out.println(Constant.PROJECT_ID_NOT_EXISTS);
+               }
+               isResponse = getResponse("project");
+           }while(isResponse);
+       }catch (EMSException e) {
+            logger.error(e.getErrorCode() + " " + e.getMessage());
+            System.out.println(e.getErrorCode() + " " + e.getMessage());
+        }
+       return projectDtos;
+    }
+
+    /**
+     * Get the employee id of the employee from the user.
+     * @return if the given id is valid it returns the id else ask again.
+     */
+    public int getProjectID() {
+        boolean isValid = true;
+        String projectId;
+        System.out.println("enter project id");
+        do{
+            projectId = scanner.nextLine();
+
+            if(employeeController.isValidData(Constant.VALID_ID, projectId)) {
+                isValid = false;
+            } else {
+                System.out.println(Constant.INVALID_DATA);   
+            }
+        } while (isValid);
+        return Integer.valueOf(projectId);
+    }
+
+     public boolean getResponse(String attribute) {
+         boolean isResponse = false;
          boolean isValid;
-         System.out.println("You want to add address again press y for yes/ press n for no");
+         System.out.println("You want to add" + attribute + "press y for yes/ press n for no");
              do {
                 isValid = true;
   
                 switch (scanner.nextLine()) {
                     case "y":
-                        isCheck = true;
+                        isResponse = true;
                         break;
 
                     case "n":
-                        isCheck = false;
+                        isResponse = false;
                         break;
 
                     default:
                         isValid = false;
-                        System.out.println(EmployeeManagementConstant.EMPLOYEE_MANAGEMENT_ERROR); 
+                        System.out.println(Constant.INVALID_DATA); 
                  }
              } while (!isValid);
-         return isCheck;
+         return isResponse;
     } 
 }

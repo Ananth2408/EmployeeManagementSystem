@@ -1,42 +1,43 @@
 package com.ideas2it.employee.controller;
 
-import com.ideas2it.employee.dto.EmployeeDTO;
 import com.ideas2it.employee.dto.ProjectDTO;
+import com.ideas2it.employee.model.Project;
+import com.ideas2it.employee.dto.EmployeeDTO;
 import com.ideas2it.employee.exception.EMSException;
 import com.ideas2it.employee.service.EmployeeManagementService;
-import com.ideas2it.employee.service.ProjectManagementService;
 import com.ideas2it.employee.service.impl.EmployeeManagementServiceImpl;
+import com.ideas2it.employee.service.ProjectManagementService;
 import com.ideas2it.employee.service.impl.ProjectManagementServiceImpl;
-import com.ideas2it.employee.view.EmployeeView;
+import com.ideas2it.employee.view.ProjectView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This Application used to maintain the employee details.
+ * This Application used to maintain the project details.
  * Create, read, update and delete operations were done in this application.
  * @version  4.1 10-10-2022.
  * @author  Ananth K.
  */
-public class EmployeeController {
-    EmployeeManagementService employeeService = new EmployeeManagementServiceImpl();
+public class ProjectController {
+    ProjectManagementService projectService = new ProjectManagementServiceImpl();
 
     /**
-     * Get the value from user and create employee detail.
-     * @return the boolean value of added employee details.
-     * @param employeedto details.
+     * Get the value from user and create project detail.
+     * @return the boolean value of added project details.
+     * @param  projectdto details.
      */
-    public int addEmployee(EmployeeDTO employeeDto) throws EMSException {
-        return employeeService.addEmployee(employeeDto);
+    public int addProject(ProjectDTO projectDto) throws EMSException {
+        return projectService.addProject(projectDto);
     }
 
     /**
      * Display the all employee details from the saved details.
      * @return the employeeDeatil.
      */
-    public List<EmployeeDTO> getAllEmployee() throws EMSException {
-        return employeeService.getAllEmployee();
+    public List<ProjectDTO> getAllProject() throws EMSException {
+        return projectService.getAllProject();
     }
 
     /**
@@ -45,9 +46,9 @@ public class EmployeeController {
      * @param employeedto details.
      * @return the boolean value if updated returns true else false.
      */
-    public boolean updateEmployee(EmployeeDTO employeeDto)
-                                                     throws EMSException {
-        return employeeService.updateEmployee(employeeDto);
+    public boolean updateProject(ProjectDTO projectDto)
+                                              throws EMSException {
+        return projectService.updateProject(projectDto);
     }
 
     /**
@@ -56,20 +57,20 @@ public class EmployeeController {
      * @param employee name from user.
      * @return if employee found returns employeedetails else it returns null.
      */
-    public List<EmployeeDTO> searchEmployee(String name) 
+    public List<ProjectDTO> searchProject(String name) 
                                   throws EMSException {
-        return employeeService.searchEmployee(name);
+        return projectService.searchProject(name);
     }
 
-   /**
+    /**
      * Delete employee details by employee name,
      * if name found it deletes employee deatils else it doesn't.
      * @param employee name from user.
      * @return the boolean value if deletes return true else false.
      */
-    public void deleteEmployee(int employeeId)
+    public void deleteProject(int projectId)
                                   throws EMSException {
-        employeeService.deleteEmployee(employeeId);
+        projectService.deleteProject(projectId);
     }
 
     /**
@@ -79,7 +80,7 @@ public class EmployeeController {
      * @return if it is valid it returns true else returns false.
      */
     public boolean isValidData(String pattern, String field) {
-        return employeeService.isValidData(pattern, field);
+        return projectService.isValidData(pattern, field);
     }
 
     /**
@@ -87,8 +88,8 @@ public class EmployeeController {
      * @param date from the user.
      * @return if it is valid it returns true else false.
      */
-    public boolean isValidBirthDate(String birthDate) throws EMSException {
-        return employeeService.isValidBirthDate(birthDate);
+    public boolean isValidStartDate(String startDate) throws EMSException {
+        return projectService.isValidStartDate(startDate);
     }
 
     /**
@@ -96,9 +97,9 @@ public class EmployeeController {
      * @param date from the user.
      * @return if it is valid it returns true else false.
      */
-    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate)
+    public boolean isValidDate(LocalDate startDate, String date)
                                                            throws EMSException {
-        return employeeService.isValidJoiningDate(birthDate, joiningDate);
+        return projectService.isValidDate(startDate, date);
     }
 
     /**
@@ -106,37 +107,20 @@ public class EmployeeController {
      * @param employee id from the user.
      * @return if employee id persents returns true else returns false.
      */
-   public EmployeeDTO employeeExists(int employeeId)
+   public EmployeeDTO getEmployee(int employeeId)
                                     throws EMSException {
+        EmployeeManagementService employeeService = new EmployeeManagementServiceImpl();
         return employeeService.employeeExists(employeeId);
     }
 
+    
     /**
-     * Used to validate the given phone number is duplicate or not.
-     * @param phonenumber from the user.
-     * @return if valid returns true else false.
-     */
-    public boolean isValidPhoneNumber(String phoneNumber) throws EMSException{
-        return employeeService.isValidPhoneNumber(phoneNumber);
-    }
-
-    /**
-     * Used to validate the given email is duplicate or not.
-     * @param email from the user.
-     * @return if valid returns true else false.
-     */
-    public boolean isValidEmail(String email) throws EMSException{
-        return employeeService.isValidEmail(email);
-    }
-
-    /**
-     * Used to validate the given employee present in the dat or not.
+     * Used to validate the given employee present in the dat or not.O
      * @param employee id from the user.
      * @return if employee id persents returns true else returns false.
      */
-   public ProjectDTO getProject(int projectId)
+    public ProjectDTO projectExists(int projectId)
                                     throws EMSException {
-        ProjectManagementService projectService = new ProjectManagementServiceImpl();
         return projectService.projectExists(projectId);
     }
 }

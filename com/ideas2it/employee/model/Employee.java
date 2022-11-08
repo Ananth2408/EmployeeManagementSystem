@@ -1,6 +1,7 @@
 package com.ideas2it.employee.model;
 
 import com.ideas2it.employee.model.Address;
+import com.ideas2it.employee.model.Project;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,13 +25,14 @@ public class Employee {
     private String gender;
     private List<Address> address;
     private String role;
+    private List<Project> project;
 
     public Employee() {}
 
     public Employee(int id, String firstName, String lastName,String role,
                     LocalDate dateOfBirth, long phoneNumber, 
                     LocalDate dateOfJoining, String email, float salary,
-                    String gender, List<Address> address) {
+                    String gender, List<Address> address, List<Project> Project) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,6 +44,7 @@ public class Employee {
         this.salary = salary;
         this.gender = gender;
         this.address = address;
+        this.project = project;
     }
 
     public int getId() {
@@ -130,6 +133,14 @@ public class Employee {
 
     public void setAddress(List<Address> address) {
         this.address = address;
+    }
+
+    public List<Project> getProject() {
+        return project;
+    }
+
+    public void setProject(List<Project> project) {
+        this.project = project;
     }
 
     public String toString() {
