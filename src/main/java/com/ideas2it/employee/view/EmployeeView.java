@@ -10,12 +10,8 @@ import com.ideas2it.employee.util.ValidateUtil;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,7 +33,7 @@ public class EmployeeView {
      * This have main menu to operation to be done.
      * If we couldn't select correct operation it shows error.
      */
-    public void employeeOperation() { 
+    /*public void employeeOperation() { 
         int operations = 0;
 
         do {
@@ -79,13 +75,13 @@ public class EmployeeView {
                 System.out.println(Constant.OPERATION_ERROR);
             }
         } while (6 != operations);
-    }
+    }*/
     
     /**
      * create and add employee details.
      * Get the employee details from the user.
      */
-    public void createEmployee() {
+    /*public void createEmployee() {
         EmployeeDTO employeeDto = new EmployeeDTO();
         boolean isResponse;
         List<ProjectDTO> projectDtos = new ArrayList();
@@ -106,14 +102,14 @@ public class EmployeeView {
             if (isResponse) {
                 employeeDto.setProject(getProject(projectDtos));
             }
-            int employeeId = employeeController.addEmployee(employeeDto);
-            logger.info("Employee Details Created" + "ID=" + employeeId);
-            System.out.println("Employee Details Added" + "ID=" + employeeId);
+            Employee employee = employeeController.addEmployee(employeeDto);
+            logger.info("Employee Details Created" + "ID=" + employee.getId());
+            System.out.println("Employee Details Added" + "ID=" + employee.getId());
         } catch (EMSException e) {
             logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
-    }
+    }*/
 
     /**
      * Print all the saved employee details.
@@ -121,7 +117,7 @@ public class EmployeeView {
     public void displayEmployee() {
 
         try {
-            List<EmployeeDTO> employeeDtos = employeeController.getAllEmployee();
+            List<EmployeeDTO> employeeDtos = employeeController.getAllEmployees();
 
             if (!employeeDtos.isEmpty()) {
 
@@ -141,7 +137,7 @@ public class EmployeeView {
      * Update the employee details by the id get from the user.
      * If it's not updated shows error.
      */
-    public void updateEmployee() {
+    /*public void updateEmployee() {
         System.out.println(Constant.EMPLOYEE_ID);
         int employeeId = getEmployeeID();
         int operations = 0;
@@ -216,7 +212,7 @@ public class EmployeeView {
                     }
                 } while (!(isUpdated));
 
-                if (employeeController.updateEmployee(employeeDto)) {
+                if (employeeController.updateEmployee(employeeDto) != null) {
                     logger.info("Employee Details Updated" + employeeId);
                     System.out.println("Employee Details Updated" + employeeId);
                 } else {
@@ -230,7 +226,7 @@ public class EmployeeView {
             logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }  
-    }
+    }*/
 
     /**
      * Used to get the type of the adrees from the address
@@ -307,7 +303,7 @@ public class EmployeeView {
      * If name found it prints employee details
      * else it shows error.
      */
-    public void searchEmployee() {
+    /*public void searchEmployee() {
 
         System.out.println(Constant.FIRST_NAME);
         String name = scanner.nextLine();
@@ -327,7 +323,7 @@ public class EmployeeView {
             logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         } 
-    }
+    }*/
 
     /**
      * Get employee name from user and delete the employee details by that name.
@@ -522,7 +518,6 @@ public class EmployeeView {
      * it returns the birth and joining date else ask again.
      */
     public LocalDate getJoiningDate(LocalDate dateOfBirth) {
-        EmployeeDTO employeeDto = new EmployeeDTO();
         boolean isValid = true;
         String dateOfJoining;
         LocalDate localDate = null;
@@ -749,7 +744,7 @@ public class EmployeeView {
     }
 
     public List<AddressDTO> getAddress() {
-        List<AddressDTO> addressDtos= new ArrayList();
+        List<AddressDTO> addressDtos= new ArrayList<AddressDTO>();
         
         do {  
             AddressDTO addressDto = new AddressDTO();
@@ -764,7 +759,7 @@ public class EmployeeView {
         return addressDtos;
     }
 
-    public List<ProjectDTO> getProject(List<ProjectDTO> projectList) {
+    /*public List<ProjectDTO> getProject(List<ProjectDTO> projectList) {
        ProjectDTO projectDto = null;
        boolean isResponse;
        List<ProjectDTO> projectDtos = projectList;
@@ -786,7 +781,7 @@ public class EmployeeView {
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
        return projectDtos;
-    }
+    }*/
 
     /**
      * Get the employee id of the employee from the user.

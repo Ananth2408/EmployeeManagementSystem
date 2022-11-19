@@ -1,8 +1,6 @@
 package com.ideas2it.employee.util;
 
 import com.ideas2it.employee.constant.Constant;
-import com.ideas2it.employee.dto.EmployeeDTO;
-import com.ideas2it.employee.dto.ProjectDTO;
 import com.ideas2it.employee.exception.EMSException;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import java.time.format.DateTimeParseException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**

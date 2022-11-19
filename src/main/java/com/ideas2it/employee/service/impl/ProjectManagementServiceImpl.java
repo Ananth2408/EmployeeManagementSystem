@@ -1,22 +1,23 @@
 package com.ideas2it.employee.service.impl;
 
 import com.ideas2it.employee.exception.EMSException;
+import com.ideas2it.employee.constant.Constant;
 import com.ideas2it.employee.dao.ProjectDao;
 import com.ideas2it.employee.dto.ProjectDTO;
-import com.ideas2it.employee.dto.EmployeeDTO;
-import com.ideas2it.employee.mapper.EmployeeMapper;
 import com.ideas2it.employee.mapper.ProjectMapper;
-import com.ideas2it.employee.model.Project;
 import com.ideas2it.employee.model.Employee;
+import com.ideas2it.employee.model.Project;
 import com.ideas2it.employee.service.EmployeeManagementService;
 import com.ideas2it.employee.service.ProjectManagementService;
-import com.ideas2it.employee.service.impl.EmployeeManagementServiceImpl;
 import com.ideas2it.employee.util.ValidateUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * This Application used to maintain the project details.
@@ -24,65 +25,75 @@ import java.util.stream.Collectors;
  * @version  4.1 10-10-2022.
  * @author  Ananth K.
  */
+@Component("projectService")
+@Configuration
 public class ProjectManagementServiceImpl implements ProjectManagementService {
-    ProjectDao projectDao = new ProjectDao();
-    ValidateUtil util = new ValidateUtil();
+    
+	@Autowired
+    ProjectDao projectDao;
+	@Autowired
+	ApplicationContext context;
+
+	ValidateUtil util = new ValidateUtil();
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public int addProject(ProjectDTO projectDto)
+    public ProjectDTO addProject(ProjectDTO projectDto)
                                throws EMSException {
         Project project = ProjectMapper.toProject(projectDto);
-        return projectDao.addProject(project);
+        ProjectDTO projectDTO = ProjectMapper.toProjectDto(projectDao.save(project));
+        return projectDTO;
     }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ProjectDTO> getAllProjects() throws EMSException {
+		List<Project> projects = projectDao.findAll();
+		List<ProjectDTO> projectDtos = new ArrayList<ProjectDTO>();
+
+		if (projects != null) {
+			for (Project project : projects) {
+				projectDtos.add(ProjectMapper.toProjectDto(project));
+			}
+		} else {
+			throw new EMSException(Constant.PROJECT_NOT_FOUND , Constant.ERROR_CODE104);
+		}
+		return projectDtos;
+	}
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<ProjectDTO> getAllProject()
-                                throws EMSException {
-        List<Project> projects = projectDao.getAllProject();
-        List<ProjectDTO> projectDtos = new ArrayList();
-
-        for (Project project : projects) {
-            projectDtos.add(ProjectMapper.toProjectDto(project));
-        }
-        return projectDtos;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean updateProject(ProjectDTO projectDto)
+    public ProjectDTO updateProject(ProjectDTO projectDto)
                                   throws EMSException {
-        boolean isUpdated = false;
         Project project = ProjectMapper.toProject(projectDto);
-
-        if (null != (projectDao.updateProject(project))) {
-            isUpdated = true;
-        }
-        return isUpdated; 
+        ProjectDTO projectDTO = ProjectMapper.toProjectDto(projectDao.save(project));
+        return projectDTO; 
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ProjectDTO> searchProject(String name) 
-                                      throws EMSException{
-        List<Project> projects = projectDao.searchProject(name);
-        List<ProjectDTO> projectDtos = new ArrayList();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ProjectDTO> searchProject(String name) throws EMSException {
+		List<Project> projects = projectDao.findByName(name);
+		List<ProjectDTO> projectDtos = new ArrayList<ProjectDTO>();
 
-        for (Project project : projects) {
-            
-            projectDtos.add(ProjectMapper.toProjectDto(project));
-        }
-        return projectDtos;
-    }
+		if (projects != null) {
+			for (Project project : projects) {
+
+				projectDtos.add(ProjectMapper.toProjectDto(project));
+			}
+		} else {
+			throw new EMSException(Constant.PROJECT_NOT_FOUND , Constant.ERROR_CODE104);
+		}
+		return projectDtos;
+	}
 
     /**
      * {@inheritDoc}
@@ -90,8 +101,25 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
     @Override
     public void deleteProject(int projectId)
                                   throws EMSException {
-        projectDao.deleteProject(projectId);
+        projectDao.deleteById(projectId);
     }
+    
+	@Override
+	public ProjectDTO assignEmployee(int employeeId, int projectId) throws EMSException {
+
+		EmployeeManagementService service = (EmployeeManagementServiceImpl) context.getBean("employeeService");
+		Employee employee = ProjectMapper.toEmployee(service.employeeExists(employeeId));
+		Project project = ProjectMapper.toProject(projectExists(projectId));
+		ProjectDTO projectDto = null;
+
+		if (employee != null & project != null) {
+			project.getEmployee().add(employee);
+			projectDto = ProjectMapper.toProjectDto(projectDao.save(project));
+		} else {
+			throw new EMSException(Constant.DETALILS_NOTEXIST , Constant.ERROR_CODE103);
+		}
+		return projectDto;
+	}
 
     /**
      * {@inheritDoc}
@@ -124,7 +152,7 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
     @Override
     public ProjectDTO projectExists(int projectId)
                                       throws EMSException {
-        List<ProjectDTO> projectDtos = getAllProject();
+        List<ProjectDTO> projectDtos = getAllProjects();
         ProjectDTO projectDto = projectDtos.stream().filter(x -> x.getId() == (projectId))
                           .findFirst().orElse(null);
         return projectDto;

@@ -1,3 +1,5 @@
 *.class
 **/logs
 **/target
+**/test
+**/resorces

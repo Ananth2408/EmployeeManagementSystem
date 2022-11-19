@@ -1,77 +1,113 @@
 package com.ideas2it.employee.controller;
 
 import com.ideas2it.employee.dto.EmployeeDTO;
-import com.ideas2it.employee.dto.ProjectDTO;
 import com.ideas2it.employee.exception.EMSException;
 import com.ideas2it.employee.service.EmployeeManagementService;
-import com.ideas2it.employee.service.ProjectManagementService;
-import com.ideas2it.employee.service.impl.EmployeeManagementServiceImpl;
-import com.ideas2it.employee.service.impl.ProjectManagementServiceImpl;
-import com.ideas2it.employee.view.EmployeeView;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 /**
- * This Application used to maintain the employee details.
- * Create, read, update and delete operations were done in this application.
- * @version  4.1 10-10-2022.
- * @author  Ananth K.
+ * This Application used to maintain the employee details. Create, read, update
+ * and delete operations were done in this application.
+ * 
+ * @version 4.1 10-10-2022.
+ * @author Ananth K.
  */
+@RestController
+@RequestMapping("/api.com.ideas2it/employee-management-system/v1.0/employee")
 public class EmployeeController {
-    EmployeeManagementService employeeService = new EmployeeManagementServiceImpl();
+	@Autowired
+	EmployeeManagementService employeeService;
 
-    /**
-     * Get the value from user and create employee detail.
-     * @return the boolean value of added employee details.
-     * @param employeedto details.
-     */
-    public int addEmployee(EmployeeDTO employeeDto) throws EMSException {
-        return employeeService.addEmployee(employeeDto);
-    }
+	/**
+	 * Get the value from user and create employee detail.
+	 * 
+	 * @return the boolean value of added employee details.
+	 * @param employeedto details.
+	 */
+	@PostMapping
+	public EmployeeDTO addEmployee(@RequestBody EmployeeDTO employeeDto)
+			throws EMSException {
+		return employeeService.addEmployee(employeeDto);
+	}
 
-    /**
-     * Display the all employee details from the saved details.
-     * @return the employeeDeatil.
-     */
-    public List<EmployeeDTO> getAllEmployee() throws EMSException {
-        return employeeService.getAllEmployee();
-    }
+	/**
+	 * Display the all employee details from the saved details.
+	 * 
+	 * @return the employeeDeatil.
+	 */
+	@GetMapping
+	public List<EmployeeDTO> getAllEmployees() throws EMSException {
+		return employeeService.getAllEmployees();
+	}
 
-    /**
-     * Update employee details by employee name,
-     * If name found it update employee details else it doesn't.
-     * @param employeedto details.
-     * @return the boolean value if updated returns true else false.
-     */
-    public boolean updateEmployee(EmployeeDTO employeeDto)
-                                                     throws EMSException {
-        return employeeService.updateEmployee(employeeDto);
-    }
+	/**
+	 * Update employee details by employee name, If name found it update 
+	 * employee details else it doesn't.
+	 * 
+	 * @param employeedto details.
+	 * @return the boolean value if updated returns true else false.
+	 */
+	@PatchMapping
+	public EmployeeDTO updateEmployee(@RequestBody EmployeeDTO employeeDto)
+			throws EMSException {
+		return employeeService.updateEmployee(employeeDto);
+	}
 
-    /**
-     * Search employee details by employee name,
-     * If name found it update employee details else it doesn't.
-     * @param employee name from user.
-     * @return if employee found returns employeedetails else it returns null.
-     */
-    public List<EmployeeDTO> searchEmployee(String name) 
-                                  throws EMSException {
-        return employeeService.searchEmployee(name);
-    }
+	/**
+	 * Search employee details by employee name, If name found it update 
+	 * employee details else it doesn't.
+	 * 
+	 * @param employee name from user.
+	 * @return
+	 */
+	@GetMapping("/searchemployee")
+	public List<EmployeeDTO> searchEmployee( String name)
+			throws EMSException {
+		return employeeService.searchEmployee(name);
+	}
 
-   /**
-     * Delete employee details by employee name,
-     * if name found it deletes employee deatils else it doesn't.
-     * @param employee name from user.
-     * @return the boolean value if deletes return true else false.
-     */
-    public void deleteEmployee(int employeeId)
-                                  throws EMSException {
-        employeeService.deleteEmployee(employeeId);
-    }
+	/**
+	 * Delete employee details by employee id, if name found it deletes employee
+	 * deatils else it doesn't.
+	 * 
+	 * @param employee id from user.
+	 * @return the message.
+	 */
+	@DeleteMapping
+	public ResponseEntity<String> deleteEmployee(int employeeId) 
+			throws EMSException {
+		employeeService.deleteEmployee(employeeId);
+		return new ResponseEntity<>
+		("Employee details deleted successfully", HttpStatus.OK);
+	}
 
+	/**
+	 * This is used to assigning project to the employee.
+	 * 
+	 * @param employeeId
+	 * @param projectId
+	 * @return Employee Details.
+	 * @throws EMSException
+	 */
+	@PatchMapping("/assignproject")
+	public EmployeeDTO assignProject(int employeeId, int projectId) throws EMSException {
+		EmployeeDTO employeeDto = null;
+		employeeDto = employeeService.assignProject(employeeId, projectId);
+		return employeeDto;
+	}
+    
     /**
      * Used to validate the given input is valid or not.
      * @param pattern is regex pattern.
@@ -134,9 +170,9 @@ public class EmployeeController {
      * @param employee id from the user.
      * @return if employee id persents returns true else returns false.
      */
-   public ProjectDTO getProject(int projectId)
+   /*public ProjectDTO getProject(int projectId)
                                     throws EMSException {
         ProjectManagementService projectService = new ProjectManagementServiceImpl();
         return projectService.projectExists(projectId);
-    }
+    }*/
 }

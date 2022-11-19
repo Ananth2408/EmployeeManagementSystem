@@ -9,10 +9,7 @@ import com.ideas2it.employee.util.ValidateUtil;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,7 +31,7 @@ public class ProjectView {
      * This have main menu to operation to be done.
      * If we couldn't select correct operation it shows error.
      */
-    public void projectOperation() { 
+    /*public void projectOperation() { 
         int operations = 0;
 
         do {
@@ -82,7 +79,7 @@ public class ProjectView {
      * create and add project details.
      * Get the project details from the user.
      */
-    public void createProject() {
+    /*public void createProject() {
         ProjectDTO projectDto = new ProjectDTO();
         boolean isResponse; 
         List<EmployeeDTO> employeeDtos = new ArrayList();
@@ -100,14 +97,14 @@ public class ProjectView {
             if (isResponse) {
                 projectDto.setEmployee(getEmployee(employeeDtos));
             }
-            int projectId = projectController.addProject(projectDto);
+            Project projectId = projectController.addProject(projectDto);
             logger.info("Project Details Created " + "ID= " + projectId);
             System.out.println("Project Details Added " + "ID= " + projectId);
         } catch (EMSException e) {
             logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
-    }
+    }*/
 
     /**
      * Print all the saved project details.
@@ -115,7 +112,7 @@ public class ProjectView {
     public void displayProject() {
 
         try {
-            List<ProjectDTO> projectDtos = projectController.getAllProject();
+            List<ProjectDTO> projectDtos = projectController.getAllProjects();
 
             if (!projectDtos.isEmpty()) {
 
@@ -135,7 +132,7 @@ public class ProjectView {
      * Update the Project details by the id get from the user.
      * If it's not updated shows error.
      */
-    public void updateProject() {
+   /* public void updateProject() {
         System.out.println(Constant.PROJECT_ID);
         int operations = 0;
         int projectId = getProjectID();
@@ -199,7 +196,7 @@ public class ProjectView {
                     }
                 } while (!(isUpdated));
 
-                if (projectController.updateProject(projectDto)) {
+                if (projectController.updateProject(projectDto) != null) {
                     logger.info("Employee Details Updated" + projectId);
                     System.out.println("Employee Details Updated" + projectId);
                 } else {
@@ -220,7 +217,7 @@ public class ProjectView {
      * If name found it prints project details
      * else it shows error.
      */
-    public void searchProject() {
+    /*public void searchProject() {
 
         System.out.println(Constant.PROJECT_NAME);
         String name = scanner.nextLine();
@@ -241,7 +238,7 @@ public class ProjectView {
             logger.error(e.getErrorCode() + " " + e.getMessage());
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         } 
-    }
+    }*/
 
     /**
      * Get project name from user and delete the project details by that name.
@@ -313,7 +310,6 @@ public class ProjectView {
      * @return if the given name is valid it returns the name else ask again.
      */
     public String getTechnology() {
-        boolean isValid = true;
         System.out.println(Constant.TECHNOLOGY);
         String technology = scanner.nextLine();
         return technology;
@@ -455,7 +451,7 @@ public class ProjectView {
      * @param employee list from the database.
      * @return employeelist.
      */
-    public List<EmployeeDTO> getEmployee(List<EmployeeDTO> employeeList) {
+    /*public List<EmployeeDTO> getEmployee(List<EmployeeDTO> employeeList) {
        EmployeeDTO employeeDto = null;
        boolean isResponse;
        List<EmployeeDTO> employees = employeeList;
@@ -476,7 +472,7 @@ public class ProjectView {
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
        return employees;
-    }
+    }*/
 
     /**
      * Get the employee id of the employee from the user.

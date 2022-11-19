@@ -1,18 +1,28 @@
 package com.ideas2it.employee.model;
 
-import com.ideas2it.employee.model.Employee;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 /**
- * Get Project details from the user.
+ * Get Project details from the user. 
  * Uses getter setter to get input from user.
+ * 
  * @version 4.1 10-10-2022.
- * @author  Ananth K.
+ * @author Ananth K.
  */
+@Entity
+@Table
 public class Project {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String projectName;
     private String technology;
@@ -21,6 +31,9 @@ public class Project {
     private LocalDate startDate;
     private LocalDate dueDate;
     private LocalDate endDate;
+
+	@ManyToMany
+	@JoinTable(name = "Employee_project")
     private List<Employee> employee;
 
     public Project() {}
@@ -97,11 +110,11 @@ public class Project {
     }
 
     public LocalDate getEndDate() {
-        return dueDate;
+        return endDate;
     }
 
     public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    	this.endDate = endDate;
     }
 
     public List<Employee> getEmployee() {
@@ -111,19 +124,4 @@ public class Project {
     public void setEmployee(List<Employee> employee) {
         this.employee = employee;
     }
-
-    public String toString() {
-        StringBuilder stringBuilderProject = new StringBuilder();
-        stringBuilderProject.append("\nProjectId: ").append(getId())
-                            .append("\nProjectName: ").append(getProjectName())
-                            .append("\nTechnology: ").append(getTechnology())
-                            .append("\nClientName: ").append(getClientName())
-                            .append("\nClientMailId: ").append(getClientMailId())
-                            .append("\nStartDate: ").append(getStartDate())
-                            .append("\nDueDate: ").append(getDueDate())
-                            .append("\nEndDate: ").append(getEndDate())
-                            .append(getEmployee());
-        return stringBuilderProject.toString();
-    }
 }
- 

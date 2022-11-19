@@ -92,4 +92,5 @@ public class Constant {
     public static final String PROJECT_ID_NOT_EXISTS = "Project ID Doesn't Exists ";
     public static final String PROJECT_NOT_FOUND = "Project Not Found :";
     public static final String PROJECT_DELETE = "Enter The ProjectId To Delete";
+    public static final String DETALILS_NOTEXIST = "Employee or Project details are not found";
 }    

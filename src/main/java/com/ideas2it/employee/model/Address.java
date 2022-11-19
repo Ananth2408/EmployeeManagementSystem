@@ -1,18 +1,36 @@
 package com.ideas2it.employee.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Get Employeeaddress from the user.
  * Uses getter setter to get input from user.
  * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
+@Entity
+@Table
 public class Address {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Address_id")
     private int id;
+	@Column(name = "Door_Number")
     private String doorNumber;
+	@Column(name = "Street")
     private String street;
+	@Column(name = "City")
     private String city;
+	@Column(name = "State")
     private String state;
+	@Column(name = "Pincode")
     private int pinCode;
+	@Column(name = "Type")
     private String type;
 
     public Address() {}
@@ -84,7 +102,7 @@ public class Address {
         this.type = type;
     }
 
-    public String toString() {
+    /*public String toString() {
         StringBuilder stringBuilderAddress = new StringBuilder();
         stringBuilderAddress.append("\nDoorNumber: ").append(getDoorNumber())
                             .append("\nStreet: ").append(getStreet())
@@ -93,5 +111,5 @@ public class Address {
                             .append("\nPincode: ").append(getPinCode())
                             .append("\nAddressType: ").append(getType());
         return stringBuilderAddress.toString();
-    }
+    }*/
 }

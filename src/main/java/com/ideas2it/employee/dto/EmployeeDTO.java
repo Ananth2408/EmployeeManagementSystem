@@ -1,10 +1,6 @@
 package com.ideas2it.employee.dto;
 
-import com.ideas2it.employee.dto.AddressDTO;
-import com.ideas2it.employee.dto.ProjectDTO;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +28,7 @@ public class EmployeeDTO {
     public EmployeeDTO(int id, String firstName, String lastName,String role,
                        LocalDate dateOfBirth, long phoneNumber, 
                        LocalDate dateOfJoining,String email, float salary, 
-                       String gender, List<AddressDTO> address, List<ProjectDTO> Project) {
+                       String gender, List<AddressDTO> address, List<ProjectDTO> project) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -143,7 +139,7 @@ public class EmployeeDTO {
         this.project = project;
     }
 
-    public String toString() {
+    /*public String toString() {
         StringBuilder stringBuilderDetails = new StringBuilder();
         stringBuilderDetails.append("\n\n\nEmployeeDetails")
                             .append("\nEmployeeId:").append(getId())
@@ -159,5 +155,5 @@ public class EmployeeDTO {
                             .append("\nGender:").append(getGender())
                             .append(getAddress()).append(getProject());
         return stringBuilderDetails.toString();
-    }
+    }*/
 }

@@ -1,10 +1,9 @@
 package com.ideas2it.employee.dto;
 
-import com.ideas2it.employee.dto.EmployeeDTO;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 /**
  * Get Project details from the user.
@@ -12,6 +11,7 @@ import java.util.List;
  * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
+@Component
 public class ProjectDTO {
     private int id;
     private String projectName;
@@ -21,14 +21,14 @@ public class ProjectDTO {
     private LocalDate startDate;
     private LocalDate dueDate;
     private LocalDate endDate;
-    private List<EmployeeDTO> employeeDto;
+    private List<EmployeeDTO> employee;
 
     public ProjectDTO() {}
 
     public ProjectDTO(int id, String projectName, String technology,
                    String clientName, String clientMailId,
                    LocalDate startDate, LocalDate dueDate,
-                   LocalDate endDate, List<EmployeeDTO> employeeDto) {
+                   LocalDate endDate, List<EmployeeDTO> employee) {
         this.id = id;
         this.projectName = projectName;
         this.technology = technology;
@@ -36,8 +36,7 @@ public class ProjectDTO {
         this.clientMailId = clientMailId;
         this.startDate = startDate;
         this.dueDate = dueDate;
-        this.endDate = endDate;
-        this.employeeDto = employeeDto;
+        this.employee = employee;
     }
 
     public int getId() {
@@ -97,22 +96,22 @@ public class ProjectDTO {
     }
 
     public LocalDate getEndDate() {
-        return dueDate;
+        return endDate;
     }
 
     public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    	this.endDate = endDate;
     }
 
     public List<EmployeeDTO> getEmployee() {
-        return employeeDto;
+        return employee;
     }
 
-    public void setEmployee(List<EmployeeDTO> employeeDto) {
-        this.employeeDto = employeeDto;
+    public void setEmployee(List<EmployeeDTO> employee) {
+        this.employee = employee;
     }
 
-    public String toString() {
+    /*public String toString() {
         StringBuilder stringBuilderProject = new StringBuilder();
         stringBuilderProject.append("\nProjectId: ").append(getId())
                             .append("\nProjectName: ").append(getProjectName())
@@ -124,5 +123,5 @@ public class ProjectDTO {
                             .append("\nEndDate: ").append(getEndDate())
                             .append(getEmployee());
         return stringBuilderProject.toString();
-    }
+    }*/
 }

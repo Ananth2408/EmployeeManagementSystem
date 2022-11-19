@@ -84,7 +84,7 @@ public class AddressDTO {
         this.type = type;
     }
 
-    public String toString() {
+    /*public String toString() {
         StringBuilder stringBuilderAddress = new StringBuilder();
         stringBuilderAddress.append("\nEmployee Address")
                             .append("\nDoorNumber: ").append(getDoorNumber())
@@ -94,5 +94,5 @@ public class AddressDTO {
                             .append("\nPincode: ").append(getPinCode())
                             .append("\nAddressType: ").append(getType());
         return stringBuilderAddress.toString();
-    }
+    }*/
 }
