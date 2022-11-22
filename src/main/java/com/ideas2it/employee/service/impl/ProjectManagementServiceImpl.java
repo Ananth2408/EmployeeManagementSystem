@@ -9,14 +9,14 @@ import com.ideas2it.employee.model.Employee;
 import com.ideas2it.employee.model.Project;
 import com.ideas2it.employee.service.EmployeeManagementService;
 import com.ideas2it.employee.service.ProjectManagementService;
-import com.ideas2it.employee.util.ValidateUtil;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,24 +26,23 @@ import org.springframework.stereotype.Component;
  * @author  Ananth K.
  */
 @Component("projectService")
-@Configuration
 public class ProjectManagementServiceImpl implements ProjectManagementService {
     
 	@Autowired
-    ProjectDao projectDao;
+    private ProjectDao projectDao;
 	@Autowired
-	ApplicationContext context;
-
-	ValidateUtil util = new ValidateUtil();
+	private ApplicationContext context;
+	
+	private Logger logger = LogManager.getLogger(ProjectManagementServiceImpl.class);
     
     /**
      * {@inheritDoc}
      */
     @Override
-    public ProjectDTO addProject(ProjectDTO projectDto)
-                               throws EMSException {
+    public ProjectDTO addProject(ProjectDTO projectDto) {
         Project project = ProjectMapper.toProject(projectDto);
         ProjectDTO projectDTO = ProjectMapper.toProjectDto(projectDao.save(project));
+        logger.info("Project created succuessfully ProjectID =" + projectDto.getId());
         return projectDTO;
     }
 
@@ -51,72 +50,75 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<ProjectDTO> getAllProjects() throws EMSException {
+	public List<ProjectDTO> getAllProjects() {
 		List<Project> projects = projectDao.findAll();
 		List<ProjectDTO> projectDtos = new ArrayList<ProjectDTO>();
 
-		if (projects != null) {
-			for (Project project : projects) {
-				projectDtos.add(ProjectMapper.toProjectDto(project));
-			}
-		} else {
-			throw new EMSException(Constant.PROJECT_NOT_FOUND , Constant.ERROR_CODE104);
+		for (Project project : projects) {
+			projectDtos.add(ProjectMapper.toProjectDto(project));
 		}
 		return projectDtos;
 	}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ProjectDTO updateProject(ProjectDTO projectDto)
-                                  throws EMSException {
-        Project project = ProjectMapper.toProject(projectDto);
-        ProjectDTO projectDTO = ProjectMapper.toProjectDto(projectDao.save(project));
-        return projectDTO; 
-    }
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<ProjectDTO> searchProject(String name) throws EMSException {
+	public ProjectDTO updateProject(ProjectDTO projectDto) {
+		Project project = ProjectMapper.toProject(projectDto);
+		ProjectDTO projectDTO = ProjectMapper.toProjectDto(projectDao.save(project));
+		return projectDTO;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ProjectDTO> searchProject(String name) {
 		List<Project> projects = projectDao.findByName(name);
 		List<ProjectDTO> projectDtos = new ArrayList<ProjectDTO>();
 
-		if (projects != null) {
+		if (!projects.isEmpty()) {
 			for (Project project : projects) {
 
 				projectDtos.add(ProjectMapper.toProjectDto(project));
 			}
 		} else {
-			throw new EMSException(Constant.PROJECT_NOT_FOUND , Constant.ERROR_CODE104);
+			logger.error(Constant.PROJECT_NOT_FOUND);
+			throw new EMSException(Constant.PROJECT_NOT_FOUND, Constant.ERROR_CODE104);
 		}
 		return projectDtos;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void deleteProject(int projectId)
-                                  throws EMSException {
-        projectDao.deleteById(projectId);
-    }
-    
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public ProjectDTO assignEmployee(int employeeId, int projectId) throws EMSException {
+	public void deleteProject(int projectId) {
+		projectDao.deleteById(projectId);
+		logger.info("Project deleted successfully ProjectID =" + projectId);
+	}
 
-		EmployeeManagementService service = (EmployeeManagementServiceImpl) context.getBean("employeeService");
+	@Override
+	public ProjectDTO assignEmployee(int employeeId, int projectId) {
+
+		EmployeeManagementService service = (EmployeeManagementServiceImpl) 
+				context.getBean("employeeService");
 		Employee employee = ProjectMapper.toEmployee(service.employeeExists(employeeId));
 		Project project = ProjectMapper.toProject(projectExists(projectId));
 		ProjectDTO projectDto = null;
 
-		if (employee != null & project != null) {
-			project.getEmployee().add(employee);
-			projectDto = ProjectMapper.toProjectDto(projectDao.save(project));
-		} else {
-			throw new EMSException(Constant.DETALILS_NOTEXIST , Constant.ERROR_CODE103);
+		try {
+			if (employee != null & project != null) {
+				project.getEmployee().add(employee);
+				projectDto = ProjectMapper.toProjectDto(projectDao.save(project));
+			} else {
+				logger.info(Constant.DETALILS_NOTEXIST);
+				throw new EMSException(Constant.DETALILS_NOTEXIST, Constant.ERROR_CODE103);
+			}
+		} catch (ConstraintViolationException e) {
+			logger.error(e.getMessage());
+			throw new EMSException(Constant.UPDATION_EXCEPTION, Constant.ERROR_CODE105);
 		}
 		return projectDto;
 	}
@@ -125,33 +127,7 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
      * {@inheritDoc}
      */
     @Override
-    public boolean isValidData(String pattern, String field) {
-        return util.isValidData(pattern, field);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidStartDate(String startDate) throws EMSException{
-        return util.isValidStartDate(startDate);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidDate(LocalDate startDate, String date)
-                                      throws EMSException {
-        return util.isValidDate(startDate, date);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ProjectDTO projectExists(int projectId)
-                                      throws EMSException {
+    public ProjectDTO projectExists(int projectId) {
         List<ProjectDTO> projectDtos = getAllProjects();
         ProjectDTO projectDto = projectDtos.stream().filter(x -> x.getId() == (projectId))
                           .findFirst().orElse(null);

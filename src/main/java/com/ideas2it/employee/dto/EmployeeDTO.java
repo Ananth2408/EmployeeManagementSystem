@@ -138,22 +138,4 @@ public class EmployeeDTO {
     public void setProject(List<ProjectDTO> project) {
         this.project = project;
     }
-
-    /*public String toString() {
-        StringBuilder stringBuilderDetails = new StringBuilder();
-        stringBuilderDetails.append("\n\n\nEmployeeDetails")
-                            .append("\nEmployeeId:").append(getId())
-                            .append("\nName:").append(getFirstName())
-                            .append(" ").append(getLastName())
-                            .append("\nRole:").append(getRole())
-                            .append("\nDateofbirth:").append(getDateOfBirth())
-                            .append("\nPhoneNumber:").append("+91")
-                            .append(getPhoneNumber())
-                            .append("\nDate of joining:").append(getDateOfJoining())
-                            .append("\nEmail:").append(getEmail())
-                            .append("\nSalary:").append(getSalary())
-                            .append("\nGender:").append(getGender())
-                            .append(getAddress()).append(getProject());
-        return stringBuilderDetails.toString();
-    }*/
 }

@@ -163,18 +163,4 @@ public class Employee {
 	public void setProject(List<Project> project) {
 		this.project = project;
 	}
-
-	/*public String toString() {
-		StringBuilder stringBuilderDetails = new StringBuilder();
-		stringBuilderDetails.append("\nID :").append(getId())
-		        .append("\nName:").append(getFirstName()).append(getLastName())
-		        .append("\nRole:").append(getRole()).append("\nDateofbirth:")
-				.append(getDateOfBirth()).append("\nPhoneNumber:")
-				.append(getPhoneNumber()).append("\nDate of joining:")
-				.append(getDateOfJoining()).append("\nEmail:")
-				.append(getEmail()).append("\nSalary:")
-				.append(getSalary()).append("\nGender:").append(getGender())
-				.append(getAddress());
-		return stringBuilderDetails.toString();
-	}*/
 }

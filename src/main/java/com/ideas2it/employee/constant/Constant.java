@@ -80,8 +80,8 @@ public class Constant {
     public static final String ERROR_CODE107 = "Error code 107 :";
     public static final String ERROR_CODE108 = "Error code 108 :";
     public static final String ERROR_CODE109 = "Error code 109 :";
-    public static final String INSERTION_EXCEPTION = "Oops! error occured in inserting data, please try again";
-    public static final String DISPLAYING_EXCEPTION = "Oops! error occured in displaying , please try again";
+    public static final String INSERTION_EXCEPTION = "Oops! error occured in inserting data, Enter correct values or please try again";
+    public static final String DISPLAYING_EXCEPTION = "Oops! error occured in displaying , Enter correct values or please try again";
     public static final String UPDATION_EXCEPTION = "Oops! error occured in updating data, please try again";
     public static final String SEARCHING_EXCEPTION = "Oops! error occured in searching data, please try again";
     public static final String DELETING_EXCEPTION = "Oops! error occured in deleting data, please try again";

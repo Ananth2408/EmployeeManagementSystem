@@ -5,7 +5,7 @@ package com.ideas2it.employee.exception;
  * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
-public class EMSException extends Exception {
+public class EMSException extends RuntimeException {
 
     private String  errorCode;
 

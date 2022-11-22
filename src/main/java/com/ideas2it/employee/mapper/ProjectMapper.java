@@ -12,34 +12,34 @@ import java.util.List;
  * Mapper convert the modelDto details to model details and
  *
  * @Version 4.1 10-10-2022
- * @author  Ananth k.
+ * @author Ananth k.
  */
 public class ProjectMapper {
 
-    public static Project toProject(ProjectDTO projectDto) {
-    	Project project = new Project();
-    	List<Employee> employees = new ArrayList<Employee>();
+	public static Project toProject(ProjectDTO projectDto) {
+		Project project = new Project();
+		List<Employee> employees = new ArrayList<Employee>();
 
-    	if (null != projectDto) {
-    	    project.setId(projectDto.getId());
-    	    project.setProjectName(projectDto.getProjectName());
-    	    project.setTechnology(projectDto.getTechnology());
-    	    project.setClientName(projectDto.getClientName());
-    	    project.setClientMailId(projectDto.getClientMailId());
-    	    project.setStartDate(projectDto.getStartDate());
-            project.setDueDate(projectDto.getDueDate());
-    	    project.setEndDate(projectDto.getEndDate());
-    	    
-    	    if (null != projectDto.getEmployee()) {
+		if (null != projectDto) {
+			project.setId(projectDto.getId());
+			project.setProjectName(projectDto.getProjectName());
+			project.setTechnology(projectDto.getTechnology());
+			project.setClientName(projectDto.getClientName());
+			project.setClientMailId(projectDto.getClientMailId());
+			project.setStartDate(projectDto.getStartDate());
+			project.setDueDate(projectDto.getDueDate());
+			project.setEndDate(projectDto.getEndDate());
 
-                for (EmployeeDTO employeeDto: projectDto.getEmployee()) {
-                    employees.add(toEmployee(employeeDto));
-                }
-            project.setEmployee(employees);
-            }
-    	}
-    	return project;
-    }
+			if (null != projectDto.getEmployee()) {
+
+				for (EmployeeDTO employeeDto : projectDto.getEmployee()) {
+					employees.add(toEmployee(employeeDto));
+				}
+				project.setEmployee(employees);
+			}
+		}
+		return project;
+	}
 
 	public static ProjectDTO toProjectDto(Project project) {
 		ProjectDTO projectDto = null;
@@ -87,7 +87,7 @@ public class ProjectMapper {
 
 	public static EmployeeDTO toEmployeeDto(Employee employee) {
 		EmployeeDTO employeeDto = new EmployeeDTO();
-		
+
 		employeeDto.setId(employee.getId());
 		employeeDto.setFirstName(employee.getFirstName());
 		employeeDto.setLastName(employee.getLastName());

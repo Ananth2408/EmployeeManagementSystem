@@ -83,16 +83,4 @@ public class AddressDTO {
     public void setType(String type) {
         this.type = type;
     }
-
-    /*public String toString() {
-        StringBuilder stringBuilderAddress = new StringBuilder();
-        stringBuilderAddress.append("\nEmployee Address")
-                            .append("\nDoorNumber: ").append(getDoorNumber())
-                            .append("\nStreet: ").append(getStreet())
-                            .append("\nCity: ").append(getCity())
-                            .append("\nState: ").append(getState())
-                            .append("\nPincode: ").append(getPinCode())
-                            .append("\nAddressType: ").append(getType());
-        return stringBuilderAddress.toString();
-    }*/
 }

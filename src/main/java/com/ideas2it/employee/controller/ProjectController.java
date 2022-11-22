@@ -1,6 +1,5 @@
 package com.ideas2it.employee.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ideas2it.employee.dto.ProjectDTO;
-import com.ideas2it.employee.exception.EMSException;
 import com.ideas2it.employee.service.ProjectManagementService;
 
 /**
@@ -28,7 +26,7 @@ import com.ideas2it.employee.service.ProjectManagementService;
 @RequestMapping("/api.com.ideas2it/employee-management-system/v1.0/project")
 public class ProjectController {
 	@Autowired
-	ProjectManagementService projectService;
+	private ProjectManagementService projectService;
 
 	/**
 	 * Get the value from user and create project detail.
@@ -37,10 +35,10 @@ public class ProjectController {
 	 * @param projectdto details.
 	 */
 	@PostMapping
-	public ProjectDTO addProject(ProjectDTO projectDto)
-			throws EMSException {
+	private ResponseEntity<ProjectDTO> addProject(ProjectDTO projectDto) {
 
-		return projectService.addProject(projectDto);
+		return new ResponseEntity<ProjectDTO>
+				(projectService.addProject(projectDto), HttpStatus.CREATED);
 	}
 
 	/**
@@ -49,9 +47,10 @@ public class ProjectController {
 	 * @return the employeeDeatil.
 	 */
 	@GetMapping
-	public List<ProjectDTO> getAllProjects() throws EMSException {
-		
-		return projectService.getAllProjects();
+	private ResponseEntity<List<ProjectDTO>> getAllProjects() {
+
+		return new ResponseEntity<List<ProjectDTO>>
+				(projectService.getAllProjects(), HttpStatus.OK);
 	}
 
 	/**
@@ -62,9 +61,10 @@ public class ProjectController {
 	 * @return the boolean value if updated returns true else false.
 	 */
 	@PatchMapping
-	public ProjectDTO updateProject(ProjectDTO projectDto) throws EMSException {
+	private ResponseEntity<ProjectDTO> updateProject(ProjectDTO projectDto) {
 
-		return projectService.updateProject(projectDto);
+		return new ResponseEntity<ProjectDTO>
+				(projectService.updateProject(projectDto), HttpStatus.ACCEPTED);
 
 	}
 
@@ -76,12 +76,12 @@ public class ProjectController {
 	 * @return
 	 */
 	@GetMapping("/searchproject")
-	public List<ProjectDTO> searchProject(String name)
-			throws EMSException {
-		
-		return projectService.searchProject(name);
+	private ResponseEntity<List<ProjectDTO>> searchProject(String name) {
+
+		return new ResponseEntity<List<ProjectDTO>>
+				(projectService.searchProject(name), HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Delete employee details by employee id, if name found it deletes employee
 	 * deatils else it doesn't.
@@ -90,76 +90,25 @@ public class ProjectController {
 	 * @return the boolean value if deletes return true else false.
 	 */
 	@DeleteMapping
-	public ResponseEntity<String> deleteProject(int employeeId)
-			throws EMSException {
-		
+	private ResponseEntity<String> deleteProject(int employeeId) {
+
 		projectService.deleteProject(employeeId);
-		return new ResponseEntity<>
-		("Project details deleted successfully", HttpStatus.OK);
+		return new ResponseEntity<>("Project details deleted successfully", HttpStatus.NO_CONTENT);
 	}
-    
+
 	/**
 	 * This is used to assigning a employee into the project.
 	 * 
-	 * @param employeeId from the user.
+	 * @param employeeId    from the user.
 	 * @param projectIdfrom the user.
 	 * @return project values.
-	 * @throws EMSException.
 	 */
 	@PatchMapping("/assignemployee")
-	public ProjectDTO assignEmployee(int employeeId,
-			int projectId) throws EMSException {
-		return projectService.assignEmployee(employeeId, projectId);
+	private ResponseEntity<ProjectDTO> assignEmployee
+	(int employeeId, int projectId) {
+		
+		return new ResponseEntity<ProjectDTO>
+				(projectService.assignEmployee(employeeId, projectId),
+						HttpStatus.CREATED);
 	}
-    
-    /**
-     * Used to validate the given input is valid or not.
-     * @param pattern is regex pattern.
-     * @param field is values, input from the users.
-     * @return if it is valid it returns true else returns false.
-     */
-    public boolean isValidData(String pattern, String field) {
-        return projectService.isValidData(pattern, field);
-    }
-
-    /**
-     * Used to validate the given input is valid or not.
-     * @param date from the user.
-     * @return if it is valid it returns true else false.
-     */
-    public boolean isValidStartDate(String startDate) throws EMSException {
-        return projectService.isValidStartDate(startDate);
-    }
-
-    /**
-     * Used to validate the given input is valid or not.
-     * @param date from the user.
-     * @return if it is valid it returns true else false.
-     */
-    public boolean isValidDate(LocalDate startDate, String date)
-                                                           throws EMSException {
-        return projectService.isValidDate(startDate, date);
-    }
-
-    /**
-     * Used to validate the given employee present in the dat or not.
-     * @param employee id from the user.
-     * @return if employee id persents returns true else returns false.
-     */
-   /*public EmployeeDTO getEmployee(int employeeId)
-                                    throws EMSException {
-        EmployeeManagementService employeeService = new EmployeeManagementServiceImpl();
-        return employeeService.employeeExists(employeeId);
-    }*/
-
-    
-    /**
-     * Used to validate the given employee present in the dat or not.O
-     * @param employee id from the user.
-     * @return if employee id persents returns true else returns false.
-     */
-    public ProjectDTO projectExists(int projectId)
-                                    throws EMSException {
-        return projectService.projectExists(projectId);
-    }
 }

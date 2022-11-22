@@ -9,13 +9,13 @@ import com.ideas2it.employee.model.Employee;
 import com.ideas2it.employee.model.Project;
 import com.ideas2it.employee.service.EmployeeManagementService;
 import com.ideas2it.employee.service.ProjectManagementService;
-import com.ideas2it.employee.util.ValidateUtil;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -32,28 +32,30 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class EmployeeManagementServiceImpl implements EmployeeManagementService {
 	@Autowired
-	EmployeeDao employeeDao;
-	
-	@Autowired
-	ApplicationContext context;
+	private EmployeeDao employeeDao;
 
-	ValidateUtil util = new ValidateUtil();
-    
+	@Autowired
+	private ApplicationContext context;
+	
+	private Logger logger = LogManager.getLogger(EmployeeManagementServiceImpl.class);
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public EmployeeDTO addEmployee(EmployeeDTO employeeDto) throws EMSException {
+	public EmployeeDTO addEmployee(EmployeeDTO employeeDto) {
 		EmployeeDTO employeeDTO = null;
-		
-		if (!isValidPhoneNumber(String.valueOf(employeeDto.getPhoneNumber())) & 
-				!isValidEmail(employeeDto.getEmail())) {
+
+		if (!isValidPhoneNumber(String.valueOf(employeeDto.getPhoneNumber())) 
+				& !isValidEmail(employeeDto.getEmail())) {
 			Employee employee = EmployeeMapper.toEmployee(employeeDto);
 			employeeDTO = EmployeeMapper.toEmployeeDTO(employeeDao.save(employee));
 		} else {
-			throw new EMSException(Constant.DUPLICATE , Constant.ERROR_CODE101);
+			logger.error(Constant.DUPLICATE, Constant.ERROR_CODE101);
+			throw new EMSException(Constant.DUPLICATE, Constant.ERROR_CODE101);
 		}
-		
+
+		logger.info("Employee created EmployeeID =" + employeeDto.getId());
 		return employeeDTO;
 	}
 
@@ -61,16 +63,12 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<EmployeeDTO> getAllEmployees() throws EMSException {
+	public List<EmployeeDTO> getAllEmployees() {
 		List<Employee> employees = employeeDao.findAll();
 		List<EmployeeDTO> employeeDtos = new ArrayList<EmployeeDTO>();
 
-		if (employees != null) {
-			for (Employee employee : employees) {
-				employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
-			}
-		} else {
-			throw new EMSException(Constant.EMPLOYEE_NOT_FOUND , Constant.ERROR_CODE102);
+		for (Employee employee : employees) {
+			employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
 		}
 		return employeeDtos;
 	}
@@ -80,15 +78,21 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 	 * 
 	 */
 	@Override
-	public EmployeeDTO updateEmployee(EmployeeDTO employeeDto) throws EMSException {
+	public EmployeeDTO updateEmployee(EmployeeDTO employeeDto) {
 		EmployeeDTO employeeDTO = null;
-		
-		if (!isValidPhoneNumber(String.valueOf(employeeDto.getPhoneNumber())) & 
-				!isValidEmail(employeeDto.getEmail())) {
-			Employee employee = EmployeeMapper.toEmployee(employeeDto);
-			employeeDTO = EmployeeMapper.toEmployeeDTO(employeeDao.save(employee));
-		} else {
-			throw new EMSException(Constant.DUPLICATE , Constant.ERROR_CODE101);
+
+		try {
+			if (!isValidPhoneNumber(String.valueOf(employeeDto.getPhoneNumber()))
+					& !isValidEmail(employeeDto.getEmail())) {
+				Employee employee = EmployeeMapper.toEmployee(employeeDto);
+				employeeDTO = EmployeeMapper.toEmployeeDTO(employeeDao.save(employee));
+			} else {
+				logger.error(Constant.DUPLICATE, Constant.ERROR_CODE101);
+				throw new EMSException(Constant.DUPLICATE, Constant.ERROR_CODE101);
+			}
+		} catch (ConstraintViolationException e) {
+			logger.error(e.getMessage());
+			throw new EMSException(Constant.UPDATION_EXCEPTION, Constant.ERROR_CODE105);
 		}
 		return employeeDTO;
 	}
@@ -97,17 +101,18 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<EmployeeDTO> searchEmployee(String name) throws EMSException {
+	public List<EmployeeDTO> searchEmployee(String name) {
 		List<Employee> employees = employeeDao.findByName(name);
 		List<EmployeeDTO> employeeDtos = new ArrayList<EmployeeDTO>();
 
-		if (employees != null) {
+		if (!employees.isEmpty()) {
 			for (Employee employee : employees) {
 
 				employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
 			}
 		} else {
-			throw new EMSException(Constant.EMPLOYEE_NOT_FOUND , Constant.ERROR_CODE102 );
+			logger.error(Constant.EMPLOYEE_NOT_FOUND);
+			throw new EMSException(Constant.EMPLOYEE_NOT_FOUND, Constant.ERROR_CODE102);
 		}
 		return employeeDtos;
 	}
@@ -116,87 +121,63 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void deleteEmployee(int employeeId) throws EMSException {
+	public void deleteEmployee(int employeeId) {
 		employeeDao.deleteById(employeeId);
+		logger.info("Employee deleted successfully EmploeeID =" + employeeId);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public EmployeeDTO assignProject(int employeeId, int projectId) 
-			throws EMSException {
+	public EmployeeDTO assignProject(int employeeId, int projectId) {
 
-		ProjectManagementService service = (ProjectManagementServiceImpl) context
-				.getBean("projectService");
+		ProjectManagementService service = (ProjectManagementServiceImpl) 
+				context.getBean("projectService");
 		Employee employee = EmployeeMapper.toEmployee(employeeExists(employeeId));
 		Project project = EmployeeMapper.toProject(service.projectExists(projectId));
 		EmployeeDTO employeeDto = null;
-		
-		if (employee != null & project != null) {
+
+		if (employee != null & project.getId() != 0) {
 			employee.getProject().add(project);
 			employeeDto = EmployeeMapper.toEmployeeDTO(employeeDao.save(employee));
 
 		} else {
-			throw new EMSException(Constant.DETALILS_NOTEXIST , Constant.ERROR_CODE103); 
+			logger.info(Constant.DETALILS_NOTEXIST);
+			throw new EMSException(Constant.DETALILS_NOTEXIST, Constant.ERROR_CODE103);
 		}
 		return employeeDto;
 	}
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidData(String pattern, String field) {
-        return util.isValidData(pattern, field);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidBirthDate(String birthDate) throws EMSException{
-        return util.isValidBirthDate(birthDate);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate)
-                                      throws EMSException {
-        return util.isValidJoiningDate(birthDate, joiningDate);
-    }
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public EmployeeDTO employeeExists(int employeeId) throws EMSException {
+	public EmployeeDTO employeeExists(int employeeId) {
 		List<EmployeeDTO> employeeDtos = getAllEmployees();
-		EmployeeDTO employeeDto = employeeDtos.stream()
-				.filter(x -> x.getId() == (employeeId)).findFirst().orElse(null);
+		EmployeeDTO employeeDto = employeeDtos.stream().
+				filter(x -> x.getId() == (employeeId)).findFirst().orElse(null);
 		return employeeDto;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public boolean isValidPhoneNumber(String phoneNumber) throws EMSException {
+	public boolean isValidPhoneNumber(String phoneNumber) {
 		List<EmployeeDTO> employeeDtos = getAllEmployees();
 		List<Long> duplicateList = employeeDtos.stream()
 				.map(employeeDto -> Long.valueOf(employeeDto.getPhoneNumber()))
 				.collect(Collectors.toList());
 
 		return duplicateList.contains(Long.parseLong(phoneNumber));
-    }
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isValidEmail(String email) throws EMSException {
+	public boolean isValidEmail(String email) {
 		List<EmployeeDTO> employeeDtos = getAllEmployees();
 		List<String> duplicateList = employeeDtos.stream()
 				.map(employeeDto -> employeeDto.getEmail())

@@ -110,18 +110,4 @@ public class ProjectDTO {
     public void setEmployee(List<EmployeeDTO> employee) {
         this.employee = employee;
     }
-
-    /*public String toString() {
-        StringBuilder stringBuilderProject = new StringBuilder();
-        stringBuilderProject.append("\nProjectId: ").append(getId())
-                            .append("\nProjectName: ").append(getProjectName())
-                            .append("\nTechnology: ").append(getTechnology())
-                            .append("\nClientName: ").append(getClientName())
-                            .append("\nClientMailId: ").append(getClientMailId())
-                            .append("\nStartDate: ").append(getStartDate())
-                            .append("\nDueDate: ").append(getDueDate())
-                            .append("\nEndDate: ").append(getEndDate())
-                            .append(getEmployee());
-        return stringBuilderProject.toString();
-    }*/
 }
