@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 public class ProjectManagementServiceImpl implements ProjectManagementService {
 
 	@Autowired
-    private ProjectDao projectDao;
+        private ProjectDao projectDao;
 	
 	private EmployeeManagementService service;
 
@@ -36,6 +36,8 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
 		return service;
 	}
     
+        @Autowired
+        @Lazy
 	public void setService(EmployeeManagementServiceImpl service) {
 		this.service = service;
 	}
@@ -135,5 +137,5 @@ public class ProjectManagementServiceImpl implements ProjectManagementService {
 	public Project projectExists(int projectId) {
 
 		return projectDao.findById(projectId).orElse(null);
-	}
+        }
 }

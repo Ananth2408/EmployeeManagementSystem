@@ -37,6 +37,8 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 		return service;
 	}
 
+        @Autowired
+        @Lazy
 	public void setService(ProjectManagementServiceImpl service) {
 		this.service = service;
 	}
