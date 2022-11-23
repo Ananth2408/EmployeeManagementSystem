@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,22 +24,23 @@ import com.ideas2it.employee.service.ProjectManagementService;
  * @author Ananth K.
  */
 @RestController
-@RequestMapping("/api.com.ideas2it/employee-management-system/v1.0/project")
+@RequestMapping("/api/v1/ems/project")
 public class ProjectController {
+	
 	@Autowired
 	private ProjectManagementService projectService;
 
 	/**
 	 * Get the value from user and create project detail.
 	 * 
-	 * @return the boolean value of added project details.
+	 * @return the value of added project details.
 	 * @param projectdto details.
 	 */
 	@PostMapping
-	private ResponseEntity<ProjectDTO> addProject(ProjectDTO projectDto) {
+	private ResponseEntity<ProjectDTO> addProject(@RequestBody ProjectDTO projectDto) {
 
 		return new ResponseEntity<ProjectDTO>
-				(projectService.addProject(projectDto), HttpStatus.CREATED);
+		        (projectService.addProject(projectDto), HttpStatus.CREATED);
 	}
 
 	/**
@@ -50,50 +52,51 @@ public class ProjectController {
 	private ResponseEntity<List<ProjectDTO>> getAllProjects() {
 
 		return new ResponseEntity<List<ProjectDTO>>
-				(projectService.getAllProjects(), HttpStatus.OK);
+		        (projectService.getAllProjects(), HttpStatus.OK);
 	}
 
 	/**
-	 * Update employee details by employee name, If name found it update employee
-	 * details else it doesn't.
+	 * Update project details by given project details name
+	 * else it doesn't.
 	 * 
-	 * @param employeedto details.
-	 * @return the boolean value if updated returns true else false.
+	 * @param projectdto details.
+	 * @return the updated project details.
 	 */
 	@PatchMapping
 	private ResponseEntity<ProjectDTO> updateProject(ProjectDTO projectDto) {
 
 		return new ResponseEntity<ProjectDTO>
-				(projectService.updateProject(projectDto), HttpStatus.ACCEPTED);
+				(projectService.updateProject(projectDto), HttpStatus.OK);
 
 	}
 
 	/**
-	 * Search employee details by employee name, If name found it update employee
+	 * Search project details by project name, If name found it update project
 	 * details else it doesn't.
 	 * 
-	 * @param employee name from user.
-	 * @return
+	 * @param project name from user.
+	 * @return searched project details
 	 */
-	@GetMapping("/searchproject")
+	@GetMapping("/search")
 	private ResponseEntity<List<ProjectDTO>> searchProject(String name) {
 
 		return new ResponseEntity<List<ProjectDTO>>
-				(projectService.searchProject(name), HttpStatus.OK);
+		        (projectService.searchProject(name), HttpStatus.OK);
 	}
 
 	/**
-	 * Delete employee details by employee id, if name found it deletes employee
+	 * Delete project details by project id, if name found it deletes project
 	 * deatils else it doesn't.
 	 * 
-	 * @param employee id from user.
-	 * @return the boolean value if deletes return true else false.
+	 * @param project id from user.
+	 * @return the message.
 	 */
 	@DeleteMapping
 	private ResponseEntity<String> deleteProject(int employeeId) {
 
 		projectService.deleteProject(employeeId);
-		return new ResponseEntity<>("Project details deleted successfully", HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>
+		        ("Project details deleted successfully", HttpStatus.NO_CONTENT);
 	}
 
 	/**
@@ -103,12 +106,11 @@ public class ProjectController {
 	 * @param projectIdfrom the user.
 	 * @return project values.
 	 */
-	@PatchMapping("/assignemployee")
+	@PatchMapping("/assign")
 	private ResponseEntity<ProjectDTO> assignEmployee
 	(int employeeId, int projectId) {
 		
 		return new ResponseEntity<ProjectDTO>
-				(projectService.assignEmployee(employeeId, projectId),
-						HttpStatus.CREATED);
+		        (projectService.assignEmployee(employeeId, projectId), HttpStatus.OK);
 	}
 }

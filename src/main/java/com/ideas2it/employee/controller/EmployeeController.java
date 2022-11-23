@@ -24,21 +24,23 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Ananth K.
  */
 @RestController
-@RequestMapping("/api.com.ideas2it/employee-management-system/v1.0/employee")
+@RequestMapping("/api/v1/ems/employee")
 public class EmployeeController {
+	
 	@Autowired
 	private EmployeeManagementService employeeService;
 
 	/**
 	 * Get the value from user and create employee detail.
 	 * 
-	 * @return the boolean value of added employee details.
+	 * @return the added employee details.
 	 * @param employeedto details.
 	 */
 	@PostMapping
 	private ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employeeDto) {
+		
 		return new ResponseEntity<EmployeeDTO>
-				(employeeService.addEmployee(employeeDto), HttpStatus.CREATED);
+		        (employeeService.addEmployee(employeeDto), HttpStatus.CREATED);
 	}
 
 	/**
@@ -48,34 +50,36 @@ public class EmployeeController {
 	 */
 	@GetMapping
 	private ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+		
 		return new ResponseEntity<List<EmployeeDTO>>
-				(employeeService.getAllEmployees(),HttpStatus.OK);
+		        (employeeService.getAllEmployees(), HttpStatus.OK);
 	}
 
 	/**
-	 * Update employee details by employee name, If name found it update employee
-	 * details else it doesn't.
+	 * Update employee details by the given employee details
+	 * else it doesn't.
 	 * 
 	 * @param employeedto details.
-	 * @return the boolean value if updated returns true else false.
+	 * @return the  updated employee details .
 	 */
 	@PatchMapping
 	private ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employeeDto) {
+		
 		return new ResponseEntity<EmployeeDTO>
-				(employeeService.updateEmployee(employeeDto), HttpStatus.ACCEPTED);
+		        (employeeService.updateEmployee(employeeDto), HttpStatus.OK);
 	}
 
 	/**
-	 * Search employee details by employee name, If name found it update employee
-	 * details else it doesn't.
+	 * Search employee details by employee name
 	 * 
 	 * @param employee name from user.
-	 * @return
+	 * @return the employee details
 	 */
-	@GetMapping("/searchemployee")
+	@GetMapping("/search")
 	private ResponseEntity<List<EmployeeDTO>> searchEmployee(String name) {
+		
 		return new ResponseEntity<List<EmployeeDTO>>
-				(employeeService.searchEmployee(name), HttpStatus.OK);
+		        (employeeService.searchEmployee(name), HttpStatus.OK);
 	}
 
 	/**
@@ -87,9 +91,10 @@ public class EmployeeController {
 	 */
 	@DeleteMapping
 	private ResponseEntity<String> deleteEmployee(int employeeId) {
+		
 		employeeService.deleteEmployee(employeeId);
 		return new ResponseEntity<>
-		("Employee details deleted successfully", HttpStatus.NO_CONTENT);
+	   	        ("Employee details deleted successfully", HttpStatus.NO_CONTENT);
 	}
 
 	/**
@@ -97,15 +102,13 @@ public class EmployeeController {
 	 * 
 	 * @param employeeId from the user
 	 * @param projectId  from the user
-	 * @return Employee Details from the user
+	 * @return the assigned Employee Details
 	 */
-	@PatchMapping("/assignproject")
+	@PatchMapping("/assign")
 	private ResponseEntity<EmployeeDTO> assignProject(int employeeId, int projectId) {
-		
+
 		return new ResponseEntity<EmployeeDTO>
-				(employeeService.assignProject(employeeId, projectId),
-						HttpStatus.ACCEPTED);
-		 
-				
+		        (employeeService.assignProject(employeeId, projectId), HttpStatus.OK);
+
 	}
 }

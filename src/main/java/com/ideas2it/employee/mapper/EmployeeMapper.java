@@ -139,6 +139,12 @@ public class EmployeeMapper {
 		return address;
 	}
 
+	/**
+	 * Converts Projectdetails to projectDtodetails
+	 * 
+	 * @param project details
+	 * @return projectDto details
+	 */
 	public static ProjectDTO toProjectDTO(Project project) {
 		ProjectDTO projectDto = new ProjectDTO();
 		
@@ -155,6 +161,12 @@ public class EmployeeMapper {
 		return projectDto;
 	}
 
+	/**
+	 * Converts ProjectDtodetails to Projectdetails
+	 * 
+	 * @param projectDTO details
+	 * @return project details
+	 */
 	public static Project toProject(ProjectDTO projectDto) {
 		Project project = new Project();
 

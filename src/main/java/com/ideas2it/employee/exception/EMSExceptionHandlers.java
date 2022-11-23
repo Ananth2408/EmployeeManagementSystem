@@ -9,6 +9,11 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.ideas2it.employee.constant.Constant;
 
+/**
+ * Used to handle the exception in this application.
+ * @version 4.1 10-10-2022.
+ * @author  Ananth K.
+ */
 @RestControllerAdvice
 public class EMSExceptionHandlers {
 

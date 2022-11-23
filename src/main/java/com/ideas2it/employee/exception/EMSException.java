@@ -1,7 +1,7 @@
 package com.ideas2it.employee.exception;
 
 /**
- * Used handle the exception in this application.
+ * Used to handle the exception in this application.
  * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */

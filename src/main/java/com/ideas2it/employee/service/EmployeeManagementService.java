@@ -1,6 +1,8 @@
 package com.ideas2it.employee.service;
 
 import com.ideas2it.employee.dto.EmployeeDTO;
+import com.ideas2it.employee.model.Employee;
+
 import java.util.List;
 
 /**
@@ -15,30 +17,29 @@ public interface EmployeeManagementService {
 	/**
 	 * Get the value from user and create employee detail.
 	 * 
-	 * @return the boolean value.
-	 * @param employee object from the view class.
+	 * @return the employeeDto details.
+	 * @param user given employee details.
 	 */
 	public EmployeeDTO addEmployee(EmployeeDTO employeeDto);
 
 	/**
 	 * Display the all employee details from the saved dteails.
 	 * 
-	 * @return the employeeDeatil from the service class.
+	 * @return the employeeDeatil .
 	 */
 	public List<EmployeeDTO> getAllEmployees();
 
 	/**
-	 * Update employee details by employee name, If name found it update employee
+	 * Update employee details by given employee details
 	 * details else it doesn't.
 	 * 
-	 * @param employee object from the view.
-	 * @return the boolean value if updated it returns true else false.
+	 * @param employee detai;s from the user.
+	 * @return the employeeDto details.
 	 */
 	public EmployeeDTO updateEmployee(EmployeeDTO employeeDto);
 
 	/**
-	 * Search employee details by employee name, If name found it update employee
-	 * details else it doesn't.
+	 * Search employee details by employee name,
 	 * 
 	 * @param employee name from user.
 	 * @return if employee found returns employee else it returns null .
@@ -46,20 +47,18 @@ public interface EmployeeManagementService {
 	public List<EmployeeDTO> searchEmployee(String name);
 
 	/**
-	 * Delete employee details by employee name, if name found it deletes emplyee
+	 * Delete employee details by employeeId, if name found it deletes empolyee
 	 * deatils else it doesn't.
-	 * 
-	 * @return the boolean value if deleted it returns true else false.
 	 */
 	public void deleteEmployee(int employeeId);
 
 	/**
-	 * Used to validate the given employee present in the dat or not.
+	 * Used to validate the given employee present in the data or not.
 	 * 
 	 * @param employee id from the user.
-	 * @return if employee id persents returns true else returns false.
+	 * @return if employee id persents returns employeeDetails.
 	 */
-	public EmployeeDTO employeeExists(int employeeId);
+	public Employee employeeExists(int employeeId);
 
 	/**
 	 * Used to assign a employee to the project.
@@ -69,20 +68,4 @@ public interface EmployeeManagementService {
 	 * @return Employee Details.
 	 */
 	public EmployeeDTO assignProject(int employeeId, int projectId);
-
-	/**
-	 * Used to validate the given phone number is duplicate or not.
-	 * 
-	 * @param phonenumber from the user.
-	 * @return if valid returns true else false.
-	 */
-	public boolean isValidPhoneNumber(String phoneNumber);
-
-	/**
-	 * Used to validate the given phone number is duplicate or not.
-	 * 
-	 * @param phonenumber from the user.
-	 * @return if valid returns true else false.
-	 */
-	public boolean isValidEmail(String email);
 }

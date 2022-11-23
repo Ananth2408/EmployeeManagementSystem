@@ -17,5 +17,4 @@ public interface ProjectDao extends JpaRepository<Project, Integer>{
 	 */
 	@Query("FROM Project p WHERE p.projectName LIKE '%:name%'")
 	List<Project> findByName(String name);
-
 }

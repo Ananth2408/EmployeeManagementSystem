@@ -11,14 +11,11 @@ import com.ideas2it.employee.service.EmployeeManagementService;
 import com.ideas2it.employee.service.ProjectManagementService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,15 +25,22 @@ import org.springframework.stereotype.Component;
  * @version 4.1 10-10-2022.
  * @author Ananth K.
  */
-@Component("employeeService")
-@Configuration
+@Component
 public class EmployeeManagementServiceImpl implements EmployeeManagementService {
+	
 	@Autowired
 	private EmployeeDao employeeDao;
 
-	@Autowired
-	private ApplicationContext context;
-	
+	private ProjectManagementService service;
+
+	public ProjectManagementService getService() {
+		return service;
+	}
+
+	public void setService(ProjectManagementServiceImpl service) {
+		this.service = service;
+	}
+
 	private Logger logger = LogManager.getLogger(EmployeeManagementServiceImpl.class);
 	
 	/**
@@ -45,9 +49,10 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 	@Override
 	public EmployeeDTO addEmployee(EmployeeDTO employeeDto) {
 		EmployeeDTO employeeDTO = null;
+		int employeeId = 0;
 
-		if (!isValidPhoneNumber(String.valueOf(employeeDto.getPhoneNumber())) 
-				& !isValidEmail(employeeDto.getEmail())) {
+		if (null == employeeDao.checkForDuplicates(employeeDto.getPhoneNumber(),
+				employeeDto.getEmail(), employeeId)) {
 			Employee employee = EmployeeMapper.toEmployee(employeeDto);
 			employeeDTO = EmployeeMapper.toEmployeeDTO(employeeDao.save(employee));
 		} else {
@@ -82,8 +87,8 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 		EmployeeDTO employeeDTO = null;
 
 		try {
-			if (!isValidPhoneNumber(String.valueOf(employeeDto.getPhoneNumber()))
-					& !isValidEmail(employeeDto.getEmail())) {
+			if (null == employeeDao.checkForDuplicates(employeeDto.getPhoneNumber(), 
+					employeeDto.getEmail(), employeeDto.getId())) {
 				Employee employee = EmployeeMapper.toEmployee(employeeDto);
 				employeeDTO = EmployeeMapper.toEmployeeDTO(employeeDao.save(employee));
 			} else {
@@ -105,14 +110,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 		List<Employee> employees = employeeDao.findByName(name);
 		List<EmployeeDTO> employeeDtos = new ArrayList<EmployeeDTO>();
 
-		if (!employees.isEmpty()) {
-			for (Employee employee : employees) {
+		for (Employee employee : employees) {
 
-				employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
-			}
-		} else {
-			logger.error(Constant.EMPLOYEE_NOT_FOUND);
-			throw new EMSException(Constant.EMPLOYEE_NOT_FOUND, Constant.ERROR_CODE102);
+			employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
 		}
 		return employeeDtos;
 	}
@@ -122,7 +122,13 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 	 */
 	@Override
 	public void deleteEmployee(int employeeId) {
-		employeeDao.deleteById(employeeId);
+		
+		if (null != employeeExists(employeeId)) {
+			employeeDao.deleteById(employeeId);
+		} else {
+			logger.error(Constant.EMPLOYEE_NOT_FOUND + employeeId);
+			throw new EMSException(Constant.EMPLOYEE_NOT_FOUND, Constant.ERROR_CODE106);
+		}
 		logger.info("Employee deleted successfully EmploeeID =" + employeeId);
 	}
 
@@ -132,10 +138,8 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 	@Override
 	public EmployeeDTO assignProject(int employeeId, int projectId) {
 
-		ProjectManagementService service = (ProjectManagementServiceImpl) 
-				context.getBean("projectService");
-		Employee employee = EmployeeMapper.toEmployee(employeeExists(employeeId));
-		Project project = EmployeeMapper.toProject(service.projectExists(projectId));
+		Employee employee = employeeExists(employeeId);
+		Project project = service.projectExists(projectId);
 		EmployeeDTO employeeDto = null;
 
 		if (employee != null & project.getId() != 0) {
@@ -153,36 +157,8 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public EmployeeDTO employeeExists(int employeeId) {
-		List<EmployeeDTO> employeeDtos = getAllEmployees();
-		EmployeeDTO employeeDto = employeeDtos.stream().
-				filter(x -> x.getId() == (employeeId)).findFirst().orElse(null);
-		return employeeDto;
-	}
+	public Employee employeeExists(int employeeId) {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isValidPhoneNumber(String phoneNumber) {
-		List<EmployeeDTO> employeeDtos = getAllEmployees();
-		List<Long> duplicateList = employeeDtos.stream()
-				.map(employeeDto -> Long.valueOf(employeeDto.getPhoneNumber()))
-				.collect(Collectors.toList());
-
-		return duplicateList.contains(Long.parseLong(phoneNumber));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isValidEmail(String email) {
-		List<EmployeeDTO> employeeDtos = getAllEmployees();
-		List<String> duplicateList = employeeDtos.stream()
-				.map(employeeDto -> employeeDto.getEmail())
-				.collect(Collectors.toList());
-
-		return duplicateList.contains(email);
+		return employeeDao.findById(employeeId).orElse(null);
 	}
 }

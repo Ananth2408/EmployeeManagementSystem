@@ -3,15 +3,12 @@ package com.ideas2it.employee.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 /**
  * Get Project details from the user.
  * Uses getter setter to get input from user.
  * @version 4.1 10-10-2022.
  * @author  Ananth K.
  */
-@Component
 public class ProjectDTO {
     private int id;
     private String projectName;

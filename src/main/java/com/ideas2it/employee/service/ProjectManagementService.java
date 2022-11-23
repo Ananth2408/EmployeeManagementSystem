@@ -1,6 +1,8 @@
 package com.ideas2it.employee.service;
 
 import com.ideas2it.employee.dto.ProjectDTO;
+import com.ideas2it.employee.model.Project;
+
 import java.util.List;
 
 /**
@@ -31,13 +33,12 @@ public interface ProjectManagementService {
 	 * else it doesn't.
 	 * 
 	 * @param project object from the view.
-	 * @return the boolean value if updated it returns true else false.
+	 * @return the projectDto details.
 	 */
 	public ProjectDTO updateProject(ProjectDTO ProjectDto);
 
 	/**
-	 * Search project details by project name, If name found it update project
-	 * details else it doesn't.
+	 * Search project details by project name
 	 * 
 	 * @param project name from user.
 	 * @return if project found returns project else it returns null .
@@ -45,20 +46,18 @@ public interface ProjectManagementService {
 	public List<ProjectDTO> searchProject(String name);
 
 	/**
-	 * Delete project details by project name, if name found it deletes project
-	 * deatils else it doesn't.
+	 * Delete project details by projectId
 	 * 
-	 * @return the boolean value if deleted it returns true else false.
-	 */
+     */
 	public void deleteProject(int projectId);
 
 	/**
-	 * Used to validate the given project present in the dat or not.
+	 * Used to validate the given project present in the data or not.
 	 * 
 	 * @param project id from the user.
 	 * @return if project id persents returns true else returns false.
 	 */
-	public ProjectDTO projectExists(int projectId);
+	public Project projectExists(int projectId);
 
 	/**
 	 * Used to assign a project to the employee.
