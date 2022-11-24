@@ -39,8 +39,8 @@ public class Constant {
     public static final String END_DATE = "Enter The End Date(yyyy-mm-dd):";
     public static final String OPERATION_ERROR = "Enter Valid Operation.";
     public static final String INVALID_DATA = "Enter The Valid Data.";
-    public static final String DUPLICATE = "Duplicate Value, Reenter The Value";
-    public static final String EMPLOYEE_NOT_FOUND = "Employee Not Found :";
+    public static final String DUPLICATE = "Phonenumber or emailId is duplicate, Reenter The Value";
+    public static final String EMPLOYEE_NOT_FOUND = "Employee Not Found ";
     public static final String FIRST_NAME = "Enter The FirstName (eg.Ananth karnan):";
     public static final String LAST_NAME = "Enter The LastName:";
     public static final String ROLE = "Enter The Role Of Emoployee";
@@ -80,8 +80,8 @@ public class Constant {
     public static final String ERROR_CODE107 = "Error code 107 :";
     public static final String ERROR_CODE108 = "Error code 108 :";
     public static final String ERROR_CODE109 = "Error code 109 :";
-    public static final String INSERTION_EXCEPTION = "Oops! error occured in inserting data, please try again";
-    public static final String DISPLAYING_EXCEPTION = "Oops! error occured in displaying , please try again";
+    public static final String INSERTION_EXCEPTION = "Oops! error occured in inserting data, Enter correct values or please try again";
+    public static final String DISPLAYING_EXCEPTION = "Oops! error occured in displaying , Enter correct values or please try again";
     public static final String UPDATION_EXCEPTION = "Oops! error occured in updating data, please try again";
     public static final String SEARCHING_EXCEPTION = "Oops! error occured in searching data, please try again";
     public static final String DELETING_EXCEPTION = "Oops! error occured in deleting data, please try again";
@@ -90,6 +90,7 @@ public class Constant {
     public static final String CONNECTION_CLOSE_EXCEPTION = "Oops! error occured connection not closed, please try again";
     public static final String DATE_EXCEPTION = "Enter Valid Date";
     public static final String PROJECT_ID_NOT_EXISTS = "Project ID Doesn't Exists ";
-    public static final String PROJECT_NOT_FOUND = "Project Not Found :";
+    public static final String PROJECT_NOT_FOUND = "Project Not Found ";
     public static final String PROJECT_DELETE = "Enter The ProjectId To Delete";
+    public static final String DETALILS_NOTEXIST = "Employee or Project details are not found";
 }    

@@ -1,9 +1,6 @@
 package com.ideas2it.employee.dto;
 
-import com.ideas2it.employee.dto.EmployeeDTO;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,14 +18,14 @@ public class ProjectDTO {
     private LocalDate startDate;
     private LocalDate dueDate;
     private LocalDate endDate;
-    private List<EmployeeDTO> employeeDto;
+    private List<EmployeeDTO> employee;
 
     public ProjectDTO() {}
 
     public ProjectDTO(int id, String projectName, String technology,
                    String clientName, String clientMailId,
                    LocalDate startDate, LocalDate dueDate,
-                   LocalDate endDate, List<EmployeeDTO> employeeDto) {
+                   LocalDate endDate, List<EmployeeDTO> employee) {
         this.id = id;
         this.projectName = projectName;
         this.technology = technology;
@@ -36,8 +33,7 @@ public class ProjectDTO {
         this.clientMailId = clientMailId;
         this.startDate = startDate;
         this.dueDate = dueDate;
-        this.endDate = endDate;
-        this.employeeDto = employeeDto;
+        this.employee = employee;
     }
 
     public int getId() {
@@ -97,32 +93,18 @@ public class ProjectDTO {
     }
 
     public LocalDate getEndDate() {
-        return dueDate;
+        return endDate;
     }
 
     public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    	this.endDate = endDate;
     }
 
     public List<EmployeeDTO> getEmployee() {
-        return employeeDto;
+        return employee;
     }
 
-    public void setEmployee(List<EmployeeDTO> employeeDto) {
-        this.employeeDto = employeeDto;
-    }
-
-    public String toString() {
-        StringBuilder stringBuilderProject = new StringBuilder();
-        stringBuilderProject.append("\nProjectId: ").append(getId())
-                            .append("\nProjectName: ").append(getProjectName())
-                            .append("\nTechnology: ").append(getTechnology())
-                            .append("\nClientName: ").append(getClientName())
-                            .append("\nClientMailId: ").append(getClientMailId())
-                            .append("\nStartDate: ").append(getStartDate())
-                            .append("\nDueDate: ").append(getDueDate())
-                            .append("\nEndDate: ").append(getEndDate())
-                            .append(getEmployee());
-        return stringBuilderProject.toString();
+    public void setEmployee(List<EmployeeDTO> employee) {
+        this.employee = employee;
     }
 }

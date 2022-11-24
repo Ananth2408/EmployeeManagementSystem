@@ -12,93 +12,93 @@ import java.util.List;
  * Mapper convert the modelDto details to model details and
  *
  * @Version 4.1 10-10-2022
- * @author  Ananth k.
+ * @author Ananth k.
  */
 public class ProjectMapper {
 
-    public static Project toProject(ProjectDTO projectDto) {
-    	Project project = new Project();
+	public static Project toProject(ProjectDTO projectDto) {
+		Project project = new Project();
+		List<Employee> employees = new ArrayList<Employee>();
 
-    	if (null != projectDto) {
-    	    project.setId(projectDto.getId());
-    	    project.setProjectName(projectDto.getProjectName());
-    	    project.setTechnology(projectDto.getTechnology());
-    	    project.setClientName(projectDto.getClientName());
-    	    project.setClientMailId(projectDto.getClientMailId());
-    	    project.setStartDate(projectDto.getStartDate());
-            project.setDueDate(projectDto.getDueDate());
-    	    project.setEndDate(projectDto.getEndDate());
-    	    project.setEmployee(toEmployee(projectDto.getEmployee()));
-    	}
-    	return project;
-    }
+		if (null != projectDto) {
+			project.setId(projectDto.getId());
+			project.setProjectName(projectDto.getProjectName());
+			project.setTechnology(projectDto.getTechnology());
+			project.setClientName(projectDto.getClientName());
+			project.setClientMailId(projectDto.getClientMailId());
+			project.setStartDate(projectDto.getStartDate());
+			project.setDueDate(projectDto.getDueDate());
+			project.setEndDate(projectDto.getEndDate());
 
-    public static ProjectDTO toProjectDto(Project project) {
-    	ProjectDTO projectDto = null;
+			if (null != projectDto.getEmployee()) {
 
-    	if (null != project) {
-	    	projectDto = new ProjectDTO();
+				for (EmployeeDTO employeeDto : projectDto.getEmployee()) {
+					employees.add(toEmployee(employeeDto));
+				}
+				project.setEmployee(employees);
+			}
+		}
+		return project;
+	}
 
-	    	projectDto.setId(project.getId());
-	    	projectDto.setProjectName(project.getProjectName());
-	    	projectDto.setTechnology(project.getTechnology());
-	    	projectDto.setClientName(project.getClientName());
-	    	projectDto.setClientMailId(project.getClientMailId());
-	    	projectDto.setStartDate(project.getStartDate());
-                projectDto.setDueDate(project.getDueDate());
-	    	projectDto.setEndDate(project.getEndDate());
-	    	projectDto.setEmployee(toEmployeeDto(project.getEmployee()));
-	    }
-    	return projectDto;
-    }
+	public static ProjectDTO toProjectDto(Project project) {
+		ProjectDTO projectDto = null;
 
-    public static List<Employee> toEmployee(List<EmployeeDTO> employeesDto) {
-    	List<Employee> employees = null;
-    	Employee employee = null;
+		if (null != project) {
+			projectDto = new ProjectDTO();
+			List<EmployeeDTO> employeeDto = new ArrayList<EmployeeDTO>();
 
-    	if (null != employeesDto) {
-            employees = new ArrayList();
+			projectDto.setId(project.getId());
+			projectDto.setProjectName(project.getProjectName());
+			projectDto.setTechnology(project.getTechnology());
+			projectDto.setClientName(project.getClientName());
+			projectDto.setClientMailId(project.getClientMailId());
+			projectDto.setStartDate(project.getStartDate());
+			projectDto.setDueDate(project.getDueDate());
+			projectDto.setEndDate(project.getEndDate());
 
-            for (EmployeeDTO employeeDto : employeesDto) {
-                employee = new Employee();
+			if (null != project.getEmployee()) {
 
-                employee.setId(employeeDto.getId());
-                employee.setFirstName(employeeDto.getFirstName());
-                employee.setLastName(employeeDto.getLastName());
-                employee.setGender(employeeDto.getGender());
-                employee.setRole(employeeDto.getRole());
-                employee.setPhoneNumber(employeeDto.getPhoneNumber());
-                employee.setEmail(employeeDto.getEmail());
-                employee.setDateOfBirth(employeeDto.getDateOfBirth());
-                employee.setDateOfJoining(employeeDto.getDateOfJoining());
-                employee.setSalary(employeeDto.getSalary());
-                employees.add(employee);
-             }
-         }
-	    return employees;
-    }
+				for (Employee employee : project.getEmployee()) {
+					employeeDto.add(toEmployeeDto(employee));
+				}
+				projectDto.setEmployee(employeeDto);
+			}
+		}
+		return projectDto;
+	}
 
-    public static List<EmployeeDTO> toEmployeeDto(List<Employee> employees) {
-    	List<EmployeeDTO> employeesDto = new ArrayList();
+	public static Employee toEmployee(EmployeeDTO employeeDto) {
+		Employee employee = new Employee();
 
-    	if (null != employees) {
+		employee.setId(employeeDto.getId());
+		employee.setFirstName(employeeDto.getFirstName());
+		employee.setLastName(employeeDto.getLastName());
+		employee.setGender(employeeDto.getGender());
+		employee.setRole(employeeDto.getRole());
+		employee.setPhoneNumber(employeeDto.getPhoneNumber());
+		employee.setEmail(employeeDto.getEmail());
+		employee.setDateOfBirth(employeeDto.getDateOfBirth());
+		employee.setDateOfJoining(employeeDto.getDateOfJoining());
+		employee.setSalary(employeeDto.getSalary());
 
-    	    for (Employee employee : employees) {
-                EmployeeDTO employeeDto = new EmployeeDTO();
+		return employee;
+	}
 
-                employeeDto.setId(employee.getId());
-                employeeDto.setFirstName(employee.getFirstName());
-                employeeDto.setLastName(employee.getLastName());
-                employeeDto.setGender(employee.getGender());
-                employeeDto.setRole(employee.getRole());
-                employeeDto.setPhoneNumber(employee.getPhoneNumber());
-	        employeeDto.setEmail(employee.getEmail());
-                employeeDto.setDateOfBirth(employee.getDateOfBirth());
-                employeeDto.setDateOfJoining(employee.getDateOfJoining());
-                employeeDto.setSalary(employee.getSalary());
-                employeesDto.add(employeeDto);
-    	    }
-    	}
-        return employeesDto;
-    }
+	public static EmployeeDTO toEmployeeDto(Employee employee) {
+		EmployeeDTO employeeDto = new EmployeeDTO();
+
+		employeeDto.setId(employee.getId());
+		employeeDto.setFirstName(employee.getFirstName());
+		employeeDto.setLastName(employee.getLastName());
+		employeeDto.setGender(employee.getGender());
+		employeeDto.setRole(employee.getRole());
+		employeeDto.setPhoneNumber(employee.getPhoneNumber());
+		employeeDto.setEmail(employee.getEmail());
+		employeeDto.setDateOfBirth(employee.getDateOfBirth());
+		employeeDto.setDateOfJoining(employee.getDateOfJoining());
+		employeeDto.setSalary(employee.getSalary());
+
+		return employeeDto;
+	}
 }

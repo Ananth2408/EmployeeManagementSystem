@@ -1,156 +1,166 @@
 package com.ideas2it.employee.service.impl;
 
 import com.ideas2it.employee.exception.EMSException;
+import com.ideas2it.employee.constant.Constant;
 import com.ideas2it.employee.dao.EmployeeDao;
 import com.ideas2it.employee.dto.EmployeeDTO;
-import com.ideas2it.employee.dto.ProjectDTO;
 import com.ideas2it.employee.mapper.EmployeeMapper;
 import com.ideas2it.employee.model.Employee;
+import com.ideas2it.employee.model.Project;
 import com.ideas2it.employee.service.EmployeeManagementService;
 import com.ideas2it.employee.service.ProjectManagementService;
-import com.ideas2it.employee.service.impl.ProjectManagementServiceImpl;
-import com.ideas2it.employee.util.ValidateUtil;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
- * This Application used to maintain the employee details.
- * Create, read, update and delete operations were done in this application.
- * @version  4.1 10-10-2022.
- * @author  Ananth K.
+ * This Application used to maintain the employee details. Create, read, update
+ * and delete operations were done in this application.
+ * 
+ * @version 4.1 10-10-2022.
+ * @author Ananth K.
  */
+@Component
 public class EmployeeManagementServiceImpl implements EmployeeManagementService {
-    EmployeeDao employeeDao = new EmployeeDao();
-    ValidateUtil util = new ValidateUtil();
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int addEmployee(EmployeeDTO employeeDto)
-                               throws EMSException {
-        Employee employee = EmployeeMapper.toEmployee(employeeDto);
-        return employeeDao.addEmployee(employee);
-    }
+	
+	@Autowired
+	private EmployeeDao employeeDao;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<EmployeeDTO> getAllEmployee()
-                                throws EMSException {
-        List<Employee> employees = employeeDao.getAllEmployee();
-        List<EmployeeDTO> employeeDtos = new ArrayList();
+	private ProjectManagementService service;
 
-        for (Employee employee : employees) {
-            employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
-        }
-        return employeeDtos;
-    }
+	public ProjectManagementService getService() {
+		return service;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean updateEmployee(EmployeeDTO employeeDto)
-                                  throws EMSException {
-        boolean isUpdated = false;
-        Employee employee = EmployeeMapper.toEmployee(employeeDto);
+        @Autowired
+        @Lazy
+	public void setService(ProjectManagementServiceImpl service) {
+		this.service = service;
+	}
 
-        if (null != (employeeDao.updateEmployee(employee))) {
-            isUpdated = true;
-        }
-        return isUpdated; 
-    }
+	private Logger logger = LogManager.getLogger(EmployeeManagementServiceImpl.class);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public EmployeeDTO addEmployee(EmployeeDTO employeeDto) {
+		EmployeeDTO employeeDTO = null;
+		int employeeId = 0;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<EmployeeDTO> searchEmployee(String name) 
-                                      throws EMSException{
-        List<Employee> employees = employeeDao.searchEmployee(name);
-        List<EmployeeDTO> employeeDtos = new ArrayList();
+		if (null == employeeDao.checkForDuplicates(employeeDto.getPhoneNumber(),
+				employeeDto.getEmail(), employeeId)) {
+			Employee employee = EmployeeMapper.toEmployee(employeeDto);
+			employeeDTO = EmployeeMapper.toEmployeeDTO(employeeDao.save(employee));
+		} else {
+			logger.error(Constant.DUPLICATE, Constant.ERROR_CODE101);
+			throw new EMSException(Constant.DUPLICATE, Constant.ERROR_CODE101);
+		}
 
-        for (Employee employee : employees) {
-            
-            employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
-        }
-        return employeeDtos;
-    }
+		logger.info("Employee created EmployeeID =" + employeeDto.getId());
+		return employeeDTO;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void deleteEmployee(int employeeId)
-                                  throws EMSException {
-        employeeDao.deleteEmployee(employeeId);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<EmployeeDTO> getAllEmployees() {
+		List<Employee> employees = employeeDao.findAll();
+		List<EmployeeDTO> employeeDtos = new ArrayList<EmployeeDTO>();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidData(String pattern, String field) {
-        return util.isValidData(pattern, field);
-    }
+		for (Employee employee : employees) {
+			employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
+		}
+		return employeeDtos;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidBirthDate(String birthDate) throws EMSException{
-        return util.isValidBirthDate(birthDate);
-    }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 */
+	@Override
+	public EmployeeDTO updateEmployee(EmployeeDTO employeeDto) {
+		EmployeeDTO employeeDTO = null;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidJoiningDate(LocalDate birthDate, String joiningDate)
-                                      throws EMSException {
-        return util.isValidJoiningDate(birthDate, joiningDate);
-    }
+		try {
+			if (null == employeeDao.checkForDuplicates(employeeDto.getPhoneNumber(), 
+					employeeDto.getEmail(), employeeDto.getId())) {
+				Employee employee = EmployeeMapper.toEmployee(employeeDto);
+				employeeDTO = EmployeeMapper.toEmployeeDTO(employeeDao.save(employee));
+			} else {
+				logger.error(Constant.DUPLICATE, Constant.ERROR_CODE101);
+				throw new EMSException(Constant.DUPLICATE, Constant.ERROR_CODE101);
+			}
+		} catch (ConstraintViolationException e) {
+			logger.error(e.getMessage());
+			throw new EMSException(Constant.UPDATION_EXCEPTION, Constant.ERROR_CODE105);
+		}
+		return employeeDTO;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EmployeeDTO employeeExists(int employeeId)
-                                      throws EMSException {
-        List<EmployeeDTO> employeeDtos = getAllEmployee();
-        EmployeeDTO employeeDto = employeeDtos.stream().filter(x -> x.getId() == (employeeId))
-                                  .findFirst().orElse(null);;
-        return employeeDto;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<EmployeeDTO> searchEmployee(String name) {
+		List<Employee> employees = employeeDao.findByName(name);
+		List<EmployeeDTO> employeeDtos = new ArrayList<EmployeeDTO>();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidPhoneNumber(String phoneNumber) throws EMSException{
-        List<EmployeeDTO> employeeDtos = getAllEmployee();
-        List<Long> duplicateList = employeeDtos.stream()
-                                          .map(employeeDto -> Long.valueOf(employeeDto.getPhoneNumber()))
-                                          .collect(Collectors.toList());
+		for (Employee employee : employees) {
 
-    return duplicateList.contains(Long.parseLong(phoneNumber));
-    }
+			employeeDtos.add(EmployeeMapper.toEmployeeDTO(employee));
+		}
+		return employeeDtos;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValidEmail(String email) throws EMSException{
-        List<EmployeeDTO> employeeDtos = getAllEmployee();
-        List<String> duplicateList = employeeDtos.stream()
-                                          .map(employeeDto -> employeeDto.getEmail())
-                                          .collect(Collectors.toList());
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void deleteEmployee(int employeeId) {
+		
+		if (null != employeeExists(employeeId)) {
+			employeeDao.deleteById(employeeId);
+		} else {
+			logger.error(Constant.EMPLOYEE_NOT_FOUND + employeeId);
+			throw new EMSException(Constant.EMPLOYEE_NOT_FOUND, Constant.ERROR_CODE106);
+		}
+		logger.info("Employee deleted successfully EmploeeID =" + employeeId);
+	}
 
-    return duplicateList.contains(email);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public EmployeeDTO assignProject(int employeeId, int projectId) {
+
+		Employee employee = employeeExists(employeeId);
+		Project project = service.projectExists(projectId);
+		EmployeeDTO employeeDto = null;
+
+		if (employee != null & project.getId() != 0) {
+			employee.getProject().add(project);
+			employeeDto = EmployeeMapper.toEmployeeDTO(employeeDao.save(employee));
+
+		} else {
+			logger.info(Constant.DETALILS_NOTEXIST);
+			throw new EMSException(Constant.DETALILS_NOTEXIST, Constant.ERROR_CODE103);
+		}
+		return employeeDto;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Employee employeeExists(int employeeId) {
+
+		return employeeDao.findById(employeeId).orElse(null);
+	}
 }
